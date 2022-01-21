@@ -31,7 +31,7 @@ let cuteFont;
 
 let startBg;
 
-let state = `start`
+let state = `game`
 
 
 /**
@@ -65,7 +65,7 @@ function setup() {
 createCanvas(windowWidth, windowHeight);
 
 //create the plushies
-for(let i = 0; i < NUM_PLUSHIES;i++){
+for(let i = 0; i < NUM_PLUSHIES; i++){
     let x = random(0, width);
     let y = random(0, height);
     let plushyImage = random(plushyImages);
@@ -94,7 +94,7 @@ function draw() {
     game();
   }
   else if(state === `win`){
-
+    win();
   }
 }
 
@@ -110,12 +110,53 @@ function start(){
   pop();
 }
 
-function updatePlushies(){
+function instructions(){
+  background(0);
+  push();
+  textFont(cuteFont);
+  textAlign(CENTER, CENTER);
+  textSize(70);
+  fill(255, 255, 255);
+  text(`Catch the scary duck`, width / 2, height / 2);
+  pop();
+}
+
+function game(){
+
   for (let i =0; i<plushies.length; i++){ //counting through all the animals in the array
     plushies[i].update();
   }
+    scaryPlushy.update();
 }
 
-function updateScaryPlushy(){
-  scaryPlushy.update();
+function win(){
+  background(255);
+}
+
+//function updatePlushies(){
+
+//}
+
+//function updateScaryPlushy(){
+
+//}
+function mousePressed() {
+  scaryPlushy.mousePressed();
+
+  for(let i = 0; i < plushies.length; i++){
+    plushies[i].mousePressed();
+  }
+}
+
+function keyPressed(){
+  if(state === `start`){
+    if(keyCode === 32){
+      state = `instructions`;
+    }
+  }
+  if(state === `instructions`){
+    if(keyCode === 8){
+      state = `game`;
+    }
+  }
 }

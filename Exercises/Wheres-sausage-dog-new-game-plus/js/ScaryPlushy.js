@@ -24,7 +24,7 @@ winState(){
 mousePressed() {
     if (!this.found && this.overlap(mouseX, mouseY)) {
       this.found = true;
-      this.barkSFX.loop();
+      this.sfx.loop();
       setTimeout(this.winState.bind(this), 3000); //3 seconds
       //state = `win`;
     }

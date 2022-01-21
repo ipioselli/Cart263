@@ -2,6 +2,7 @@ class Plushy {
 constructor(x, y, image, sfx){
   this.x =x;
   this.y =y;
+  this.image = image;
   this.angle = 0;
   this.sfx = sfx;
 }
@@ -29,5 +30,12 @@ overlap(x, y){
       else{
         return false;
       }
+  }
+
+  mousePressed(){
+    if(this.overlap(mouseX, mouseY)){
+      this.x += 10;
+      this.sfx.play();
+    }
   }
 }
