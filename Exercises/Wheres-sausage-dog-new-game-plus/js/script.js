@@ -16,7 +16,7 @@ Brief:
 "use strict";
 
 const NUM_PLUSHY_IMAGES = 10;
-const NUM_PLUSHIES = 100;
+const NUM_PLUSHIES = 200;
 
 let plushyImages = [];
 let plushies = [];
@@ -31,7 +31,7 @@ let cuteFont;
 
 let startBg;
 
-let state = `game`
+let state = `start`;
 
 
 /**
@@ -49,7 +49,7 @@ function preload() {
   goodSFX = loadSound(`assets/sounds/good.mp3`);
   badSFX = loadSound(`assets/sounds/bad.mp3`);
 
-  //load cuteFont
+  //load font
   cuteFont = loadFont(`assets/fonts/Sunny.otf`);
 
   //load backgrounds
@@ -106,7 +106,10 @@ function start(){
   textAlign(CENTER, CENTER);
   textSize(100);
   fill(255, 255, 255);
-  text(`Welcome! Press spacebar`, width / 2, height / 2);
+  text(`Welcome to the Sanrio Amusement Park!`, width / 2, height - 700);
+  textSize(80);
+  fill(255, 255, 255);
+  text(`Press the spacebar to continue!`, width / 2, height - 500);
   pop();
 }
 
@@ -122,41 +125,55 @@ function instructions(){
 }
 
 function game(){
+  background(255, 204, 227);
+  updatePlushies();
+  updateScaryPlushy();
 
-  for (let i =0; i<plushies.length; i++){ //counting through all the animals in the array
-    plushies[i].update();
-  }
-    scaryPlushy.update();
 }
 
 function win(){
   background(255);
 }
 
-//function updatePlushies(){
-
-//}
-
-//function updateScaryPlushy(){
-
-//}
-function mousePressed() {
-  scaryPlushy.mousePressed();
-
-  for(let i = 0; i < plushies.length; i++){
-    plushies[i].mousePressed();
+function updatePlushies(){
+  for (let i =0; i<plushies.length; i++){ //counting through all the animals in the array
+    plushies[i].update();
   }
 }
 
-function keyPressed(){
-  if(state === `start`){
-    if(keyCode === 32){
-      state = `instructions`;
+function updateScaryPlushy(){
+  scaryPlushy.update();
+}
+
+
+function mousePressed() {
+  if (state === `game`) { //can only click on the plushies in the game state
+
+    scaryPlushy.mousePressed();
+
+    for (let i = 0; i < plushies.length; i++) {
+      plushies[i].mousePressed();
     }
   }
-  if(state === `instructions`){
-    if(keyCode === 8){
+}
+
+function keyPressed() {
+  if (state === `start`) {
+    if (keyCode === 32) { //keycode for spacebar
+      state = `instructions`;
+      badSFX.stop();
+      goodSFX.stop();
+    }
+  }
+  if (state === `instructions`) {
+    if (keyCode === 13) { //keycode for enter
       state = `game`;
+
+    }
+  }
+  if (state === `win`) {
+    if (keyCode === 82) { //keycode for R
+      state = `start`;
     }
   }
 }
