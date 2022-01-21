@@ -30,8 +30,11 @@ let badSFX;
 let cuteFont;
 
 let startBg;
+let instructionsBg;
+let winBg;
 
-let state = `start`;
+let state = `win`;
+
 
 
 /**
@@ -54,6 +57,8 @@ function preload() {
 
   //load backgrounds
   startBg = loadImage("assets/images/Start-Bg.png");
+  instructionsBg = loadImage("assets/images/Instructions-Bg.png");
+  winBg = loadImage("assets/images/Win-Bg.png");
 
 }
 
@@ -114,13 +119,30 @@ function start(){
 }
 
 function instructions(){
-  background(0);
+  image(instructionsBg, width / 2, height / 2, windowWidth, windowHeight );
   push();
   textFont(cuteFont);
   textAlign(CENTER, CENTER);
-  textSize(70);
+  textSize(60);
   fill(255, 255, 255);
-  text(`Catch the scary duck`, width / 2, height / 2);
+  text(`You work in an amusement park and notice strange activity in the claw machine.`, width / 2, height - 300);
+  text(`You must find the scary looking plushy among all the cute ones before anyone see's it.`, width / 2, height - 250);
+  textSize(40);
+  text(`Press ENTER to continue`, width / 2, height - 150);
+  pop();
+}
+
+//function when you finally find the scary plushy
+function win(){
+  imageMode(CENTER, CENTER);
+  image(winBg, width / 2, height / 2, windowWidth, windowHeight );
+  push();
+  textFont(cuteFont);
+  textAlign(CENTER, CENTER);
+  textSize(60);
+  fill(255, 255, 255);
+  text(`YAY you cought the scary plushy!`, width / 2, height - 300);
+  text(`Press R to restart the game!`, width / 2, height - 200);
   pop();
 }
 
@@ -131,9 +153,6 @@ function game(){
 
 }
 
-function win(){
-  background(255);
-}
 
 function updatePlushies(){
   for (let i =0; i<plushies.length; i++){ //counting through all the animals in the array
