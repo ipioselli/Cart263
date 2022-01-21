@@ -27,6 +27,8 @@ let scaryPlushy = undefined;
 let goodSFX = undefined;
 let badSFX = undefined;
 
+let state = `start`
+
 
 /**
 Preloads all the images for the plushies and the scary plush
@@ -52,7 +54,7 @@ for(let i = 0; i < NUM_PLUSHIES;i++){
     let x = random(0, width);
     let y = random(0, height);
     let plushyImage = random(plushyImages);
-    let plushy = new Plushy(x,y, plushyImage, badSFX);
+    let plushy = new Plushy(x, y, plushyImage, badSFX);
     plushies.push(plushy);
   }
 
@@ -66,6 +68,31 @@ for(let i = 0; i < NUM_PLUSHIES;i++){
 Description of draw()
 */
 function draw() {
-  
 
+  if(state === `start`){
+    start();
+  }
+  else if(state === `instructions`){
+    instructions();
+  }
+  else if(state === `game`){
+    game();
+  }
+  else if(state === `win`){
+
+  }
+}
+
+function start(){
+
+}
+
+function updatePlushies(){
+  for (let i =0; i<plushies.length; i++){ //counting through all the animals in the array
+    plushies[i].update();
+  }
+}
+
+function updateScaryPlushy(){
+  scaryPlushy.update();
 }
