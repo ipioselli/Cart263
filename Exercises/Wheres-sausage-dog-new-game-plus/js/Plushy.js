@@ -10,15 +10,18 @@ class Plushy {
     this.y = y;
     //image
     this.image = image;
-    
+    //angle for rotation
     this.angle = 0;
+    //sound
     this.sfx = sfx;
   }
 
+  //calls the display method
   update() {
     this.display();
   }
 
+  //displays the plushies
   display() {
     push();
     imageMode(CENTER);
@@ -28,6 +31,7 @@ class Plushy {
     pop();
   }
 
+  //check for overlap with the mouse
   overlap(x, y) {
     if (x > this.x - this.image.width / 2 &&
       x < this.x + this.image.width / 2 &&
@@ -39,6 +43,8 @@ class Plushy {
     }
   }
 
+  //calls the overlap method and does changes to the plushies if clicked on
+  //also adds a sound when clicked
   mousePressed() {
     if (this.overlap(mouseX, mouseY)) {
       this.x += 10;

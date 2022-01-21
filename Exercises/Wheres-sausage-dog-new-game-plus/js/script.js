@@ -2,7 +2,7 @@
 Exercise 1: Where's Sausage Dog? New Game
 Ines Pioselli
 
-In the exercise, the user must click the scary plushy among all the cute plushies
+In this exercise, the user must click the scary plushy among all the cute plushies
 to win the game. They can also click on the other plushies to hear a weird sound.
 */
 
@@ -195,7 +195,7 @@ function keyPressed() {
       state = `game`;
     }
   }
-  
+
   if (state === `win`) {
     if (keyCode === 82) { //keycode for R
       state = `start`;
