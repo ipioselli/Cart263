@@ -37,7 +37,7 @@ function preload() {
     let plushyImage = loadImage(`assets/images/plushy${i}.png`);
     plushyImages.push(plushyImage);
   }
-  scaryPlushyImage = loadImage(`assets/images/scary-plush.png`);
+  scaryPlushyImage = loadImage(`assets/images/scary-plushy.png`);
 }
 
 
@@ -48,6 +48,17 @@ function setup() {
 createCanvas(windowWidth, windowHeight);
 
 //create the plushies
+for(let i = 0; i < NUM_PLUSHIES;i++){
+    let x = random(0, width);
+    let y = random(0, height);
+    let plushyImage = random(plushyImages);
+    let plushy = new Plushy(x,y, plushyImage, badSFX);
+    plushies.push(plushy);
+  }
+
+  let x = random(0, width);
+  let y = random(0, height);
+  scaryPlushy = new ScaryPlushy(x, y, scaryPlushyImage, goodSFX);
 }
 
 
