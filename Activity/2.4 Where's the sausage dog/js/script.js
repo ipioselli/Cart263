@@ -14,6 +14,8 @@ let animals = [];
 let sausageDogImage = undefined;
 let sausageDog = undefined;
 
+let barkSFX = undefined;
+
 function preload() {
 
   for (let i = 0; i < NUM_ANIMAL_IMAGES; i++) {
@@ -34,13 +36,13 @@ function setup() {
     let x = random(0, width);
     let y = random(0, height);
     let animalImage = random(animalImages);
-    let animal = new Animal(x,y, animalImage);
+    let animal = new Animal(x,y, animalImage, barkSFX);
     animals.push(animal);
   }
 
   let x = random(0,width);
   let y = random(0,height);
-  sausageDog = new SausageDog(x, y, sausageDogImage);
+  sausageDog = new SausageDog(x, y, sausageDogImage, barkSFX);
 }
 
 
@@ -60,4 +62,8 @@ function draw() {
 
 function mousePressed(){
   sausageDog.mousePressed();
+
+  for (let i = 0; i<animals.length; i++){
+    animals[i].mousePressed();
+  }
 }

@@ -1,10 +1,10 @@
 class Animal {
-  constructor(x, y, image){
+  constructor(x, y, image, sfx){
     this.x = x;
     this.y = y;
     this.image = image;
-
     this.angle = 0;
+    this.sfx = sfx;
   }
 
   update() {
@@ -20,7 +20,7 @@ class Animal {
     pop();
   }
 
-  overlap(x, y){ 
+  overlap(x, y){
     if(x > this.x - this.image.width/2 &&
       x < this.x + this.image.width/2 &&
       y > this.y - this.image.height/2 &&
