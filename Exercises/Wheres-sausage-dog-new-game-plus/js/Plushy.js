@@ -10,6 +10,7 @@ class Plushy {
     this.y = y;
     //image
     this.image = image;
+    
     this.angle = 0;
     this.sfx = sfx;
   }

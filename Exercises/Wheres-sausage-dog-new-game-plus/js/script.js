@@ -2,50 +2,48 @@
 Exercise 1: Where's Sausage Dog? New Game
 Ines Pioselli
 
-ideas:
-- have sanrio plushies
--
-Brief:
-- change the images
-- add start and end screens
-- add the ability to restart
-- add a countdown timer
-- add more visuals to the game (have all animals make random sounds or make dog bark)
+In the exercise, the user must click the scary plushy among all the cute plushies
+to win the game. They can also click on the other plushies to hear a weird sound.
 */
 
 "use strict";
 
+//constants for the plushy images
 const NUM_PLUSHY_IMAGES = 10;
 const NUM_PLUSHIES = 200;
 
-let plushyImages = [];
-let plushies = [];
+let plushyImages = []; //array for the plushy images
+let plushies = []; //array for the plushy objects
 
-let scaryPlushyImage = undefined;
-let scaryPlushy = undefined;
+let scaryPlushyImage; //image for the scary plushy
+let scaryPlushy; //scary plushy object
 
-let goodSFX;
-let badSFX;
+let goodSFX; //sound for when you click on the scary plushy
+let badSFX; //sound for when you click the cute plushies
 
-let cuteFont;
+let cuteFont; //font
 
+//images for the backgrounds for all the states
 let startBg;
 let instructionsBg;
 let winBg;
 
-let state = `win`;
+//starting state
+let state = `start`;
 
 
 
 /**
-Preloads all the images for the plushies and the scary plush
+Preloads all the images for the plushies, the scary plushy and all the backgrounds
 */
 function preload() {
 
-  for(let i = 0; i < NUM_PLUSHY_IMAGES; i++){
+  //loads the cute plushies
+  for (let i = 0; i < NUM_PLUSHY_IMAGES; i++) {
     let plushyImage = loadImage(`assets/images/plushy${i}.png`);
     plushyImages.push(plushyImage);
   }
+  //loads scary plushy image
   scaryPlushyImage = loadImage(`assets/images/scary-plushy.png`);
 
   //load music
@@ -64,12 +62,12 @@ function preload() {
 
 
 /**
-Description of setup
+Setups the objects for the game
 */
 function setup() {
 createCanvas(windowWidth, windowHeight);
 
-//create the plushies
+//create the plushies and randomize location
 for(let i = 0; i < NUM_PLUSHIES; i++){
     let x = random(0, width);
     let y = random(0, height);
@@ -78,31 +76,36 @@ for(let i = 0; i < NUM_PLUSHIES; i++){
     plushies.push(plushy);
   }
 
+  //create scary plushy and give it a random spot
   let x = random(0, width);
   let y = random(0, height);
   scaryPlushy = new ScaryPlushy(x, y, scaryPlushyImage, goodSFX);
 }
 
 
-/**
-Description of draw()
-*/
-function draw() {
 
-  if(state === `start`){
+//calls the state change function
+function draw() {
+  stateChange();
+}
+
+//changes all the states
+function stateChange() {
+  if (state === `start`) {
     start();
   }
-  else if(state === `instructions`){
+  else if (state === `instructions`) {
     instructions();
   }
-  else if(state === `game`){
+  else if (state === `game`) {
     game();
   }
-  else if(state === `win`){
+  else if (state === `win`) {
     win();
   }
 }
 
+//function to load the title screen
 function start(){
   imageMode(CENTER, CENTER);
   image(startBg, width / 2, height / 2, windowWidth, windowHeight );
@@ -118,6 +121,7 @@ function start(){
   pop();
 }
 
+//function to load the instructions for the game
 function instructions(){
   image(instructionsBg, width / 2, height / 2, windowWidth, windowHeight );
   push();
@@ -130,6 +134,13 @@ function instructions(){
   textSize(40);
   text(`Press ENTER to continue`, width / 2, height - 150);
   pop();
+}
+
+//function for the game
+function game(){
+  background(255, 204, 227);
+  updatePlushies();
+  updateScaryPlushy();
 }
 
 //function when you finally find the scary plushy
@@ -146,50 +157,45 @@ function win(){
   pop();
 }
 
-function game(){
-  background(255, 204, 227);
-  updatePlushies();
-  updateScaryPlushy();
 
-}
-
-
+//calls the update method for the plushies
 function updatePlushies(){
   for (let i =0; i<plushies.length; i++){ //counting through all the animals in the array
     plushies[i].update();
   }
 }
 
+//calls the update method for the scary plushy
 function updateScaryPlushy(){
   scaryPlushy.update();
 }
 
-
+//function
 function mousePressed() {
   if (state === `game`) { //can only click on the plushies in the game state
 
-    scaryPlushy.mousePressed();
+    scaryPlushy.mousePressed(); //calls mousePressed method for scaryPlushy
 
     for (let i = 0; i < plushies.length; i++) {
-      plushies[i].mousePressed();
+      plushies[i].mousePressed();  //calls mousePressed method for the plushies
     }
   }
 }
 
+//get keyboard input from the user
 function keyPressed() {
   if (state === `start`) {
     if (keyCode === 32) { //keycode for spacebar
       state = `instructions`;
-      badSFX.stop();
-      goodSFX.stop();
     }
   }
+
   if (state === `instructions`) {
     if (keyCode === 13) { //keycode for enter
       state = `game`;
-
     }
   }
+  
   if (state === `win`) {
     if (keyCode === 82) { //keycode for R
       state = `start`;
