@@ -24,8 +24,10 @@ let plushies = [];
 let scaryPlushyImage = undefined;
 let scaryPlushy = undefined;
 
-let goodSFX = undefined;
-let badSFX = undefined;
+let goodSFX;
+let badSFX;
+
+let cuteFont;
 
 let state = `start`
 
@@ -40,6 +42,13 @@ function preload() {
     plushyImages.push(plushyImage);
   }
   scaryPlushyImage = loadImage(`assets/images/scary-plushy.png`);
+
+  //load music
+  goodSFX = loadSound(`assets/sounds/good.mp3`);
+  badSFX = loadSound(`assets/sounds/bad.mp3`);
+
+  //load cuteFont
+  cuteFont = loadFont(`assets/fonts/Sunny.otf`
 }
 
 
