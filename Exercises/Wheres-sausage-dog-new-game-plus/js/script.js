@@ -29,6 +29,8 @@ let badSFX;
 
 let cuteFont;
 
+let startBg;
+
 let state = `start`
 
 
@@ -48,7 +50,11 @@ function preload() {
   badSFX = loadSound(`assets/sounds/bad.mp3`);
 
   //load cuteFont
-  cuteFont = loadFont(`assets/fonts/Sunny.otf`
+  cuteFont = loadFont(`assets/fonts/Sunny.otf`);
+
+  //load backgrounds
+  startBg = loadImage("assets/images/Start-Bg.png");
+
 }
 
 
@@ -93,7 +99,15 @@ function draw() {
 }
 
 function start(){
-
+  imageMode(CENTER, CENTER);
+  image(startBg, width / 2, height / 2, windowWidth, windowHeight );
+  push();
+  textFont(cuteFont);
+  textAlign(CENTER, CENTER);
+  textSize(100);
+  fill(255, 255, 255);
+  text(`Welcome! Press spacebar`, width / 2, height / 2);
+  pop();
 }
 
 function updatePlushies(){
