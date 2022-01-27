@@ -1,6 +1,8 @@
 /**
-3.1  Responsive voice
+3.2  Annyang
 Ines Pioselli
+Annyang only works with chrome
+Voice recognition
 
 */
 
@@ -25,9 +27,5 @@ function draw() {
 }
 
 function mousePressed(){
-  responsiveVoice.speak("1 2 3", "UK English Male", {
-    pitch:2,
-    rate:1.5,
-    volume: 1
-  }); //says something when you click the canvas
+
 }
