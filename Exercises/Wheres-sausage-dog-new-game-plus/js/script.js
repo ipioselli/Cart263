@@ -155,6 +155,14 @@ function win(){
   text(`YAY you cought the scary plushy!`, width / 2, height - 300);
   text(`Press R to restart the game!`, width / 2, height - 200);
   pop();
+
+  reset();
+
+}
+
+function reset(){
+  scaryPlushy.angle = 0;
+  scaryPlushy.found = false;
 }
 
 
