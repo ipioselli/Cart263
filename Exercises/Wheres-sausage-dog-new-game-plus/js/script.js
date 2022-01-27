@@ -15,11 +15,13 @@ const NUM_PLUSHIES = 200;
 let plushyImages = []; //array for the plushy images
 let plushies = []; //array for the plushy objects
 
-let scaryPlushyImage; //image for the scary plushy
-let scaryPlushy; //scary plushy object
+
 
 let goodSFX; //sound for when you click on the scary plushy
 let badSFX; //sound for when you click the cute plushies
+
+let scaryPlushyImage; //image for the scary plushy
+let scaryPlushy;
 
 let cuteFont; //font
 
@@ -67,15 +69,24 @@ Setups the objects for the game
 function setup() {
 createCanvas(windowWidth, windowHeight);
 
-//create the plushies and randomize location
-for(let i = 0; i < NUM_PLUSHIES; i++){
-    let x = random(0, width);
-    let y = random(0, height);
-    let plushyImage = random(plushyImages);
-    let plushy = new Plushy(x, y, plushyImage, badSFX);
-    plushies.push(plushy);
-  }
+setupScaryPlushy();
+setupPlushy();
 
+}
+
+function setupPlushy(){
+  //create the plushies and randomize location
+  for(let i = 0; i < NUM_PLUSHIES; i++){
+      let x = random(0, width);
+      let y = random(0, height);
+      let plushyImage = random(plushyImages);
+      let plushy = new Plushy(x, y, plushyImage, badSFX);
+      plushies.push(plushy);
+    }
+
+}
+
+function setupScaryPlushy(){
   //create scary plushy and give it a random spot
   let x = random(0, width);
   let y = random(0, height);
@@ -119,6 +130,8 @@ function start(){
   fill(255, 255, 255);
   text(`Press the spacebar to continue!`, width / 2, height - 500);
   pop();
+
+  reset();
 }
 
 //function to load the instructions for the game
@@ -156,11 +169,12 @@ function win(){
   text(`Press R to restart the game!`, width / 2, height - 200);
   pop();
 
-  reset();
+
 
 }
 
 function reset(){
+  setupScaryPlushy();
   scaryPlushy.angle = 0;
   scaryPlushy.found = false;
 }
