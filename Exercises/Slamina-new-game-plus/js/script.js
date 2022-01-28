@@ -312,34 +312,42 @@ function game(){
   }
 
   sparkles();
+  checkScore();
   displayFruitWords();
   displaycurrentAnswer();
   displayGoodScore();
   displayLivesLeft();
-
-
-
 
 }
 
 function checkScore(){
   if(currentAnswer === currentFruit){
     fill(0, 255, 0);
+    currentScore++;
+    if(currentScore === correctMaxScore){
+      state = `win`;
+    }
+
   }
   else{
-    fill(255, 0, 0);
+    fill(255, 0, 0); //red
+    currentLives--;
+    if(currentLives === livesLeft){
+      state = `lose`;
+    }
   }
   text(currentAnswer, width/2, height/2);
 }
 
-function displaycurrentAnswer(){
-  push();
-  textFont(retroFont);
-  textSize(50);
-  textAlign(CENTER, CENTER);
-  text(currentAnswer, width/2 + 200, height/2);
-  pop();
-}
+// function displaycurrentAnswer(){
+//   push();
+//   fill(255, 255, 255);
+//   textFont(retroFont);
+//   textSize(50);
+//   textAlign(CENTER, CENTER);
+//   text(currentAnswer, width/2 + 200, height/2);
+//   pop();
+// }
 
 function displayFruitWords(){
   push();
