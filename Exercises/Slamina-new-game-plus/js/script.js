@@ -119,8 +119,8 @@ let correctMaxScore = 5;
 let currentScore = 0;
 
 //for wrong answers
-let currentLives = 5
-let livesLeft = 0;
+let wrongAnswers = 0;
+let maxWrongAnswers = 5;
 
 let goodSFX;
 let badSFX;
@@ -151,7 +151,7 @@ function setup() {
 
   if(annyang){
     let commands = {
-      'I think it is *fruits': guessFruit
+      'I think it is a *fruit': guessFruit
     };
     annyang.addCommands(commands);
     annyang.start();
@@ -162,10 +162,10 @@ function setup() {
   }
 
 }
-
-function reset(){
-  hihjhredhyiuhgfl;jhbjikjkhfykjh
-}
+//
+// function reset(){
+//   hihjhredhyiuhgfl;jhbjikjkhfykjh
+// }
 
 function setupFruits(){
   for(let i = 0; i < numStartFruits; i++){
@@ -314,7 +314,7 @@ function game(){
   sparkles();
 
   displayFruitWords();
-  //displaycurrentAnswer();
+  displaycurrentAnswer();
   displayGoodScore();
   displayLivesLeft();
 
@@ -324,34 +324,42 @@ function checkScore(){
   if(currentAnswer === currentFruit){
     fill(0, 255, 0);
     currentScore++;
+
     if(currentScore === correctMaxScore){
       state = `win`;
+    }
+    else{
+      nextFruit();
     }
 
   }
   else{
-    fill(255, 0, 0); //red
-    currentLives--;
-    if(currentLives === livesLeft){
+    fill(255, 0, 0);
+    wrongAnswers++;
+    if(wrongAnswers === maxWrongAnswers){
       state = `lose`;
     }
   }
-  text(currentAnswer, width/2, height/2);
 }
 
 function win(){
   background(344, 56, 98);
 }
 
-// function displaycurrentAnswer(){
-//   push();
-//   fill(255, 255, 255);
-//   textFont(retroFont);
-//   textSize(50);
-//   textAlign(CENTER, CENTER);
-//   text(currentAnswer, width/2 + 200, height/2);
-//   pop();
-// }
+function lose(){
+  background(34, 67, 90);
+}
+
+function displaycurrentAnswer(){
+  push();
+
+  textFont(retroFont);
+  textSize(50);
+  textAlign(CENTER, CENTER);
+  text(`I think it is a ${currentAnswer} `, width/2, height/2 + 200);
+  pop();
+
+}
 
 function displayFruitWords(){
   push();
@@ -380,22 +388,18 @@ function displayLivesLeft(){
   textFont(retroFont);
   textSize(50);
   textAlign(CENTER, CENTER);
-  text(livesLeft, width/2, height/2 + 200);
+  text(wrongAnswers, width/2, height/2 + 200);
   pop();
 }
 
-function mousePressed(){
-  if(state === `game`){ //only works when you are in the game state
-    currentFruit = random(fruits); //chooses a random fruit
+function sayFruitBackwards(fruit){
+
     let reverseFruit = reverseString(currentFruit); //reserves the current Fruit
     responsiveVoice.speak(reverseFruit);
-  }
 }
 
-function guessFruit(fruit){
-  currentAnswer = fruit.toLowerCase();
-  checkScore();
-}
+
+
 
 /**
 Reverses the provided string
@@ -410,6 +414,25 @@ function reverseString(string) {
   // Return the result
   return result;
 }
+
+function guessFruit(fruit){
+  currentAnswer = fruit.toLowerCase();
+  checkScore();
+}
+
+function nextFruit(){
+  currentAnswer = ``;
+  currentFruit = random(fruits);
+  sayFruitBackwards();
+}
+
+function mousePressed(){
+  if(state === `game`){
+    nextFruit();
+}
+}
+
+
 
 function keyPressed() {
   if (state === `start`) {
