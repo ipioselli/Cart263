@@ -1,6 +1,8 @@
 /**
 Activity 2: Slamina
 Ines Pioselli
+
+Inspired by Marina and the Diamons album FROOT
 Brief:
 - add start and end screens
 - add visuals when you get an answer right or wrong
@@ -98,6 +100,16 @@ const fruits = [
 
 //fonts
 let retroFont;
+let mainFont;
+
+let numStartFruitImages = 7;
+let numStartFruits = 100;
+
+let startFruitsImages = [];
+let startFruits = [];
+
+let gravityForce = 0.0025;
+
 
 let currentFruit = ``;
 let currentAnswer = ``;
@@ -110,13 +122,20 @@ let currentScore = 0;
 let currentLives = 5
 let livesLeft = 0;
 
+let goodSFX;
+let badSFX;
 
 let state = `start`;
 
 function preload() {
 
-//load fonts
-retroFont = loadFont(`assets/fonts/neon.otf`)
+  for (let i = 0; i < numStartFruitImages; i++) {
+    let fruitImage = loadImage(`assets/images/fruit${i}.png`);
+    startFruitsImages.push(fruitImage);
+  }
+  //load fonts
+  retroFont = loadFont(`assets/fonts/neon.otf`);
+  mainFont = loadFont(`assets/fonts/Bohemian Soul.otf`);
 }
 
 
@@ -124,6 +143,7 @@ retroFont = loadFont(`assets/fonts/neon.otf`)
 function setup() {
   canvas = createCanvas(800, 800);
   windowResized();
+  setupFruits();
 
   if(annyang){
     let commands = {
@@ -136,6 +156,17 @@ function setup() {
     textStyle(BOLD);
     textAlign(CENTER, CENTER);
   }
+
+}
+
+function setupFruits(){
+  for(let i = 0; i < numStartFruits; i++){
+      let x = random(0, width);
+      let y = random(0, height);
+      let fruitImage = random(startFruitsImages);
+      let startFruit = new Fruit(x, y, fruitImage);
+      startFruits.push(startFruit);
+    }
 
 }
 
@@ -169,7 +200,6 @@ function windowResized(){
 function draw() {
   stateChange();
 
-
 }
 
 function stateChange(){
@@ -198,11 +228,25 @@ function start() {
   push();
   textFont(retroFont);
   textAlign(CENTER, CENTER);
-  textSize(40);
+  textSize(60);
   fill(255, 255, 255);
-  text(`FROOT GAME!`, width / 2, height / 2);
+  text(`FROOT GAME!`, width / 2, height / 2 -100);
+
+  textFont(mainFont);
+  textSize(20);
+  fill(255, 255, 255);
+  text(`Press SPACEBAR to Start`, width / 2, height / 2 +100 );
+
+
   pop();
 
+  updateFruits();
+  sparkles();
+
+
+}
+
+function sparkles(){
   //adds sparkling effect
   for (let i = 0; i < 1000; i++) {
     let x = random(0, width);
@@ -212,13 +256,51 @@ function start() {
   }
 }
 
+function updateFruits(){
+  for (let i =0; i<startFruits.length; i++){ //counting through all the animals in the array
+    let startFruit = startFruits[i];
+    startFruits[i].update();
+
+  }
+
+  for (let i =0; i<startFruits.length; i++){ //counting through all the animals in the array
+    let startFruit = startFruits[i];
+    startFruits[i].gravity(gravityForce);
+
+  }
+}
+
 function instructions(){
   background(0);
+  push();
+  textFont(mainFont);
+  textSize(30);
+  fill(255, 255, 255);
+  textSize(30);
+  text(`Instructions`, width / 2, height / 2 -200 );
+  textSize(20);
+  text(`1. Say the fruit names in their normal form`, width / 2, height / 2 -100 );
+  text(`2. If you get more than 5 wrong you lose :(`, width / 2, height / 2 -50 );
+  text(`3. If you get 5 right you win! :D`, width / 2, height / 2 );
+  textSize(15);
+  text(`Press ENTER to continue`, width / 2, height / 2 + 100 );
+
+
+
+  pop();
+  sparkles();
 
 }
 
 function game(){
   background(0);
+  for (let i =0; i< 20; i++){ //counting through all the animals in the array
+    let startFruit = startFruits[i];
+    startFruits[i].display();
+
+  }
+
+
 
   if(currentAnswer === currentFruit){
     fill(0, 255, 0);
