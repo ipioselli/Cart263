@@ -134,9 +134,17 @@ let song;
 let gameBg; // variable for the game state background
 let winBg;
 
+let angryFruit = {
+  x: 400,
+  y: 450,
+  size: 0,
+  grow: true,
+  growAmount:3,
+}
+
 let canvas; //declares the canvas
 
-let state = `lose`; //beginning state
+let state = `start`; //beginning state
 
 function preload() {
 
@@ -150,6 +158,7 @@ function preload() {
 
   gameBg = loadImage("assets/images/game-bg.png");
   winBg = loadImage("assets/images/win-bg.png");
+  angryFruit.image = loadImage("assets/images/angryFruit.png");
 
   //load sounds
   goodSFX = loadSound(`assets/sounds/good.mp3`);
@@ -371,6 +380,42 @@ function win(){
 
 function lose(){
   background(0);
+  push();
+  textFont(mainFont);
+  fill(255, 255,255);
+  textSize(50);
+  textAlign(CENTER, CENTER);
+  text(`RIP >:(`, width/2, height/2 -200);
+  textSize(30);
+  text(`You are not worthy of FROOTS`, width/2, height/2 -100);
+  pop();
+
+  moveAngryFruit();
+  displayAngryFruit();
+
+  sparkles();
+}
+
+function moveAngryFruit(){
+  if (angryFruit.size > 200) { //max size is 30
+    angryFruit.grow = false;
+  }
+  if (angryFruit.size < 20) {
+    angryFruit.grow = true;
+  }
+
+  if (angryFruit.grow === true) {
+    angryFruit.size += angryFruit.growAmount; //if the size is at 0 it will grow
+  }
+  else {
+    angryFruit.size -= angryFruit.growAmount //if the size is at 30 it will shrink
+  }
+
+}
+
+function displayAngryFruit(){
+  imageMode(CENTER, CENTER);
+  image(angryFruit.image, angryFruit.x, angryFruit.y, angryFruit.size, angryFruit.size);
 }
 
 function displaycurrentAnswer(){
