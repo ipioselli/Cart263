@@ -316,7 +316,7 @@ function instructions(){
   text(`2. If you get more than 5 wrong you lose :(`, width / 2, height / 2 -50 );
   text(`3. If you get 5 right you win! :D`, width / 2, height / 2 );
   text(`4. Click on the screen to change word`, width / 2, height / 2 + 50 );
-  text(`5. Make sure to say "I think it is "`, width / 2, height / 2 + 100 );
+  text(`5. Make sure to say "I think it is"`, width / 2, height / 2 + 100 );
   textSize(15);
   text(`Press ENTER to continue`, width / 2, height / 2 + 200 );
   pop();
