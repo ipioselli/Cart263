@@ -10,9 +10,9 @@ class Fruit {
     this.ax = 0;
     this.ay = 0;
     this.maxSpeed = 30;
-    //size of the acorn
+    //size of the fruit
     this.size = 50;
-    //the image for the acorn
+    //the image for the fruit
     this.image = image;
 
   }

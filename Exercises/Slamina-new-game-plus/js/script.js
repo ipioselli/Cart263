@@ -137,7 +137,7 @@ let winBg; // variable for the win state background
 //declares variable for the angry fruit in the lose state
 let angryFruit = {
   x: 400,
-  y: 450,
+  y: 550,
   size: 0,
   grow: true,
   growAmount:3,
@@ -174,30 +174,32 @@ function preload() {
 }
 
 
-
 function setup() {
   canvas = createCanvas(800, 800);
-  windowResized();
-  setupFruits();
+  windowResized(); //responsive window resizing
+  setupFruits(); //sets up all the fruit images for the start state
 
+  //setups annyang for speech recognition
+  //checks if annyang is available
   if(annyang){
+    //create the guessing command
     let commands = {
       'I think it is a *fruit': guessFruit
     };
+    //setup annyang and start
     annyang.addCommands(commands);
     annyang.start();
 
+    //text defaults
     textSize(32);
     textStyle(BOLD);
     textAlign(CENTER, CENTER);
   }
-
 }
-//
-// function reset(){
-//
-// }
 
+
+
+//create fruit objects at random locations from the Fruit class for the start state
 function setupFruits(){
   for(let i = 0; i < numStartFruits; i++){
       let x = random(0, width);
@@ -236,86 +238,67 @@ function windowResized(){
   canvas.elt.style.height = `${newHeight}px`;
 }
 
-
+//display all the states
 function draw() {
   stateChange(); //function to change the states
 
 }
 
+//function to switch from state to state
 function stateChange(){
   if (state === `start`){
     start();
-
   }
   else if(state === `instructions`){
     instructions();
   }
   else if(state === `game`){
     game();
-
   }
   else if(state === `win`){
     win();
   }
-
   else if(state === `lose`){
     lose();
   }
 }
 
+// title screen
+// shows the bouncing fruit with the title
+// must press enter to move to the instructions
 function start() {
   background(0);
-
   push();
   textFont(retroFont);
   textAlign(CENTER, CENTER);
   textSize(60);
   fill(255, 255, 255);
   text(`FROOT GAME!`, width / 2, height / 2 -100);
-
   textFont(mainFont);
   textSize(20);
   fill(255, 255, 255);
   text(`Press SPACEBAR to Start`, width / 2, height / 2 +100 );
-
   pop();
 
-  updateFruits();
-  sparkles();
+  updateFruits(); //calls the function to move and display the fruits
+  sparkles(); //calls the sparkles function for the static effect
+
+  reset();
+
 }
 
-//sparkling static effect from cart 253
-function sparkles(){
-  for (let i = 0; i < 1000; i++) {
-    let x = random(0, width);
-    let y = random(0, height);
-    stroke(400);
-    point(x, y);
-  }
-}
 
-function updateFruits(){
-  for (let i =0; i<startFruits.length; i++){ //counting through all the animals in the array
-    let startFruit = startFruits[i];
-    startFruits[i].update();
-  }
-
-  for (let i =0; i<startFruits.length; i++){ //counting through all the animals in the array
-    let startFruit = startFruits[i];
-    startFruits[i].gravity(gravityForce);
-
-  }
-}
-
+//instructions state
+//must press enter to start the game
 function instructions(){
   background(0);
   push();
   textFont(mainFont);
   textSize(30);
   fill(255, 255, 255);
-  textSize(30);
+  textSize(40);
   text(`Instructions`, width / 2, height / 2 -200 );
-  textSize(20);
+  textSize(30);
   text(`1. Say the fruit names in their normal form`, width / 2, height / 2 -100 );
   text(`2. If you get more than 5 wrong you lose :(`, width / 2, height / 2 -50 );
   text(`3. If you get 5 right you win! :D`, width / 2, height / 2 );
@@ -325,50 +308,28 @@ function instructions(){
   text(`Press ENTER to continue`, width / 2, height / 2 + 200 );
   pop();
 
-  sparkles();
+  sparkles(); //calls sparkles function
 
 }
 
+//game state
+//displays all variables to play the game
 function game(){
   background(0);
   imageMode(CENTER, CENTER);
-  image(gameBg, width / 2, height / 2, 800,800 );
+  image(gameBg, width / 2, height / 2, 800,800 ); //background image
 
-  sparkles();
-
-  displayFruitWords();
-  displaycurrentAnswer();
-  displayGoodScore();
-  displayLivesLeft();
+  sparkles(); //displays static sparkles
+  displayFruitWords(); //displays the fruits that the female voice says
+  displaycurrentAnswer(); //displays the user's answer
+  displayGoodScore(); //displays the right answer score
+  displayBadScore(); //displays the wrong answer score
 }
 
-function checkScore(){
-  if(currentAnswer === currentFruit){
-    fill(0, 255, 0);
-    rightAnswers++;
-    goodSFX.play();
-
-    if(rightAnswers === maxRightAnswers){
-      state = `win`;
-    }
-    else{
-      nextFruit();
-    }
-  }
-
-  else{
-    fill(255, 0, 0);
-    wrongAnswers++;
-    badSFX.play();
-    if(wrongAnswers === maxWrongAnswers){
-      state = `lose`;
-    }
-  }
-}
-
+//win state when you get 5 right answers
 function win(){
   imageMode(CENTER, CENTER);
-  image(winBg, width / 2, height / 2, 800,800 );
+  image(winBg, width / 2, height / 2, 800,800 ); //background image
   push();
   textFont(mainFont);
   fill(255, 255,255);
@@ -377,13 +338,16 @@ function win(){
   text(`Congratulations!`, width/2, height/2 -200);
   textSize(30);
   text(`You are a FROOT expert!`, width/2, height/2 -100);
+  textSize(20);
+  text(`Press R to restart the game`, width/2, height/2);
   pop();
 
-  updateFruits();
+  updateFruits(); //displays bouncing fruit again
+  sparkles(); //sparkling static effect
 
-  sparkles();
 }
 
+//lose state when you get 5 wrong answers
 function lose(){
   background(0);
   push();
@@ -394,36 +358,100 @@ function lose(){
   text(`RIP >:(`, width/2, height/2 -200);
   textSize(30);
   text(`You are not worthy of FROOTS`, width/2, height/2 -100);
+  textSize(20);
+  text(`Press R to restart the game`, width/2, height/2);
   pop();
 
-  moveAngryFruit();
-  displayAngryFruit();
+  growAngryFruit(); //moves the angry fruit
+  displayAngryFruit(); //displays the angry fruit
+  sparkles(); //sparkling effect
 
-  sparkles();
 }
 
-function moveAngryFruit(){
-  if (angryFruit.size > 200) { //max size is 30
+
+function reset(){
+
+
+  fill(0);
+  currentAnswer = ``;
+  currentAnswer = ``;
+  rightAnswers = 0;
+  wrongAnswers = 0;
+}
+
+//sparkling static effect
+function sparkles(){
+  for (let i = 0; i < 1000; i++) {
+    let x = random(0, width);
+    let y = random(0, height);
+    stroke(400);
+    point(x, y);
+  }
+}
+
+//function to display and move the fruits
+//calls the updateFruits function from the Fruit class
+function updateFruits(){
+  for (let i =0; i<startFruits.length; i++){ //counting through all the fruits in the array
+    let startFruit = startFruits[i];
+    startFruits[i].update();
+  }
+
+  //calls the gravity function from the Fruit class and passes gravityForce variable through it
+  for (let i =0; i<startFruits.length; i++){ //counting through all the animals in the array
+    let startFruit = startFruits[i];
+    startFruits[i].gravity(gravityForce);
+  }
+}
+
+//function to check the scores and display the correct states and sound effects
+function checkScore(){
+  if(currentAnswer === currentFruit){ //if the users answer is the same as the responsiveVoice
+    fill(0, 255, 0); //the text becomes green
+    rightAnswers++; //the right score goes up by 1
+    goodSFX.play(); //plays the good sfx
+
+    if(rightAnswers === maxRightAnswers){ //if the right score = 5
+      state = `win`; //calls the win state
+    }
+    else{
+      nextFruit(); //else continues the game
+    }
+  }
+  else{ //if the users answer is different from the responsiveVoice
+    fill(255, 0, 0); //the text becomes red
+    wrongAnswers++; // wrong score goes up by 1
+    badSFX.play(); //plays the bad sfx
+    if(wrongAnswers === maxWrongAnswers){ //if the wrong score = 5
+      state = `lose`; //calls the lose state
+    }
+  }
+}
+
+//function to grow the angryfruit in the lose state
+function growAngryFruit(){
+  if (angryFruit.size > 200) { //max size is 200
     angryFruit.grow = false;
   }
-  if (angryFruit.size < 20) {
+  if (angryFruit.size < 20) { //min size is 20
     angryFruit.grow = true;
   }
 
   if (angryFruit.grow === true) {
-    angryFruit.size += angryFruit.growAmount; //if the size is at 0 it will grow
+    angryFruit.size += angryFruit.growAmount; //if the size is at 20 it will grow
   }
   else {
-    angryFruit.size -= angryFruit.growAmount //if the size is at 30 it will shrink
+    angryFruit.size -= angryFruit.growAmount //if the size is at 200 it will shrink
   }
-
 }
 
+//function to display the angry fruit image
 function displayAngryFruit(){
   imageMode(CENTER, CENTER);
   image(angryFruit.image, angryFruit.x, angryFruit.y, angryFruit.size, angryFruit.size);
 }
 
+//displays the users answer
 function displaycurrentAnswer(){
   push();
   textFont(retroFont);
@@ -431,9 +459,9 @@ function displaycurrentAnswer(){
   textAlign(CENTER, CENTER);
   text(`I think it is a ${currentAnswer} `, width/2, height/2 + 200);
   pop();
-
 }
 
+//displays the fruits the responsiveVoice says backwards
 function displayFruitWords(){
   push();
   fill(255, 255, 255);
@@ -441,10 +469,11 @@ function displayFruitWords(){
   textSize(40);
   textAlign(CENTER, CENTER);
   text(`Current Fruit: `, width/2 - 150, height/2);
-  text(reverseString(currentFruit), width/2 + 150, height/2); //displays reversed word
+  text(reverseString(currentFruit), width/2 + 150, height/2); //displays reversed fruit
   pop();
 }
 
+//displays the right answer score
 function displayGoodScore(){
   push();
   fill(255, 255, 255);
@@ -453,10 +482,10 @@ function displayGoodScore(){
   textAlign(CENTER, CENTER);
   text(`Right: ${rightAnswers}`, width/2 -180, height/2 -250);
   pop();
-
 }
 
-function displayLivesLeft(){
+//displays the wrong answer score
+function displayBadScore(){
   push();
   fill(255, 255, 255);
   textFont(retroFont);
@@ -466,14 +495,12 @@ function displayLivesLeft(){
   pop();
 }
 
+//reverses the fruit's letters from the array of fruits and lets the responsiveVoice say them
 function sayFruitBackwards(fruit){
 
     let reverseFruit = reverseString(currentFruit); //reserves the current Fruit
     responsiveVoice.speak(reverseFruit);
 }
-
-
-
 
 /**
 Reverses the provided string
@@ -489,25 +516,29 @@ function reverseString(string) {
   return result;
 }
 
+// Called by annyang when the user make a guess.
+// fruit parameter contains the guess as a string.
+// Sets the answer text to the guess.
 function guessFruit(fruit) {
+  //converts the letters to lower case
   currentAnswer = fruit.toLowerCase();
-  checkScore();
+  checkScore(); // checks the score
 }
 
+//reset the answer text, get a new random fruit, say its name
 function nextFruit() {
-
   currentFruit = random(fruits);
   sayFruitBackwards();
 }
 
+//when the user clicks go to the next fruit
 function mousePressed() {
   if (state === `game`) {
     nextFruit();
   }
 }
 
-
-
+//handles keyboard input from the user
 function keyPressed() {
   if (state === `start`) {
     if (keyCode === 32) { //keycode for spacebar
