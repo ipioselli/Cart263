@@ -129,11 +129,12 @@ let maxWrongAnswers = 5;
 
 let goodSFX; // good sfx when you get the answer right
 let badSFX; // bad sfx when you get the answer wrong
-let song;
+let song; // instructions song
 
 let gameBg; // variable for the game state background
-let winBg;
+let winBg; // variable for the win state background
 
+//declares variable for the angry fruit in the lose state
 let angryFruit = {
   x: 400,
   y: 450,
@@ -144,10 +145,12 @@ let angryFruit = {
 
 let canvas; //declares the canvas
 
-let state = `lose`; //beginning state
+let state = `start`; //beginning state
 
+//preloads all the images, sounds and fonts
 function preload() {
 
+  //loads an array of fruit images for the start state
   for (let i = 0; i < numStartFruitImages; i++) {
     let fruitImage = loadImage(`assets/images/fruit${i}.png`);
     startFruitsImages.push(fruitImage);
@@ -156,8 +159,11 @@ function preload() {
   retroFont = loadFont(`assets/fonts/neon.otf`);
   mainFont = loadFont(`assets/fonts/Bohemian Soul.otf`);
 
+  //loads background images
   gameBg = loadImage("assets/images/game-bg.png");
   winBg = loadImage("assets/images/win-bg.png");
+
+  //loads angry fruit image
   angryFruit.image = loadImage("assets/images/angryFruit.png");
 
   //load sounds
