@@ -125,6 +125,8 @@ let livesLeft = 0;
 let goodSFX;
 let badSFX;
 
+let gameBg;
+
 let state = `start`;
 
 function preload() {
@@ -136,6 +138,8 @@ function preload() {
   //load fonts
   retroFont = loadFont(`assets/fonts/neon.otf`);
   mainFont = loadFont(`assets/fonts/Bohemian Soul.otf`);
+
+  gameBg = loadImage("assets/images/game-Bg.png");
 }
 
 
@@ -157,6 +161,10 @@ function setup() {
     textAlign(CENTER, CENTER);
   }
 
+}
+
+function reset(){
+  hihjhredhyiuhgfl;jhbjikjkhfykjh
 }
 
 function setupFruits(){
@@ -294,11 +302,20 @@ function instructions(){
 
 function game(){
   background(0);
+  imageMode(CENTER, CENTER);
+  image(gameBg, width / 2, height / 2, windowWidth, windowHeight );
+
   for (let i =0; i< 20; i++){ //counting through all the animals in the array
     let startFruit = startFruits[i];
     startFruits[i].display();
 
   }
+
+  sparkles();
+  displayFruitWords();
+  displaycurrentAnswer();
+  displayGoodScore();
+  displayLivesLeft();
 
 
 
@@ -309,6 +326,46 @@ function game(){
     fill(255, 0, 0);
   }
   text(currentAnswer, width/2, height/2);
+}
+
+function displaycurrentAnswer(){
+  push();
+  textFont(retroFont);
+  textSize(50);
+  textAlign(CENTER, CENTER);
+  text(currentAnswer, width/2 + 200, height/2);
+  pop();
+}
+
+function displayFruitWords(){
+  push();
+  fill(255, 255, 255);
+  textFont(retroFont);
+  textSize(50);
+  textAlign(CENTER, CENTER);
+  text(reverseString(currentFruit), width/2 + 100, height/2); //displays reversed word
+  pop();
+}
+
+function displayGoodScore(){
+  push();
+  fill(255, 255, 255);
+  textFont(retroFont);
+  textSize(50);
+  textAlign(CENTER, CENTER);
+  text(currentScore, width/2, height/2);
+  pop();
+
+}
+
+function displayLivesLeft(){
+  push();
+  fill(255, 255, 255);
+  textFont(retroFont);
+  textSize(50);
+  textAlign(CENTER, CENTER);
+  text(livesLeft, width/2, height/2 + 200);
+  pop();
 }
 
 function mousePressed(){
