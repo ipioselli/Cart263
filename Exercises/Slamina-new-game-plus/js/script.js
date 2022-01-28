@@ -144,7 +144,7 @@ let angryFruit = {
 
 let canvas; //declares the canvas
 
-let state = `start`; //beginning state
+let state = `lose`; //beginning state
 
 function preload() {
 
