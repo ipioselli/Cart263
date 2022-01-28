@@ -129,6 +129,7 @@ let maxWrongAnswers = 5;
 
 let goodSFX; // good sfx when you get the answer right
 let badSFX; // bad sfx when you get the answer wrong
+let song;
 
 let gameBg; // variable for the game state background
 
@@ -151,6 +152,8 @@ function preload() {
   //load sounds
   goodSFX = loadSound(`assets/sounds/good.mp3`);
   badSFX = loadSound(`assets/sounds/bad.mp3`);
+  song = loadSound(`assets/sounds/FROOT.mp3`);
+
 }
 
 
@@ -225,6 +228,7 @@ function draw() {
 function stateChange(){
   if (state === `start`){
     start();
+
   }
   else if(state === `instructions`){
     instructions();
@@ -299,13 +303,11 @@ function instructions(){
   text(`2. If you get more than 5 wrong you lose :(`, width / 2, height / 2 -50 );
   text(`3. If you get 5 right you win! :D`, width / 2, height / 2 );
   text(`4. Click on the screen to change word`, width / 2, height / 2 + 50 );
-
+  text(`5. Make sure to say "I think it is a"`, width / 2, height / 2 + 100 );
   textSize(15);
-  text(`Press ENTER to continue`, width / 2, height / 2 + 100 );
-
-
-
+  text(`Press ENTER to continue`, width / 2, height / 2 + 200 );
   pop();
+
   sparkles();
 
 }
@@ -313,13 +315,7 @@ function instructions(){
 function game(){
   background(0);
   imageMode(CENTER, CENTER);
-  image(gameBg, width / 2, height / 2, windowWidth, windowHeight );
-
-  for (let i =0; i< 20; i++){ //counting through all the animals in the array
-    let startFruit = startFruits[i];
-    startFruits[i].display();
-
-  }
+  image(gameBg, width / 2, height / 2, 800,800 );
 
   sparkles();
 
@@ -327,7 +323,6 @@ function game(){
   displaycurrentAnswer();
   displayGoodScore();
   displayLivesLeft();
-
 }
 
 function checkScore(){
@@ -342,8 +337,8 @@ function checkScore(){
     else{
       nextFruit();
     }
-
   }
+
   else{
     fill(255, 0, 0);
     wrongAnswers++;
@@ -390,7 +385,7 @@ function displayGoodScore(){
   textFont(retroFont);
   textSize(50);
   textAlign(CENTER, CENTER);
-  text(`Right: ${currentScore}`, width/2 -200, height/2 -250);
+  text(`Right: ${currentScore}`, width/2 -180, height/2 -250);
   pop();
 
 }
@@ -401,7 +396,7 @@ function displayLivesLeft(){
   textFont(retroFont);
   textSize(50);
   textAlign(CENTER, CENTER);
-  text(`Wrong: ${wrongAnswers}`, width/2 + 200, height/2 -  250);
+  text(`Wrong: ${wrongAnswers}`, width/2 + 180, height/2 -  250);
   pop();
 }
 
@@ -428,21 +423,21 @@ function reverseString(string) {
   return result;
 }
 
-function guessFruit(fruit){
+function guessFruit(fruit) {
   currentAnswer = fruit.toLowerCase();
   checkScore();
 }
 
-function nextFruit(){
-  //currentAnswer = ``;
+function nextFruit() {
+
   currentFruit = random(fruits);
   sayFruitBackwards();
 }
 
-function mousePressed(){
-  if(state === `game`){
+function mousePressed() {
+  if (state === `game`) {
     nextFruit();
-}
+  }
 }
 
 
@@ -451,12 +446,15 @@ function keyPressed() {
   if (state === `start`) {
     if (keyCode === 32) { //keycode for spacebar
       state = `instructions`;
+      song.setVolume(0.05);
+      song.play();
     }
   }
 
   if (state === `instructions`) {
     if (keyCode === 13) { //keycode for enter
       state = `game`;
+      song.stop();
     }
   }
 
