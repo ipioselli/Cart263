@@ -319,6 +319,10 @@ function game(){
 
 
 
+
+}
+
+function checkScore(){
   if(currentAnswer === currentFruit){
     fill(0, 255, 0);
   }
