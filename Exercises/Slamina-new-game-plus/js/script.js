@@ -129,7 +129,7 @@ let gameBg;
 
 let canvas;
 
-let state = `start`;
+let state = `game`;
 
 function preload() {
 
@@ -141,14 +141,18 @@ function preload() {
   retroFont = loadFont(`assets/fonts/neon.otf`);
   mainFont = loadFont(`assets/fonts/Bohemian Soul.otf`);
 
-  gameBg = loadImage("assets/images/game-Bg.png");
+  gameBg = loadImage("assets/images/game-bg.png");
+
+  //load sounds
+  goodSFX = loadSound(`assets/sounds/good.mp3`);
+  badSFX = loadSound(`assets/sounds/bad.mp3`);
 }
 
 
 
 function setup() {
-  createCanvas(800, 800);
-  //windowResized();
+  canvas = createCanvas(800, 800);
+  windowResized();
   setupFruits();
 
   if(annyang){
@@ -180,31 +184,31 @@ function setupFruits(){
 
 }
 
-// function windowResized(){
-//   let canvasRatio = height / width;
-//   let windowRatio = windowHeight / windowWidth;
-//
-//   // Create variables to store the new width and height
-//   let newWidth = undefined;
-//   let newHeight = undefined;
-//
-//   // If the window ratio is smaller, we'll use the window height to
-//   // set the basis of our new canvas dimensions.
-//   if (windowRatio < canvasRatio) {
-//     // Our canvas will fit by setting its height to the window height...
-//     newHeight = windowHeight;
-//     // ... and then scaling the width based on the ratio
-//     newWidth = windowHeight / canvasRatio;
-//   } else {
-//     // Our canvas will fit by setting its width to the window width...
-//     newWidth = windowWidth;
-//     // ... and then scaling the height based on the ratio
-//     newHeight = windowWidth * canvasRatio;
-// }
-// // Set the canvas's CSS width and height properties to the new values
-//   canvas.elt.style.width = `${newWidth}px`;
-//   canvas.elt.style.height = `${newHeight}px`;
-// }
+function windowResized(){
+  let canvasRatio = height / width;
+  let windowRatio = windowHeight / windowWidth;
+
+  // Create variables to store the new width and height
+  let newWidth = undefined;
+  let newHeight = undefined;
+
+  // If the window ratio is smaller, we'll use the window height to
+  // set the basis of our new canvas dimensions.
+  if (windowRatio < canvasRatio) {
+    // Our canvas will fit by setting its height to the window height...
+    newHeight = windowHeight;
+    // ... and then scaling the width based on the ratio
+    newWidth = windowHeight / canvasRatio;
+  } else {
+    // Our canvas will fit by setting its width to the window width...
+    newWidth = windowWidth;
+    // ... and then scaling the height based on the ratio
+    newHeight = windowWidth * canvasRatio;
+}
+// Set the canvas's CSS width and height properties to the new values
+  canvas.elt.style.width = `${newWidth}px`;
+  canvas.elt.style.height = `${newHeight}px`;
+}
 
 
 function draw() {
@@ -326,6 +330,7 @@ function checkScore(){
   if(currentAnswer === currentFruit){
     fill(0, 255, 0);
     currentScore++;
+    goodSFX.play();
 
     if(currentScore === correctMaxScore){
       state = `win`;
@@ -338,6 +343,7 @@ function checkScore(){
   else{
     fill(255, 0, 0);
     wrongAnswers++;
+    badSFX.play();
     if(wrongAnswers === maxWrongAnswers){
       state = `lose`;
     }
@@ -366,10 +372,11 @@ function displaycurrentAnswer(){
 function displayFruitWords(){
   push();
   fill(255, 255, 255);
-  textFont(retroFont);
-  textSize(50);
+  textFont(mainFont);
+  textSize(40);
   textAlign(CENTER, CENTER);
-  text(reverseString(currentFruit), width/2 + 100, height/2); //displays reversed word
+  text(`Current Fruit: `, width/2 - 150, height/2);
+  text(reverseString(currentFruit), width/2 + 150, height/2); //displays reversed word
   pop();
 }
 
@@ -379,7 +386,7 @@ function displayGoodScore(){
   textFont(retroFont);
   textSize(50);
   textAlign(CENTER, CENTER);
-  text(currentScore, width/2, height/2);
+  text(`Right: ${currentScore}`, width/2 -200, height/2 -250);
   pop();
 
 }
@@ -390,7 +397,7 @@ function displayLivesLeft(){
   textFont(retroFont);
   textSize(50);
   textAlign(CENTER, CENTER);
-  text(wrongAnswers, width/2, height/2 + 200);
+  text(`Wrong: ${wrongAnswers}`, width/2 + 200, height/2 -  250);
   pop();
 }
 
