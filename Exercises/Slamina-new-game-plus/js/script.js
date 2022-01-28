@@ -120,7 +120,7 @@ let currentFruit = ``;
 let currentAnswer = ``;
 
 //for correct answers
-let currentScore = 0;
+let rightAnswers = 0;
 let maxRightAnswers = 5;
 
 //for wrong answers
@@ -339,10 +339,10 @@ function game(){
 function checkScore(){
   if(currentAnswer === currentFruit){
     fill(0, 255, 0);
-    currentScore++;
+    rightAnswers++;
     goodSFX.play();
 
-    if(currentScore === maxRightAnswers){
+    if(rightAnswers === maxRightAnswers){
       state = `win`;
     }
     else{
@@ -445,7 +445,7 @@ function displayGoodScore(){
   textFont(retroFont);
   textSize(50);
   textAlign(CENTER, CENTER);
-  text(`Right: ${currentScore}`, width/2 -180, height/2 -250);
+  text(`Right: ${rightAnswers}`, width/2 -180, height/2 -250);
   pop();
 
 }
