@@ -127,6 +127,8 @@ let badSFX;
 
 let gameBg;
 
+let canvas;
+
 let state = `start`;
 
 function preload() {
@@ -164,7 +166,7 @@ function setup() {
 }
 //
 // function reset(){
-//   
+//
 // }
 
 function setupFruits(){
