@@ -1,5 +1,5 @@
 class Fruit {
-  constructor(x, y, image){
+  constructor(x, y, image) {
     //position
     this.x = x;
     this.y = y;
@@ -17,11 +17,10 @@ class Fruit {
 
   }
 
-  update(){
+  //calls display and gravity functions
+  update() {
     this.display();
     this.move();
-
-
   }
 
   //gravity force to the acceleration
@@ -29,6 +28,7 @@ class Fruit {
     this.ay = this.ay + force;
   }
 
+  //moves the fruits
   move() {
     //update velocity with acceleration
     this.vx = this.vx + this.ax;
@@ -43,29 +43,23 @@ class Fruit {
     this.y = this.y + this.vy;
 
     //constrains the ball to the canvas
-  this.x = constrain(this.x, 0, width);
-  this.y = constrain(this.y, 0, height);
+    this.x = constrain(this.x, 0, width);
+    this.y = constrain(this.y, 0, height);
 
-  //makes the ball bounce off the canvas
+    //makes the ball bounce off the canvas
     if (this.x >= width || this.x <= 0) {
       this.vx = -this.vx;
     }
-
     if (this.y >= width || this.y <= 0) {
       this.vy = -this.vy;
     }
-
-
-
-    }
-
-    display() {
-      push();
-      noStroke();
-      image(this.image, this.x, this.y, this.size, this.size);
-      pop();
-    }
-
-
-
   }
+
+  //displays the image for the fruits
+  display() {
+    push();
+    noStroke();
+    image(this.image, this.x, this.y, this.size, this.size);
+    pop();
+  }
+}

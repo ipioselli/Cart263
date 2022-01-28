@@ -1,5 +1,5 @@
 /**
-Activity 2: Slamina
+Exercise 2: Slamina
 Ines Pioselli
 
 Brief:
@@ -145,7 +145,7 @@ let angryFruit = {
 
 let canvas; //declares the canvas
 
-let state = `start`; //beginning state
+let state = `enter`; //beginning state
 
 //preloads all the images, sounds and fonts
 function preload() {
@@ -173,7 +173,7 @@ function preload() {
 
 }
 
-
+//setups annyang and all the fruits
 function setup() {
   canvas = createCanvas(800, 800);
   windowResized(); //responsive window resizing
@@ -197,8 +197,6 @@ function setup() {
   }
 }
 
-
-
 //create fruit objects at random locations from the Fruit class for the start state
 function setupFruits(){
   for(let i = 0; i < numStartFruits; i++){
@@ -208,7 +206,6 @@ function setupFruits(){
       let startFruit = new Fruit(x, y, fruitImage);
       startFruits.push(startFruit);
     }
-
 }
 
 //Pippins code for resizing the canvas
@@ -241,11 +238,14 @@ function windowResized(){
 //display all the states
 function draw() {
   stateChange(); //function to change the states
-
 }
 
 //function to switch from state to state
 function stateChange(){
+
+  if(state === `enter`){ //added this state so the fruits would reset properly
+    enter();
+  }
   if (state === `start`){
     start();
   }
@@ -261,6 +261,22 @@ function stateChange(){
   else if(state === `lose`){
     lose();
   }
+}
+
+//function before start state
+// incorporates reset function so bouncing fruits can reset
+function enter(){
+  background(0);
+  push();
+  textFont(mainFont);
+  textAlign(CENTER, CENTER);
+  textSize(60);
+  fill(255, 255, 255);
+  text(`ENTER`, width / 2, height / 2);
+  pop();
+
+  sparkles(); //sparkling effect
+  reset(); //calls the reset function
 }
 
 // title screen
@@ -282,9 +298,6 @@ function start() {
 
   updateFruits(); //calls the function to move and display the fruits
   sparkles(); //calls the sparkles function for the static effect
-
-  reset();
-
 }
 
 
@@ -369,8 +382,11 @@ function lose(){
 }
 
 
+//resets the variables for the game
 function reset(){
 
+  startFruits = [];
+  setupFruits();
 
   fill(0);
   currentAnswer = ``;
@@ -534,35 +550,40 @@ function nextFruit() {
 //when the user clicks go to the next fruit
 function mousePressed() {
   if (state === `game`) {
-    nextFruit();
+    nextFruit(); //changes the fruit
   }
 }
 
 //handles keyboard input from the user
 function keyPressed() {
+  if(state === `enter`){
+    if(keyCode === 13){ //keycode for enter
+      state = `start`;
+    }
+  }
   if (state === `start`) {
     if (keyCode === 32) { //keycode for spacebar
       state = `instructions`;
-      song.setVolume(0.05);
-      song.play();
+      song.setVolume(0.05); //setups the volume
+      song.play(); //plays the music
     }
   }
 
   if (state === `instructions`) {
     if (keyCode === 13) { //keycode for enter
       state = `game`;
-      song.stop();
+      song.stop(); //stops music
     }
   }
 
   if (state === `win`) {
     if (keyCode === 82) { //keycode for R
-      state = `start`;
+      state = `enter`;
     }
   }
   if(state === `lose`){
     if(keyCode === 82){ //keycode for  R
-      state = `start`;
+      state = `enter`;
     }
   }
 }

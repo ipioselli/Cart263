@@ -102,7 +102,8 @@ function draw() {
 
 //changes all the states
 function stateChange() {
-  if (state === `start`) {
+
+  if (state === `start`) { 
     start();
   }
   else if (state === `instructions`) {
@@ -115,6 +116,7 @@ function stateChange() {
     win();
   }
 }
+
 
 //function to load the title screen
 function start(){
