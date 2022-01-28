@@ -12,6 +12,7 @@ Brief:
 
 "use strict";
 
+//https://github.com/dariusk/corpora/blob/master/data/foods/fruits.json
 const fruits = [
         "apple",
         "apricot",
@@ -95,6 +96,8 @@ const fruits = [
         "watermelon"
 ];
 
+//fonts
+let retroFont;
 
 let currentFruit = ``;
 let currentAnswer = ``;
@@ -112,12 +115,15 @@ let state = `start`;
 
 function preload() {
 
+//load fonts
+retroFont = loadFont(`assets/fonts/neon.otf`)
 }
 
 
 
 function setup() {
-  createCanvas(500,500);
+  canvas = createCanvas(800, 800);
+  windowResized();
 
   if(annyang){
     let commands = {
@@ -133,17 +139,37 @@ function setup() {
 
 }
 
+function windowResized(){
+  let canvasRatio = height / width;
+  let windowRatio = windowHeight / windowWidth;
+
+  // Create variables to store the new width and height
+  let newWidth = undefined;
+  let newHeight = undefined;
+
+  // If the window ratio is smaller, we'll use the window height to
+  // set the basis of our new canvas dimensions.
+  if (windowRatio < canvasRatio) {
+    // Our canvas will fit by setting its height to the window height...
+    newHeight = windowHeight;
+    // ... and then scaling the width based on the ratio
+    newWidth = windowHeight / canvasRatio;
+  } else {
+    // Our canvas will fit by setting its width to the window width...
+    newWidth = windowWidth;
+    // ... and then scaling the height based on the ratio
+    newHeight = windowWidth * canvasRatio;
+}
+// Set the canvas's CSS width and height properties to the new values
+  canvas.elt.style.width = `${newWidth}px`;
+  canvas.elt.style.height = `${newHeight}px`;
+}
+
 
 function draw() {
   stateChange();
 
-  if(currentAnswer === currentFruit){
-    fill(0, 255, 0);
-  }
-  else{
-    fill(255, 0, 0);
-  }
-  text(currentAnswer, width/2, height/2);
+
 }
 
 function stateChange(){
@@ -166,11 +192,49 @@ function stateChange(){
   }
 }
 
-function mousePressed(){
-  currentAnimal = random(fruits); //chooses a random fruit
-  let reverseFruit = reverseString(currentFruit); //reserves the current Fruit
-  responsiveVoice.speak(reverseFruit);
+function start() {
+  background(0);
 
+  push();
+  textFont(retroFont);
+  textAlign(CENTER, CENTER);
+  textSize(40);
+  fill(255, 255, 255);
+  text(`FROOT GAME!`, width / 2, height / 2);
+  pop();
+
+  //adds sparkling effect
+  for (let i = 0; i < 1000; i++) {
+    let x = random(0, width);
+    let y = random(0, height);
+    stroke(400);
+    point(x, y);
+  }
+}
+
+function instructions(){
+  background(0);
+
+}
+
+function game(){
+  background(0);
+
+  if(currentAnswer === currentFruit){
+    fill(0, 255, 0);
+  }
+  else{
+    fill(255, 0, 0);
+  }
+  text(currentAnswer, width/2, height/2);
+}
+
+function mousePressed(){
+  if(state === `game`){ //only works when you are in the game state
+    currentFruit = random(fruits); //chooses a random fruit
+    let reverseFruit = reverseString(currentFruit); //reserves the current Fruit
+    responsiveVoice.speak(reverseFruit);
+  }
 }
 
 function guessFruit(fruit){
@@ -190,4 +254,29 @@ function reverseString(string) {
   let result = reverseCharacters.join('');
   // Return the result
   return result;
+}
+
+function keyPressed() {
+  if (state === `start`) {
+    if (keyCode === 32) { //keycode for spacebar
+      state = `instructions`;
+    }
+  }
+
+  if (state === `instructions`) {
+    if (keyCode === 13) { //keycode for enter
+      state = `game`;
+    }
+  }
+
+  if (state === `win`) {
+    if (keyCode === 82) { //keycode for R
+      state = `start`;
+    }
+  }
+  if(state === `lose`){
+    if(keyCode === 82){ //keycode for  R
+      state = `start`;
+    }
+  }
 }
