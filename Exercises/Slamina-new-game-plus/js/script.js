@@ -164,7 +164,7 @@ function setup() {
 }
 //
 // function reset(){
-//   hihjhredhyiuhgfl;jhbjikjkhfykjh
+//   
 // }
 
 function setupFruits(){
