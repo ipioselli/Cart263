@@ -2,19 +2,25 @@
 Activity 2: Slamina
 Ines Pioselli
 
-Inspired by Marina and the Diamons album FROOT
 Brief:
-- add start and end screens
-- add visuals when you get an answer right or wrong
-- add sound effects
-- add a counter
-- add different words
+- add start and end screens √
+- add visuals when you get an answer right or wrong √
+- add sound effects √
+- add a score √
+- add different words √
+
+This program is a guessing fruit game inspired by Marina and the Diamonds ablum froot.
+The female voice will say the names of the fruits backwards
+and you will have to guess what the words are.
+If you get 5 right you win and get a nice lil sparkling sound effect.
+If you get 5 wrong you lose and get the yoshi blep sound.
 
 */
 
 "use strict";
 
 //https://github.com/dariusk/corpora/blob/master/data/foods/fruits.json
+//array of fruit words
 const fruits = [
         "apple",
         "apricot",
@@ -102,34 +108,33 @@ const fruits = [
 let retroFont;
 let mainFont;
 
+//variables for bouncing fruits at the start state
 let numStartFruitImages = 7;
 let numStartFruits = 100;
-
 let startFruitsImages = [];
 let startFruits = [];
+let gravityForce = 0.0025; //gravity
 
-let gravityForce = 0.0025;
-
-
+//variables for the game state
 let currentFruit = ``;
 let currentAnswer = ``;
 
 //for correct answers
-let correctMaxScore = 5;
 let currentScore = 0;
+let maxRightAnswers = 5;
 
 //for wrong answers
 let wrongAnswers = 0;
 let maxWrongAnswers = 5;
 
-let goodSFX;
-let badSFX;
+let goodSFX; // good sfx when you get the answer right
+let badSFX; // bad sfx when you get the answer wrong
 
-let gameBg;
+let gameBg; // variable for the game state background
 
-let canvas;
+let canvas; //declares the canvas
 
-let state = `game`;
+let state = `start`; //beginning state
 
 function preload() {
 
@@ -184,6 +189,7 @@ function setupFruits(){
 
 }
 
+//Pippins code for resizing the canvas
 function windowResized(){
   let canvasRatio = height / width;
   let windowRatio = windowHeight / windowWidth;
@@ -212,7 +218,7 @@ function windowResized(){
 
 
 function draw() {
-  stateChange();
+  stateChange(); //function to change the states
 
 }
 
@@ -251,17 +257,14 @@ function start() {
   fill(255, 255, 255);
   text(`Press SPACEBAR to Start`, width / 2, height / 2 +100 );
 
-
   pop();
 
   updateFruits();
   sparkles();
-
-
 }
 
+//sparkling static effect from cart 253
 function sparkles(){
-  //adds sparkling effect
   for (let i = 0; i < 1000; i++) {
     let x = random(0, width);
     let y = random(0, height);
@@ -274,7 +277,6 @@ function updateFruits(){
   for (let i =0; i<startFruits.length; i++){ //counting through all the animals in the array
     let startFruit = startFruits[i];
     startFruits[i].update();
-
   }
 
   for (let i =0; i<startFruits.length; i++){ //counting through all the animals in the array
@@ -296,6 +298,8 @@ function instructions(){
   text(`1. Say the fruit names in their normal form`, width / 2, height / 2 -100 );
   text(`2. If you get more than 5 wrong you lose :(`, width / 2, height / 2 -50 );
   text(`3. If you get 5 right you win! :D`, width / 2, height / 2 );
+  text(`4. Click on the screen to change word`, width / 2, height / 2 + 50 );
+
   textSize(15);
   text(`Press ENTER to continue`, width / 2, height / 2 + 100 );
 
@@ -332,7 +336,7 @@ function checkScore(){
     currentScore++;
     goodSFX.play();
 
-    if(currentScore === correctMaxScore){
+    if(currentScore === maxRightAnswers){
       state = `win`;
     }
     else{
@@ -430,7 +434,7 @@ function guessFruit(fruit){
 }
 
 function nextFruit(){
-  currentAnswer = ``;
+  //currentAnswer = ``;
   currentFruit = random(fruits);
   sayFruitBackwards();
 }
