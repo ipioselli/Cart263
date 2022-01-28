@@ -390,7 +390,7 @@ function reset(){
 
   fill(0);
   currentAnswer = ``;
-  currentAnswer = ``;
+  currentFruit = ``;
   rightAnswers = 0;
   wrongAnswers = 0;
 }
