@@ -132,10 +132,11 @@ let badSFX; // bad sfx when you get the answer wrong
 let song;
 
 let gameBg; // variable for the game state background
+let winBg;
 
 let canvas; //declares the canvas
 
-let state = `start`; //beginning state
+let state = `lose`; //beginning state
 
 function preload() {
 
@@ -148,6 +149,7 @@ function preload() {
   mainFont = loadFont(`assets/fonts/Bohemian Soul.otf`);
 
   gameBg = loadImage("assets/images/game-bg.png");
+  winBg = loadImage("assets/images/win-bg.png");
 
   //load sounds
   goodSFX = loadSound(`assets/sounds/good.mp3`);
@@ -350,16 +352,29 @@ function checkScore(){
 }
 
 function win(){
-  background(344, 56, 98);
+  imageMode(CENTER, CENTER);
+  image(winBg, width / 2, height / 2, 800,800 );
+  push();
+  textFont(mainFont);
+  fill(255, 255,255);
+  textSize(50);
+  textAlign(CENTER, CENTER);
+  text(`Congratulations!`, width/2, height/2 -200);
+  textSize(30);
+  text(`You are a FROOT expert!`, width/2, height/2 -100);
+  pop();
+
+  updateFruits();
+
+  sparkles();
 }
 
 function lose(){
-  background(34, 67, 90);
+  background(0);
 }
 
 function displaycurrentAnswer(){
   push();
-
   textFont(retroFont);
   textSize(50);
   textAlign(CENTER, CENTER);
