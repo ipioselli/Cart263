@@ -312,9 +312,9 @@ function game(){
   }
 
   sparkles();
-  checkScore();
+
   displayFruitWords();
-  displaycurrentAnswer();
+  //displaycurrentAnswer();
   displayGoodScore();
   displayLivesLeft();
 
@@ -337,6 +337,10 @@ function checkScore(){
     }
   }
   text(currentAnswer, width/2, height/2);
+}
+
+function win(){
+  background(344, 56, 98);
 }
 
 // function displaycurrentAnswer(){
@@ -390,7 +394,7 @@ function mousePressed(){
 
 function guessFruit(fruit){
   currentAnswer = fruit.toLowerCase();
-  console.log(currentAnswer);
+  checkScore();
 }
 
 /**
