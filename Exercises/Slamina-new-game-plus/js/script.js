@@ -246,7 +246,7 @@ function stateChange(){
   if(state === `enter`){ //added this state so the fruits would reset properly
     enter();
   }
-  if (state === `start`){
+  else if (state === `start`){
     start();
   }
   else if(state === `instructions`){
