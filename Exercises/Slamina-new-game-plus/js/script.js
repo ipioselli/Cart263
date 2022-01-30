@@ -385,8 +385,8 @@ function lose(){
 //resets the variables for the game
 function reset(){
 
-  startFruits = [];
-  setupFruits();
+  startFruits = []; //empties the array
+  setupFruits();// setup fruit again
 
   fill(0);
   currentAnswer = ``;
@@ -564,7 +564,7 @@ function keyPressed() {
   if (state === `start`) {
     if (keyCode === 32) { //keycode for spacebar
       state = `instructions`;
-      song.setVolume(0.05); //setups the volume
+      song.setVolume(0.05); //setup the volume
       song.play(); //plays the music
     }
   }
