@@ -15,9 +15,9 @@ let spyProfile = {
   passWord: `**REDACTED**`
 };
 
-let instrumentData = undefined;
-let objectData =  undefined;
-let taroData = undefined;
+let instrumentData;
+let objectData;
+let taroData;
 
 function preload(){
 
@@ -34,9 +34,20 @@ function preload(){
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
+  let data = JSON.parse(localStorage.getItem(`spy-profile-data`));
 
-
-
+  if(data){
+    let passWord = prompt(`Agent! What is your password?!`);
+    if(passWord === data.passWord){
+      spyProfile.name = data.name;
+      spyProfile.alias = data.alias;
+      spyProfile.secretWeapon = data.secretWeapon;
+      spyProfile.passWord = data.passWord;
+    }
+  }
+  else{
+    generateSpyProfile();
+  }
 }
 
 function generateSpyProfile(){
@@ -45,15 +56,19 @@ function generateSpyProfile(){
   spyProfile.alias = `The ${instrument}`;
   spyProfile.secretWeapon = random(objectData.objects);
 
-  let card = random();
+  let card = random(taroData.tarot_interpretations);
+  spyProfile.passWord = random(card.keywords);
+
+  localStorage.setItem(`spy-profile-data`, JSON.stringify(spyProfile));
 }
 
 function draw() {
 
 background(255);
 
-let profile = `** SPY PROFILE! DO NOT DISTRIBUTE! ** Name: ${spyProfile.name}
-Alias: ${spyProfile.name}
+let profile = `** SPY PROFILE! DO NOT DISTRIBUTE! **
+Name: ${spyProfile.name}
+Alias: ${spyProfile.alias}
 Secret Weapon: ${spyProfile.secretWeapon}
 Password: ${spyProfile.passWord}`;
 
