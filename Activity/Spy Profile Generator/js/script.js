@@ -34,13 +34,18 @@ function preload(){
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
-  
+
 
 
 }
 
 function generateSpyProfile(){
   spyProfile.name = prompt(`Agent! What is your name?!`);
+  let instrument =  random(instrumentData.instruments);
+  spyProfile.alias = `The ${instrument}`;
+  spyProfile.secretWeapon = random(objectData.objects);
+
+  let card = random();
 }
 
 function draw() {
