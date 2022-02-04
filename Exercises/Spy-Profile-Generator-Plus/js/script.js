@@ -66,16 +66,17 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
 
   let data = JSON.parse(localStorage.getItem(`magical-girl-profile-data`));
-    // if(data){
-    //   let password = prompt(`Please enter your password.`);
-    //   if(password === data.password){
-    //     loadMagicalGirlData();
-    //     loadSidekickData();
-    //   }
-    // }
-    // else{
+    if(data){
+      let password = prompt(`Please enter your password.`);
+      if(password === data.password){
+        loadMagicalGirlData();
+        loadSidekickData();
+      }
+    }
+    else{
       generateMagicalGirlProfile();
     }
+  }
 
 
 function loadMagicalGirlData(){
@@ -197,8 +198,9 @@ function game(){
   textSize(24);
   fill(255);
   textAlign(LEFT, TOP);
+  textLeading(40);
   text(profile01, 100, 100);
-  text(profile02, 100, 500);
+  text(profile02, 100, 600);
   pop();
 }
 
