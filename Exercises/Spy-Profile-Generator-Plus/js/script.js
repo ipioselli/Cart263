@@ -72,7 +72,7 @@ function preload(){
 }
 
 function setup() {
-  canvas = createCanvas(windowWidth, windowHeight);
+  canvas = createCanvas(1920, 1080);
   windowResized();
 
   data = JSON.parse(localStorage.getItem(`magical-girl-profile-data`));
