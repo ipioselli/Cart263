@@ -15,12 +15,14 @@ magicalGirlProfile = spyProfile
 
 "use strict";
 
+
 let magicalGirlProfile = {
   name: `**TOP SECRET**`,
-  magicalGirlAlias: `**TOP SECRET**`,
+  alias: `**TOP SECRET**`,
   zodiac: `**TOP SECRET**`,
   powers:`**TOP SECRET**`,
   magicWand: `**TOP SECRET**`,
+  birthPlace: `**TOP SECRET**`,
   password: `**TOP SECRET**`
 };
 
@@ -31,17 +33,30 @@ let sideKickProfile = {
   birthPlace:`**TOP SECRET**`,
 }
 
-let instrumentData;
-let objectData;
-let taroData;
+let loveCraft; //alias
+let streetFighterData; //powers
+let zodiacData; //zodiac sign
+let artifactData; //wand
+let planets;
+let gemstones; //password
+
+
+let cuteFont;
+
+let startBg;
+let missionBg;
+let gameBg;
+
+let state = `start`;
 
 function preload(){
 
-  instrumentData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/music/instruments.json`);
-
-  objectData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/objects/objects.json`);
-
-  taroData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/divination/tarot_interpretations.json`);
+  loveCraft = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/mythology/lovecraft.json`);
+  streetFighterData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/games/street_fighter_ii.json`);
+  zodiacData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/divination/zodiac.json`);
+  artifactData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/archetypes/artifact.json`);
+  planets = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/science/planets.json`);
+  gemstones = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/materials/gemstones.json`);
 }
 
 
@@ -50,24 +65,27 @@ function preload(){
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
-  let data = JSON.parse(localStorage.getItem(`spy-profile-data`));
+  let data = JSON.parse(localStorage.getItem(`magical-girl-profile-data`));
 
-  if(data){
-    let password = prompt(`Agent! What is your password?!`);
+  if(data !==null){
+    let password = prompt(`Please enter your password.`);
     if(password === data.password){
-      spyProfile.name = data.name;
-      spyProfile.alias = data.alias;
-      spyProfile.secretWeapon = data.secretWeapon;
-      spyProfile.password = data.password;
+      magicalGirlProfile.name = data.name;
+      magicalGirlProfile.alias = data.alias;
+      magicalGirlProfile.zodiac = data.zodiac;
+      magicalGirlProfile.powers = data.powers;
+      magicalGirlProfile.magicWand = data.magicWand;
+      magicalGirlProfile.birthPlace = data.birthPlace;
+      magicalGirlProfile.password = data.password;
     }
   }
   else{
-    generateSpyProfile();
+    generateMagicalGirlProfile();
   }
 }
 
-function generateSpyProfile(){
-  spyProfile.name = prompt(`Agent! What is your name?!`);
+function generateMagicalGirlProfile(){
+  magicalGirlProfile.name = prompt(`Welcome! What is your name?`);
   let instrument =  random(instrumentData.instruments);
   spyProfile.alias = `The ${instrument}`;
   spyProfile.secretWeapon = random(objectData.objects);
