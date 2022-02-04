@@ -39,7 +39,7 @@ let artifactData; //wand
 let planetData;
 let gemstoneData; //password
 
-
+let startFont;
 let cuteFont;
 
 let startBg;
@@ -58,6 +58,9 @@ function preload(){
   gemstoneData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/materials/gemstones.json`);
 
   startBg = loadImage(`assets/images/start-Bg`);
+  startFont = loadFont(`assets/fonts/Chromate-Regular`);
+
+
 
 }
 
@@ -126,21 +129,21 @@ function generateSidekickProfile(){
 
 
 function draw() {
-
-background(255);
-
-let profile = `** SPY PROFILE! DO NOT DISTRIBUTE! **
-Name: ${spyProfile.name}
-Alias: ${spyProfile.alias}
-Secret Weapon: ${spyProfile.secretWeapon}
-password: ${spyProfile.password}`;
-
-push();
-textFont(`Courier, monospace`);
-textSize(24);
-textAlign(LEFT, TOP);
-text(profile, 100, 100);
-pop();
+changeState();
+// background(255);
+//
+// let profile = `** SPY PROFILE! DO NOT DISTRIBUTE! **
+// Name: ${spyProfile.name}
+// Alias: ${spyProfile.alias}
+// Secret Weapon: ${spyProfile.secretWeapon}
+// password: ${spyProfile.password}`;
+//
+// push();
+// textFont(`Courier, monospace`);
+// textSize(24);
+// textAlign(LEFT, TOP);
+// text(profile, 100, 100);
+// pop();
 }
 
 function changeState(){
@@ -156,8 +159,14 @@ function changeState(){
 }
 
 function start(){
-
+  imageMode(CENTER, CENTER);
+  image(startBg, width/2, height/2, 1920, 1080);
   push();
+  textFont(startFont);
+  textSize(30);
+  fill(255, 255, 255);
+  textAlign(CENTER, CENTER);
+  text(`Magical Girl Simulator!`, width/2, height/2 -100);
   pop();
 
   sparkles();
@@ -165,7 +174,7 @@ function start(){
 }
 
 function mission(){
-
+background(0);
 }
 
 function sparkles(){
