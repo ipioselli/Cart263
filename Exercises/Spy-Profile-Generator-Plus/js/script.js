@@ -97,8 +97,7 @@ function setup() {
     }
   } else {
     //if there is no data then setup the profile with data
-    generateMagicalGirlProfile(); //calls function to generate magical girl profile
-    generateSidekickProfile(); //calls function to generate sidekick profile
+    generateMagicalGirlProfile();
   }
 }
 
@@ -167,7 +166,7 @@ function generateMagicalGirlProfile() {
   let quality01 = random(characterData.characters);
   magicalGirlProfile.quality = random(quality01.qualities);
 
-
+  generateSidekickProfile(); //calls function to generate sidekick profile
 
   //save the resulting profile into local storage
   localStorage.setItem(`magical-girl-profile-data`, JSON.stringify(magicalGirlProfile));
@@ -191,6 +190,7 @@ function generateSidekickProfile() {
 }
 
 
+//function to draw all the states
 function draw() {
   changeState();
 
@@ -201,13 +201,17 @@ function draw() {
 function changeState() {
   if (state === `start`) {
     start();
-  } else if (state === `mission`) {
+  }
+  else if (state === `mission`) {
     mission();
-  } else if (state === `game`) {
+  }
+  else if (state === `game`) {
     game();
   }
 }
 
+
+//function to load the start state
 function start() {
   imageMode(CENTER, CENTER);
   image(startBg, width / 2, height / 2, 1920, 1080);
@@ -222,11 +226,12 @@ function start() {
   text(`Press Enter to begin`, width / 2, height / 2 + 150);
   pop();
 
-  sparkles();
-
+  sparkles(); //calls function to create sparkling effect
 
 }
 
+
+//function to load instructions/mission
 function mission() {
   imageMode(CENTER, CENTER);
   image(missionBg, width / 2, height / 2, 1920, 1080);
@@ -243,14 +248,16 @@ function mission() {
   textSize(30);
   text(`Press SPACEBAR to continue`, width / 2, height / 2 + 300);
 
-  sparkles();
+  sparkles();//calls function to create sparkling effect
 }
 
+//game state that loads all the profiles
 function game() {
 
   imageMode(CENTER, CENTER);
   image(gameBg, width / 2, height / 2, 1920, 1080);
 
+  //magical girl profile
   let profile01 = `** Magical Girl Profile **
   Name: ${magicalGirlProfile.name}
   Magical Girl name: ${magicalGirlProfile.alias}
@@ -260,6 +267,7 @@ function game() {
   Birth Place: ${magicalGirlProfile.birthPlace}
   password: ${magicalGirlProfile.password}`;
 
+  //sidekick profile
   let profile02 = ` ** Sidekick Profile **
   Name:  ${magicalGirlProfile.sidekickName}
   Powers: ${magicalGirlProfile.sidekickPowers}
@@ -284,10 +292,11 @@ function game() {
   text(`Press B to change only your sidekick profile`, width / 2 - 320, height / 2 + 350);
   pop();
 
-  sparkles();
+  sparkles(); //calls function to create sparkling effect
 
 }
 
+//function that creates sparkling effect
 function sparkles() {
   for (let i = 0; i < 1000; i++) {
     let x = random(0, width);
@@ -298,16 +307,18 @@ function sparkles() {
 }
 
 
+//handles keyboard input
 function keyPressed() {
-  if (state === `start` && keyCode === 13) {
+  if (state === `start` && keyCode === 13) { //keycode for enter
     state = `mission`;
-  } else if (state === `mission` && keyCode === 32) {
+  }
+  else if (state === `mission` && keyCode === 32) { //keycode for spacebar
     state = `game`;
   }
 
   if (state === `game` && keyCode === 65) { //keycode for A
-    generateMagicalGirlProfile();
+    generateMagicalGirlProfile(); //allows you to change entire profile
   }
-  if (state === `game` && keyCode === 66) //keycode for b
-    generateSidekickProfile();
+  if (state === `game` && keyCode === 66) //keycode for B
+    generateSidekickProfile(); //allows you to change sidekick profile
 }
