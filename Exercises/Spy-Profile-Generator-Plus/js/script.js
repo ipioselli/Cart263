@@ -23,22 +23,21 @@ let magicalGirlProfile = {
   powers:`**TOP SECRET**`,
   magicWand: `**TOP SECRET**`,
   birthPlace: `**TOP SECRET**`,
-  password: `**TOP SECRET**`
+  password: `**TOP SECRET**`,
+
+  sidekickName: `**TOP SECRET**`,
+  sidekickZodiac: `**TOP SECRET**`,
+  sidekickPowers:`**TOP SECRET**`,
+  sidekickBirthPlace:`**TOP SECRET**`,
+
 };
 
-let sideKickProfile = {
-  name: `**TOP SECRET**`,
-  zodiac: `**TOP SECRET**`,
-  powers:`**TOP SECRET**`,
-  birthPlace:`**TOP SECRET**`,
-}
-
-let loveCraft; //alias
+let loveCraftData; //alias
 let streetFighterData; //powers
 let zodiacData; //zodiac sign
 let artifactData; //wand
-let planets;
-let gemstones; //password
+let planetData;
+let gemstoneData; //password
 
 
 let cuteFont;
@@ -51,12 +50,15 @@ let state = `start`;
 
 function preload(){
 
-  loveCraft = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/mythology/lovecraft.json`);
+  loveCraftData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/mythology/lovecraft.json`);
   streetFighterData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/games/street_fighter_ii.json`);
   zodiacData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/divination/zodiac.json`);
   artifactData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/archetypes/artifact.json`);
-  planets = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/science/planets.json`);
-  gemstones = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/materials/gemstones.json`);
+  planetData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/science/planets.json`);
+  gemstoneData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/materials/gemstones.json`);
+
+  startBg = loadImage(`assets/images/start-Bg`);
+
 }
 
 
@@ -77,6 +79,11 @@ function setup() {
       magicalGirlProfile.magicWand = data.magicWand;
       magicalGirlProfile.birthPlace = data.birthPlace;
       magicalGirlProfile.password = data.password;
+
+      magicalGirlProfile.sidekickName = data.sidekickName;
+      magicalGirlProfile.sidekickZodiac = data.sidekickZodiac;
+      magicalGirlProfile.sidekickPowers = data.sidekickPowers;
+      magicalGirlProfile.sidekickBirthPlace = data.sidekickBirthPlace;
     }
   }
   else{
@@ -86,15 +93,37 @@ function setup() {
 
 function generateMagicalGirlProfile(){
   magicalGirlProfile.name = prompt(`Welcome! What is your name?`);
-  let instrument =  random(instrumentData.instruments);
-  spyProfile.alias = `The ${instrument}`;
-  spyProfile.secretWeapon = random(objectData.objects);
+  magicalGirlProfile.alias =  random(loveCraftData.deities);
+  magicalGirlProfile.zodiac = random(zodiacData.western_zodiac);
 
-  let card = random(taroData.tarot_interpretations);
-  spyProfile.password = random(card.keywords);
+  let card = random(streetFighterData.characters);
+  magicalGirlProfile.powers = random(card.moves);
 
-  localStorage.setItem(`spy-profile-data`, JSON.stringify(spyProfile));
+  let wand = random(artifactData.artifacts);
+  magicalGirlProfile.magicWand =  random(wand.name);
+
+  let planet = random(planetData.planets);
+  magicalGirlProfile.birthPlace = random(planet.name)
+
+  magicalGirlProfile.password = random(gemstoneData.gemstones);
+
+  generateSidekickProfile();
+
+
+  localStorage.setItem(`magical-girl-profile-data`, JSON.stringify(magicalGirlProfile));
 }
+
+
+function generateSidekickProfile(){
+  magicalGirlProfile.sidekickName = random(loveCraftData.supernatural_creatures);
+  magicalGirlProfile.sidekickZodiac =  random(zodiacData.western_zodiac);
+  let power02 = random(streetFighterData.characters);
+  magicalGirlProfile.sidekickPowers = random(power02.moves);
+
+  let planet02 = random(planetData.planets);
+  magicalGirlProfile.sidekickBirthPlace = random(planet02.name);
+}
+
 
 function draw() {
 
