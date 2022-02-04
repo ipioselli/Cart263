@@ -235,4 +235,10 @@ function keyPressed(){
   else if(state === `mission` && keyCode === 32){
     state = `game`;
   }
+
+  if (state === `game` && keyCode === 65){ //keycode for A
+    generateMagicalGirlProfile();
+  }
+  if(state === `game` && keyCode === 66) //keycode for b
+  generateSidekickProfile();
 }
