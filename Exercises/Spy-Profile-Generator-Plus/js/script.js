@@ -45,6 +45,8 @@ let startBg;
 let missionBg;
 let gameBg;
 
+let data;
+
 let state = `start`;
 
 
@@ -66,12 +68,12 @@ function preload(){
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
-  let data = JSON.parse(localStorage.getItem(`magical-girl-profile-data`));
-    if(data){
+  data = JSON.parse(localStorage.getItem(`magical-girl-profile-data`));
+    if(data !==null){
       let password = prompt(`Please enter your password.`);
       if(password === data.password){
         loadMagicalGirlData();
-        loadSidekickData();
+        //loadSidekickData();
       }
     }
     else{
@@ -89,14 +91,16 @@ function loadMagicalGirlData(){
   magicalGirlProfile.quality = data.quality;
   magicalGirlProfile.password = data.password;
 
-}
-
-function loadSidekickData(){
   magicalGirlProfile.sidekickName = data.sidekickName;
   magicalGirlProfile.sidekickPowers = data.sidekickPowers;
   magicalGirlProfile.sidekickQuality = data.sidekickQuality;
   magicalGirlProfile.sidekickBirthPlace = data.sidekickBirthPlace;
+
 }
+
+// function loadSidekickData(){
+//
+// }
 
 function generateMagicalGirlProfile(){
   magicalGirlProfile.name = prompt(`Welcome! What is your name?`);
@@ -124,6 +128,7 @@ function generateMagicalGirlProfile(){
 
 
 function generateSidekickProfile(){
+
   magicalGirlProfile.sidekickName = random(loveCraftData.supernatural_creatures);
   let power02 = random(streetFighterData.characters);
 
@@ -138,6 +143,8 @@ function generateSidekickProfile(){
 
 function draw() {
 changeState();
+
+
 
 
 }
@@ -178,6 +185,7 @@ function mission(){
 }
 
 function game(){
+
   background(0);
 
   let profile01 = `** Magical Girl Profile **
@@ -195,9 +203,6 @@ function game(){
   Main Quality: ${magicalGirlProfile.sidekickQuality}
   Birth Place:  ${magicalGirlProfile.sidekickBirthPlace}`;
 
-
-
-
   push();
   textFont(startFont);
   textSize(24);
@@ -207,6 +212,10 @@ function game(){
   text(profile01, 100, 100);
   text(profile02, 100, 600);
   pop();
+
+
+
+
 }
 
 function sparkles(){
