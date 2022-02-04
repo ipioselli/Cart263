@@ -41,7 +41,7 @@ let characterData; // quality
 let romanData; //alias
 
 let mainFont; //font used for main text
-let cuteFont; //font used for headers
+let cuteFont; //font used for
 
 let startBg;
 let missionBg;
@@ -49,7 +49,9 @@ let gameBg;
 
 let data;
 
-let state = `start
+let state = `start`;
+
+let canvas;
 
 function preload(){
 
@@ -70,7 +72,8 @@ function preload(){
 }
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(1920, 1080);
+  windowResized();
 
   data = JSON.parse(localStorage.getItem(`magical-girl-profile-data`));
     if(data !==null){
@@ -84,6 +87,33 @@ function setup() {
       generateMagicalGirlProfile();
     }
   }
+
+  //Pippins code for resizing the canvas
+function windowResized(){
+  let canvasRatio = height / width;
+  let windowRatio = windowHeight / windowWidth;
+
+  // Create variables to store the new width and height
+  let newWidth = undefined;
+  let newHeight = undefined;
+
+  // If the window ratio is smaller, we'll use the window height to
+  // set the basis of our new canvas dimensions.
+  if (windowRatio < canvasRatio) {
+    // Our canvas will fit by setting its height to the window height...
+    newHeight = windowHeight;
+    // ... and then scaling the width based on the ratio
+    newWidth = windowHeight / canvasRatio;
+  } else {
+    // Our canvas will fit by setting its width to the window width...
+    newWidth = windowWidth;
+    // ... and then scaling the height based on the ratio
+    newHeight = windowWidth * canvasRatio;
+}
+// Set the canvas's CSS width and height properties to the new values
+  canvas.elt.style.width = `${newWidth}px`;
+  canvas.elt.style.height = `${newHeight}px`;
+}
 
 
 function loadMagicalGirlData(){
