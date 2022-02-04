@@ -48,6 +48,8 @@ let startBg; //variable for start state background image
 let missionBg; //vairbale for mission state background
 let gameBg; //variable for game state background
 
+let startSong; //variable for start state song
+
 let data; //data variable for storing data
 
 let state = `start`; //first state
@@ -75,6 +77,9 @@ function preload() {
   //fonts
   mainFont = loadFont("assets/fonts/Chromate-Regular.otf");
   cuteFont = loadFont(`assets/fonts/Marshland_Beauty.otf`);
+
+  //sound
+  startSong = loadSound(`assets/sounds/start-Song.mp3`);
 
 }
 
@@ -311,9 +316,12 @@ function sparkles() {
 function keyPressed() {
   if (state === `start` && keyCode === 13) { //keycode for enter
     state = `mission`;
+    startSong.loop(); //loops song during mission and game state
+    startSong.setVolume(0.05); //sets song volume
   }
   else if (state === `mission` && keyCode === 32) { //keycode for spacebar
     state = `game`;
+
   }
 
   if (state === `game` && keyCode === 65) { //keycode for A
