@@ -3,14 +3,13 @@ Ines Pioselli
 Exercise 03: Spy Profile Generator Plus
 
 Brief:
-- improve the visual display of the PROFILE
-- add more categories to the PROFILE
+- improve the visual display of the PROFILE --check
+- add more categories to the PROFILE --check
 - add the ability to change specific categories in their PROFILE
 - use voice synthesis and voice recognition for identification
 - ask for a username and password instead of just a password
 
 
-magicalGirlProfile = spyProfile
 */
 
 "use strict";
@@ -21,10 +20,12 @@ let magicalGirlProfile = {
   alias: `**TOP SECRET**`,
   powers:`**TOP SECRET**`,
   magicWand: `**TOP SECRET**`,
+  quality: `**TOP SECRET**`,
   birthPlace: `**TOP SECRET**`,
   password: `**TOP SECRET**`,
 
   sidekickName: `**TOP SECRET**`,
+  sidekickQuality: `**TOP SECRET**`,
   sidekickPowers:`**TOP SECRET**`,
   sidekickBirthPlace:`**TOP SECRET**`,
 
@@ -32,10 +33,10 @@ let magicalGirlProfile = {
 
 let loveCraftData; //alias
 let streetFighterData; //powers
-let zodiacData; //zodiac sign
 let artifactData; //wand
 let planetData;
 let gemstoneData; //password
+let characterData;
 
 let startFont;
 let cuteFont;
@@ -51,20 +52,15 @@ function preload(){
 
   loveCraftData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/mythology/lovecraft.json`);
   streetFighterData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/games/street_fighter_ii.json`);
-  zodiacData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/divination/zodiac.json`);
   artifactData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/objects/objects.json`);
   planetData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/science/minor_planets.json`);
   gemstoneData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/materials/gemstones.json`);
+  characterData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/archetypes/character.json`);
 
   startBg = loadImage("assets/images/start-Bg.png");
   startFont = loadFont("assets/fonts/Chromate-Regular.otf");
 
-
-
 }
-
-
-
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -88,12 +84,14 @@ function loadMagicalGirlData(){
   magicalGirlProfile.powers = data.powers;
   magicalGirlProfile.magicWand = data.magicWand;
   magicalGirlProfile.birthPlace = data.birthPlace;
+  magicalGirlProfile.quality = data.quality;
   magicalGirlProfile.password = data.password;
 }
 
 function loadSidekickData(){
   magicalGirlProfile.sidekickName = data.sidekickName;
   magicalGirlProfile.sidekickPowers = data.sidekickPowers;
+  magicalGirlProfile.sidekickQuality = data.sidekickQuality;
   magicalGirlProfile.sidekickBirthPlace = data.sidekickBirthPlace;
 }
 
@@ -112,6 +110,9 @@ function generateMagicalGirlProfile(){
 
   magicalGirlProfile.password = random(gemstoneData.gemstones);
 
+  let quality01 = random(characterData.characters);
+  magicalGirlProfile.quality = random(quality01.qualities);
+
   generateSidekickProfile();
 
 
@@ -121,12 +122,14 @@ function generateMagicalGirlProfile(){
 
 function generateSidekickProfile(){
   magicalGirlProfile.sidekickName = random(loveCraftData.supernatural_creatures);
-  magicalGirlProfile.sidekickZodiac =  random(zodiacData.western_zodiac);
   let power02 = random(streetFighterData.characters);
+
+  let quality02 = random(characterData.characters);
+  magicalGirlProfile.sidekickQuality = random(quality02.qualities);
+
   magicalGirlProfile.sidekickPowers = random(power02.moves);
 
-  let planet02 = random(planetData.planets);
-  magicalGirlProfile.sidekickBirthPlace = random(planet02.name);
+  magicalGirlProfile.sidekickBirthPlace = random(planetData.minor_planets);
 }
 
 
@@ -171,23 +174,26 @@ background(0);
 
 function game(){
   background(0);
+
   let profile01 = `** Magical Girl Profile **
   Name: ${magicalGirlProfile.name}
   Magical Girl name: ${magicalGirlProfile.alias}
   Powers: ${magicalGirlProfile.powers}
-  Zodiac Sign:  ${magicalGirlProfile.zodiac}
+  Main Quality:  ${magicalGirlProfile.quality}
   Magical Weapon: ${magicalGirlProfile.magicWand}
   Birth Place: ${magicalGirlProfile.birthPlace}
   password: ${magicalGirlProfile.password}`;
 
   let profile02 = ` ** Sidekick Profile **
   Name:  ${magicalGirlProfile.sidekickName}
+  Powers: ${magicalGirlProfile.sidekickPowers}
+  Main Quality: ${magicalGirlProfile.sidekickQuality}
   Birth Place:  ${magicalGirlProfile.sidekickBirthPlace}`;
 
 
 
   push();
-  textFont(`startFont`);
+  textFont(startFont);
   textSize(24);
   fill(255);
   textAlign(LEFT, TOP);
