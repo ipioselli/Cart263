@@ -208,32 +208,7 @@ function setupFruits(){
     }
 }
 
-//Pippins code for resizing the canvas
-function windowResized(){
-  let canvasRatio = height / width;
-  let windowRatio = windowHeight / windowWidth;
 
-  // Create variables to store the new width and height
-  let newWidth = undefined;
-  let newHeight = undefined;
-
-  // If the window ratio is smaller, we'll use the window height to
-  // set the basis of our new canvas dimensions.
-  if (windowRatio < canvasRatio) {
-    // Our canvas will fit by setting its height to the window height...
-    newHeight = windowHeight;
-    // ... and then scaling the width based on the ratio
-    newWidth = windowHeight / canvasRatio;
-  } else {
-    // Our canvas will fit by setting its width to the window width...
-    newWidth = windowWidth;
-    // ... and then scaling the height based on the ratio
-    newHeight = windowWidth * canvasRatio;
-}
-// Set the canvas's CSS width and height properties to the new values
-  canvas.elt.style.width = `${newWidth}px`;
-  canvas.elt.style.height = `${newHeight}px`;
-}
 
 //display all the states
 function draw() {

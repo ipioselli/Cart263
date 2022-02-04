@@ -15,20 +15,21 @@ They must remember their password to access their data. However, if they are unh
 
 "use strict";
 
-//declares all variables
+//declares all variables  for magical girl profile
 let magicalGirlProfile = {
   name: `**TOP SECRET**`,
   alias: `**TOP SECRET**`,
-  powers:`**TOP SECRET**`,
+  powers: `**TOP SECRET**`,
   magicWand: `**TOP SECRET**`,
   quality: `**TOP SECRET**`,
   birthPlace: `**TOP SECRET**`,
   password: `**TOP SECRET**`,
 
+  //sidekick profile
   sidekickName: `**TOP SECRET**`,
   sidekickQuality: `**TOP SECRET**`,
-  sidekickPowers:`**TOP SECRET**`,
-  sidekickBirthPlace:`**TOP SECRET**`,
+  sidekickPowers: `**TOP SECRET**`,
+  sidekickBirthPlace: `**TOP SECRET**`,
 
 };
 
@@ -41,20 +42,23 @@ let characterData; // quality
 let romanData; //alias
 
 let mainFont; //font used for main text
-let cuteFont; //font used for
+let cuteFont; //font used for headers
 
-let startBg;
-let missionBg;
-let gameBg;
+let startBg; //variable for start state background image
+let missionBg; //vairbale for mission state background
+let gameBg; //variable for game state background
 
-let data;
+let data; //data variable for storing data
 
-let state = `start`;
+let state = `start`; //first state
 
-let canvas;
+let canvas; //declares canvas variable
 
-function preload(){
 
+//lods all JSON data, fonts and background images
+function preload() {
+
+  //JSON data
   romanData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/mythology/roman_deities.json`);
   titanData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/mythology/greek_titans.json`);
   streetFighterData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/games/street_fighter_ii.json`);
@@ -63,33 +67,43 @@ function preload(){
   flowerData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/plants/flowers.json`);
   characterData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/archetypes/character.json`);
 
+  //images
   startBg = loadImage("assets/images/start-Bg.png");
   missionBg = loadImage("assets/images/mission-Bg.png");
   gameBg = loadImage(`assets/images/game-Bg.png`);
+
+  //fonts
   mainFont = loadFont("assets/fonts/Chromate-Regular.otf");
   cuteFont = loadFont(`assets/fonts/Marshland_Beauty.otf`);
 
 }
 
 function setup() {
+  //create canvas
   canvas = createCanvas(1920, 1080);
-  windowResized();
+  windowResized(); //calls resizing function
 
+  //tries to load data
   data = JSON.parse(localStorage.getItem(`magical-girl-profile-data`));
-    if(data !==null){
-      let password = prompt(`Please enter your password.`);
-      if(password === data.password){
-        loadMagicalGirlData();
-        loadSidekickData();
-      }
+  //checks if there is data to load
+  if (data !== null) {
+    //if so ask for the password
+    let password = prompt(`Please enter your password.`);
+    //check if password is correct
+    if (password === data.password) {
+      //if so then set up both profiles
+      loadMagicalGirlData();
+      loadSidekickData();
     }
-    else{
-      generateMagicalGirlProfile();
-    }
+  } else {
+    //if there is no data then setup the profile with data
+    generateMagicalGirlProfile(); //calls function to generate magical girl profile
+    generateSidekickProfile(); //calls function to generate sidekick profile
   }
+}
 
-  //Pippins code for resizing the canvas
-function windowResized(){
+//Pippins code for resizing the canvas
+function windowResized() {
   let canvasRatio = height / width;
   let windowRatio = windowHeight / windowWidth;
 
@@ -109,14 +123,15 @@ function windowResized(){
     newWidth = windowWidth;
     // ... and then scaling the height based on the ratio
     newHeight = windowWidth * canvasRatio;
-}
-// Set the canvas's CSS width and height properties to the new values
+  }
+  // Set the canvas's CSS width and height properties to the new values
   canvas.elt.style.width = `${newWidth}px`;
   canvas.elt.style.height = `${newHeight}px`;
 }
 
 
-function loadMagicalGirlData(){
+//loads all the variables into data for the magical girl profile
+function loadMagicalGirlData() {
   magicalGirlProfile.name = data.name;
   magicalGirlProfile.alias = data.alias;
   magicalGirlProfile.powers = data.powers;
@@ -127,23 +142,23 @@ function loadMagicalGirlData(){
 
 }
 
-function loadSidekickData(){
+//loads all the variables into data for the sidekick profile
+function loadSidekickData() {
   magicalGirlProfile.sidekickName = data.sidekickName;
   magicalGirlProfile.sidekickPowers = data.sidekickPowers;
   magicalGirlProfile.sidekickQuality = data.sidekickQuality;
   magicalGirlProfile.sidekickBirthPlace = data.sidekickBirthPlace;
 }
 
-function generateMagicalGirlProfile(){
+//generates a magical girl profile from JSON data
+function generateMagicalGirlProfile() {
   magicalGirlProfile.name = prompt(`Welcome! What is your name?`);
-  magicalGirlProfile.alias =  random(romanData.roman_deities);
+  magicalGirlProfile.alias = random(romanData.roman_deities);
 
   let power01 = random(streetFighterData.characters);
   magicalGirlProfile.powers = random(power01.moves);
 
-
-  magicalGirlProfile.magicWand =  random(objectData.objects);
-
+  magicalGirlProfile.magicWand = random(objectData.objects);
 
   magicalGirlProfile.birthPlace = random(countryData.countries);
 
@@ -152,14 +167,15 @@ function generateMagicalGirlProfile(){
   let quality01 = random(characterData.characters);
   magicalGirlProfile.quality = random(quality01.qualities);
 
-  generateSidekickProfile();
 
 
+  //save the resulting profile into local storage
   localStorage.setItem(`magical-girl-profile-data`, JSON.stringify(magicalGirlProfile));
 }
 
 
-function generateSidekickProfile(){
+//generates just your sidekick profile from JSON data
+function generateSidekickProfile() {
 
   magicalGirlProfile.sidekickName = random(titanData.greek_titans);
   let power02 = random(streetFighterData.characters);
@@ -170,40 +186,40 @@ function generateSidekickProfile(){
   magicalGirlProfile.sidekickPowers = random(power02.moves);
 
   magicalGirlProfile.sidekickBirthPlace = random(countryData.countries);
+
+  localStorage.setItem(`magical-girl-profile-data`, JSON.stringify(magicalGirlProfile));
 }
 
 
 function draw() {
-changeState();
+  changeState();
 
 }
 
 
 //function to change all the states
-function changeState(){
-  if(state === `start`){
+function changeState() {
+  if (state === `start`) {
     start();
-  }
-  else if(state === `mission`){
+  } else if (state === `mission`) {
     mission();
-  }
-  else if(state === `game`){
+  } else if (state === `game`) {
     game();
   }
 }
 
-function start(){
+function start() {
   imageMode(CENTER, CENTER);
-  image(startBg, width/2, height/2, 1920, 1080);
+  image(startBg, width / 2, height / 2, 1920, 1080);
   push();
   textFont(cuteFont);
   textSize(60);
   fill(255, 255, 255);
   textAlign(CENTER, CENTER);
-  text(`Magical Girl Simulator`, width/2, height/2 -100);
+  text(`Magical Girl Simulator`, width / 2, height / 2 - 100);
   textFont(mainFont);
   textSize(40);
-  text(`Press Enter to begin`, width/2, height/2 + 150);
+  text(`Press Enter to begin`, width / 2, height / 2 + 150);
   pop();
 
   sparkles();
@@ -211,29 +227,29 @@ function start(){
 
 }
 
-function mission(){
+function mission() {
   imageMode(CENTER, CENTER);
-  image(missionBg, width/2, height/2, 1920, 1080);
+  image(missionBg, width / 2, height / 2, 1920, 1080);
   textFont(cuteFont);
   textSize(60);
   textAlign(CENTER, CENTER);
   fill(255, 255, 255);
-  text(`Secret Mission`, width/2, height/2 - 200);
+  text(`Secret Mission`, width / 2, height / 2 - 200);
   textFont(mainFont);
   textSize(35);
   text(`You are given a top secret mission to save the world from evil. \n
       You will be given a new magical girl identity and sidekick to help you. \n
-      Make sure to remember your password to access your data again.`, width/2, height/2 );
+      Make sure to remember your password to access your data again.`, width / 2, height / 2);
   textSize(30);
-  text(`Press SPACEBAR to continue`, width/2, height/2 + 300);
+  text(`Press SPACEBAR to continue`, width / 2, height / 2 + 300);
 
   sparkles();
 }
 
-function game(){
+function game() {
 
   imageMode(CENTER, CENTER);
-  image(gameBg, width/2, height/2, 1920, 1080);
+  image(gameBg, width / 2, height / 2, 1920, 1080);
 
   let profile01 = `** Magical Girl Profile **
   Name: ${magicalGirlProfile.name}
@@ -255,24 +271,24 @@ function game(){
   textFont(cuteFont);
   textSize(60);
   fill(255);
-  text(`Profiles`, width/2, height/2 - 400);
+  text(`Profiles`, width / 2, height / 2 - 400);
   textFont(mainFont);
   textSize(24);
   fill(255);
 
   textLeading(50);
-  text(profile01, width/2 - 320, 300);
-  text(profile02, width/2 + 320, 300);
+  text(profile01, width / 2 - 320, 300);
+  text(profile02, width / 2 + 320, 300);
   textSize(30);
-  text(`Press A to change your entire profile`, width/2 -320, height/2 + 300);
-  text(`Press B to change your sidekick profile`, width/2 -320, height/2 + 350);
+  text(`Press A to change your entire profile`, width / 2 - 320, height / 2 + 300);
+  text(`Press B to change only your sidekick profile`, width / 2 - 320, height / 2 + 350);
   pop();
 
   sparkles();
 
 }
 
-function sparkles(){
+function sparkles() {
   for (let i = 0; i < 1000; i++) {
     let x = random(0, width);
     let y = random(0, height);
@@ -282,17 +298,16 @@ function sparkles(){
 }
 
 
-function keyPressed(){
-  if(state === `start` && keyCode === 13){
+function keyPressed() {
+  if (state === `start` && keyCode === 13) {
     state = `mission`;
-  }
-  else if(state === `mission` && keyCode === 32){
+  } else if (state === `mission` && keyCode === 32) {
     state = `game`;
   }
 
-  if (state === `game` && keyCode === 65){ //keycode for A
+  if (state === `game` && keyCode === 65) { //keycode for A
     generateMagicalGirlProfile();
   }
-  if(state === `game` && keyCode === 66) //keycode for b
-  generateSidekickProfile();
+  if (state === `game` && keyCode === 66) //keycode for b
+    generateSidekickProfile();
 }
