@@ -5,16 +5,17 @@ Exercise 03: Spy Profile Generator Plus
 Brief:
 - improve the visual display of the PROFILE --check
 - add more categories to the PROFILE --check
-- add the ability to change specific categories in their PROFILE
-- use voice synthesis and voice recognition for identification
-- ask for a username and password instead of just a password
+- add the ability to change specific categories in their PROFILE --- check
+
+In this program, the user must enter their name. Their magical girl profile will be loaded as well as their sidekick profile.
+They must remember their password to access their data. However, if they are unhappy they can regenerate both profiles.
 
 
 */
 
 "use strict";
 
-
+//declares all variables
 let magicalGirlProfile = {
   name: `**TOP SECRET**`,
   alias: `**TOP SECRET**`,
@@ -31,15 +32,16 @@ let magicalGirlProfile = {
 
 };
 
-let loveCraftData; //alias
-let streetFighterData; //powers
-let artifactData; //wand
-let planetData;
-let gemstoneData; //password
-let characterData;
+let titanData; //sidekick name
+let streetFighterData; //powers data
+let objectData; //wand
+let countryData; //birth place
+let flowerData; //password
+let characterData; // quality
+let romanData; //alias
 
-let startFont;
-let cuteFont;
+let mainFont; //font used for main text
+let cuteFont; //font used for headers
 
 let startBg;
 let missionBg;
@@ -47,21 +49,23 @@ let gameBg;
 
 let data;
 
-let state = `start`;
-
+let state = `start
 
 function preload(){
 
-  loveCraftData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/mythology/lovecraft.json`);
+  romanData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/mythology/roman_deities.json`);
+  titanData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/mythology/greek_titans.json`);
   streetFighterData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/games/street_fighter_ii.json`);
-  artifactData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/objects/objects.json`);
-  planetData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/science/minor_planets.json`);
-  gemstoneData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/materials/gemstones.json`);
+  objectData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/objects/objects.json`);
+  countryData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/geography/countries.json`);
+  flowerData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/plants/flowers.json`);
   characterData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/archetypes/character.json`);
 
   startBg = loadImage("assets/images/start-Bg.png");
   missionBg = loadImage("assets/images/mission-Bg.png");
-  startFont = loadFont("assets/fonts/Chromate-Regular.otf");
+  gameBg = loadImage(`assets/images/game-Bg.png`);
+  mainFont = loadFont("assets/fonts/Chromate-Regular.otf");
+  cuteFont = loadFont(`assets/fonts/Marshland_Beauty.otf`);
 
 }
 
@@ -73,7 +77,7 @@ function setup() {
       let password = prompt(`Please enter your password.`);
       if(password === data.password){
         loadMagicalGirlData();
-        //loadSidekickData();
+        loadSidekickData();
       }
     }
     else{
@@ -91,31 +95,29 @@ function loadMagicalGirlData(){
   magicalGirlProfile.quality = data.quality;
   magicalGirlProfile.password = data.password;
 
+}
+
+function loadSidekickData(){
   magicalGirlProfile.sidekickName = data.sidekickName;
   magicalGirlProfile.sidekickPowers = data.sidekickPowers;
   magicalGirlProfile.sidekickQuality = data.sidekickQuality;
   magicalGirlProfile.sidekickBirthPlace = data.sidekickBirthPlace;
-
 }
-
-// function loadSidekickData(){
-//
-// }
 
 function generateMagicalGirlProfile(){
   magicalGirlProfile.name = prompt(`Welcome! What is your name?`);
-  magicalGirlProfile.alias =  random(loveCraftData.deities);
+  magicalGirlProfile.alias =  random(romanData.roman_deities);
 
   let power01 = random(streetFighterData.characters);
   magicalGirlProfile.powers = random(power01.moves);
 
 
-  magicalGirlProfile.magicWand =  random(artifactData.objects);
+  magicalGirlProfile.magicWand =  random(objectData.objects);
 
 
-  magicalGirlProfile.birthPlace = random(planetData.minor_planets);
+  magicalGirlProfile.birthPlace = random(countryData.countries);
 
-  magicalGirlProfile.password = random(gemstoneData.gemstones);
+  magicalGirlProfile.password = random(flowerData.flowers);
 
   let quality01 = random(characterData.characters);
   magicalGirlProfile.quality = random(quality01.qualities);
@@ -129,7 +131,7 @@ function generateMagicalGirlProfile(){
 
 function generateSidekickProfile(){
 
-  magicalGirlProfile.sidekickName = random(loveCraftData.supernatural_creatures);
+  magicalGirlProfile.sidekickName = random(titanData.greek_titans);
   let power02 = random(streetFighterData.characters);
 
   let quality02 = random(characterData.characters);
@@ -137,18 +139,17 @@ function generateSidekickProfile(){
 
   magicalGirlProfile.sidekickPowers = random(power02.moves);
 
-  magicalGirlProfile.sidekickBirthPlace = random(planetData.minor_planets);
+  magicalGirlProfile.sidekickBirthPlace = random(countryData.countries);
 }
 
 
 function draw() {
 changeState();
 
-
-
-
 }
 
+
+//function to change all the states
 function changeState(){
   if(state === `start`){
     start();
@@ -165,11 +166,12 @@ function start(){
   imageMode(CENTER, CENTER);
   image(startBg, width/2, height/2, 1920, 1080);
   push();
-  textFont(startFont);
-  textSize(50);
+  textFont(cuteFont);
+  textSize(60);
   fill(255, 255, 255);
   textAlign(CENTER, CENTER);
-  text(`Magical Girl Simulator!`, width/2, height/2 -100);
+  text(`Magical Girl Simulator`, width/2, height/2 -100);
+  textFont(mainFont);
   textSize(40);
   text(`Press Enter to begin`, width/2, height/2 + 150);
   pop();
@@ -182,11 +184,26 @@ function start(){
 function mission(){
   imageMode(CENTER, CENTER);
   image(missionBg, width/2, height/2, 1920, 1080);
+  textFont(cuteFont);
+  textSize(60);
+  textAlign(CENTER, CENTER);
+  fill(255, 255, 255);
+  text(`Secret Mission`, width/2, height/2 - 200);
+  textFont(mainFont);
+  textSize(35);
+  text(`You are given a top secret mission to save the world from evil. \n
+      You will be given a new magical girl identity and sidekick to help you. \n
+      Make sure to remember your password to access your data again.`, width/2, height/2 );
+  textSize(30);
+  text(`Press SPACEBAR to continue`, width/2, height/2 + 300);
+
+  sparkles();
 }
 
 function game(){
 
-  background(0);
+  imageMode(CENTER, CENTER);
+  image(gameBg, width/2, height/2, 1920, 1080);
 
   let profile01 = `** Magical Girl Profile **
   Name: ${magicalGirlProfile.name}
@@ -204,17 +221,24 @@ function game(){
   Birth Place:  ${magicalGirlProfile.sidekickBirthPlace}`;
 
   push();
-  textFont(startFont);
+  textAlign(LEFT, TOP);
+  textFont(cuteFont);
+  textSize(60);
+  fill(255);
+  text(`Profiles`, width/2, height/2 - 400);
+  textFont(mainFont);
   textSize(24);
   fill(255);
-  textAlign(LEFT, TOP);
-  textLeading(40);
-  text(profile01, 100, 100);
-  text(profile02, 100, 600);
+
+  textLeading(50);
+  text(profile01, width/2 - 320, 300);
+  text(profile02, width/2 + 320, 300);
+  textSize(30);
+  text(`Press A to change your entire profile`, width/2 -320, height/2 + 300);
+  text(`Press B to change your sidekick profile`, width/2 -320, height/2 + 350);
   pop();
 
-
-
+  sparkles();
 
 }
 
