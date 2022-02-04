@@ -58,6 +58,7 @@ function preload(){
   characterData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/archetypes/character.json`);
 
   startBg = loadImage("assets/images/start-Bg.png");
+  missionBg = loadImage("assets/images/mission-Bg.png");
   startFont = loadFont("assets/fonts/Chromate-Regular.otf");
 
 }
@@ -87,6 +88,7 @@ function loadMagicalGirlData(){
   magicalGirlProfile.birthPlace = data.birthPlace;
   magicalGirlProfile.quality = data.quality;
   magicalGirlProfile.password = data.password;
+
 }
 
 function loadSidekickData(){
@@ -167,10 +169,12 @@ function start(){
 
   sparkles();
 
+
 }
 
 function mission(){
-background(0);
+  imageMode(CENTER, CENTER);
+  image(missionBg, width/2, height/2, 1920, 1080);
 }
 
 function game(){
@@ -190,6 +194,7 @@ function game(){
   Powers: ${magicalGirlProfile.sidekickPowers}
   Main Quality: ${magicalGirlProfile.sidekickQuality}
   Birth Place:  ${magicalGirlProfile.sidekickBirthPlace}`;
+
 
 
 
