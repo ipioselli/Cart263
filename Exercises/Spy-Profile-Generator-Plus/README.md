@@ -1,3 +1,5 @@
-# Template p5 project
+# Exercise 03: Spy Profile Generator Plus
 
-This is the README file for the entire project. For more official projects you should write information here about the nature of the project, your name, any special explanations of how the project works, etc.
+This programs uses data storage to ask you for your name and load a magical girl profile for you and a sidekick profile as well. You are entrusted with a top secret
+mission to save the world. You are given a sidekick to help you along with a new cool alias. You must remember your password to access the data again and you can change it
+if you do not like your new identity.
