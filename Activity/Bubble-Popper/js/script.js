@@ -1,26 +1,32 @@
 /**
-Title of Project
-Author Name
+Activity 4 : Bubble popper
+Ines Pioselli
 
-This is a template. You must fill in the title,
-author, and this description to match your project!
 */
 
 "use strict";
 
 
-/**
-Description of preload
-*/
-function preload() {
+let video = undefined;
 
-}
+let handpose =  undefined;
 
-
+let predictions = [];
 /**
 Description of setup
 */
 function setup() {
+  createCanvas(640, 480);
+
+  video = createCapture(VIDEO);
+  video.hide();
+
+  handpose = ml5.handpose(video,{
+    fliphorizontal: true //flips camera
+    }, function(){
+      console.log(`Model loaded.`);
+    });
+
 
 }
 
