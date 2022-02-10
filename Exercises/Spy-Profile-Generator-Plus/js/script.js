@@ -40,6 +40,7 @@ let countryData; //birth place
 let flowerData; //password
 let characterData; // quality
 let romanData; //alias
+let zodiacData;
 
 let mainFont; //font used for main text
 let cuteFont; //font used for headers
@@ -68,6 +69,7 @@ function preload() {
   countryData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/geography/countries.json`);
   flowerData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/plants/flowers.json`);
   characterData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/archetypes/character.json`);
+  zodiacData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/divination/zodiac.json`);
 
   //images
   startBg = loadImage("assets/images/start-Bg.png");
@@ -89,21 +91,7 @@ function setup() {
   windowResized(); //calls resizing function
 
   //tries to load data
-  data = JSON.parse(localStorage.getItem(`magical-girl-profile-data`));
-  //checks if there is data to load
-  if (data !== null) {
-    //if so ask for the password
-    let password = prompt(`Please enter your password.`);
-    //check if password is correct
-    if (password === data.password) {
-      //if so then set up both profiles
-      loadMagicalGirlData();
-      loadSidekickData();
-    }
-  } else {
-    //if there is no data then setup the profile with data
-    generateMagicalGirlProfile();
-  }
+
 }
 
 //Pippins code for resizing the canvas
@@ -162,7 +150,7 @@ function generateMagicalGirlProfile() {
   let power01 = random(streetFighterData.characters);
   magicalGirlProfile.powers = random(power01.moves);
 
-  magicalGirlProfile.magicWand = random(objectData.objects);
+  magicalGirlProfile.magicWand = random(zodiacData.objects);
 
   magicalGirlProfile.birthPlace = random(countryData.countries);
 
@@ -315,6 +303,22 @@ function sparkles() {
 //handles keyboard input
 function keyPressed() {
   if (state === `start` && keyCode === 13) { //keycode for enter
+    data = JSON.parse(localStorage.getItem(`magical-girl-profile-data`));
+    //checks if there is data to load
+    if (data !== null) {
+      //if so ask for the password
+      let password = prompt(`Please enter your password.`);
+      //check if password is correct
+      if (password === data.password) {
+        //if so then set up both profiles
+        loadMagicalGirlData();
+        loadSidekickData();
+      }
+    }
+    else {
+      //if there is no data then setup the profile with data
+      generateMagicalGirlProfile();
+    }
     state = `mission`;
     startSong.loop(); //loops song during mission and game state
     startSong.setVolume(0.05); //sets song volume
