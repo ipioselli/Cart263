@@ -44,11 +44,16 @@ let canShoot = true;
 
 let angel;
 
-let wand = {
-  x: 0,
-  y: 0,
-  size: 100,
-  image:undefined,
+let pin = {
+  tip: {
+   x: undefined,
+   y: undefined
+ },
+ head: {
+   x: undefined,
+   y: undefined,
+   size: 20
+ }
 };
 
 let angelKillSFX;
@@ -61,7 +66,7 @@ let winBg;
 let loseBg;
 
 let angelImg;
-let wandImg;
+let pinImg;
 
 let angelsKilled = 0;
 let maxAngelsKilled = 7; //lucky angel number
@@ -81,7 +86,7 @@ function preload(){
   instructionsBg = loadImage(`assets/images/instructionsBg.png`);
 
   angelImg = loadImage(`assets/images/angel.png`);
-  wandImg = loadImage(`assets/images/wand.png`);
+  pinImg = loadImage(`assets/images/wand.png`);
 
 }
 /**
@@ -158,9 +163,6 @@ function instructions(){
 
 function win(){
   background(0);
-
-
-
 }
 
 
@@ -190,17 +192,17 @@ function game(){
   background(255, 0, 255);
 
   if(predictions.length>0){
-    updateWand(predictions[0]);
+    updatepin(predictions[0]);
 
-    let d = dist(wand.x, wand.y, angel.x, angel.y);
+    let d = dist(pin.tip.x, pin.tip.y, angel.x, angel.y);
     if(d < angel.size/2){
 
       angelsKilled++;
-      angel.vy--;
+      angel.vy -=2;
 
       resetAngel();
     }
-      displayWand();
+      displaypin();
   }
   //updateSparkles();
   checkScore();
@@ -250,9 +252,11 @@ function sparkles(){
 
 
 
-function updateWand(prediction){
-  wand.x = prediction.annotations.indexFinger[3][0];
-  wand.y = prediction.annotations.indexFinger[3][1];
+function updatepin(prediction){
+  pin.tip.x = prediction.annotations.indexFinger[3][0];
+  pin.tip.y = prediction.annotations.indexFinger[3][1];
+  pin.head.x = prediction.annotations.indexFinger[0][0];
+  pin.head.y = prediction.annotations.indexFinger[0][1];
 }
 
 function resetAngel(){
@@ -278,14 +282,18 @@ function displayAngel(){
 
 }
 
-function displayWand(){
+function displaypin(){
   push();
   stroke(255);
-  strokeWeight(2);
-  line(wand.x, wand.y,);
+  strokeWeight(4);
+  line(pin.tip.x, pin.tip.y, pin.head.x, pin.head.y);
   pop();
-  imageMode(CENTER, CENTER);
-  image(wandImg, wand.x, wand.y, wand.size, wand.size);
+
+  push();
+fill(255, 0, 0);
+noStroke();
+ellipse(pin.head.x, pin.head.y, pin.head.size);
+pop();
 }
 
 function displayScore(){
