@@ -31,7 +31,7 @@ I wanted to include an image for the pin but it lagged way too much T-T
 
 "use strict";
 
-let state = `start`;
+let state = `win`;
 
 let video = undefined;
 let modelName = `HANDPOSE`;
@@ -166,6 +166,20 @@ function instructions() {
 
 function win() {
   background(0);
+
+
+  push();
+  fill(255);
+  textFont(titleFont);
+  textAlign(CENTER, CENTER);
+  textSize(50);
+  text(`YAY YOU DEFEATED THE ANGELS`, width/2, height/2 -100);
+  textSize(30);
+  text(`Press R to restart the game`, width/2, height/2 );
+  pop();
+
+  sparkles();
+  resetGame();
 }
 
 
@@ -213,7 +227,6 @@ image(gameBg, width/2, height/2, 640, 480)
   }
 
   checkScore();
-
   checkTimer();
   moveAngel();
   checkOutofBounds();
@@ -225,11 +238,8 @@ image(gameBg, width/2, height/2, 640, 480)
 function checkScore() {
   if (angelsKilled === maxAngelsKilled) {
     state = `win`;
-
-
   }
 }
-
 
 //calls the lose state once the timer is over
 function checkTimer() {
@@ -276,6 +286,11 @@ function checkOutofBounds() {
   }
 }
 
+function resetGame(){
+  angelsKilled = 0;
+  timer = 5000;
+}
+
 function displayAngel() {
   imageMode(CENTER, CENTER);
 
@@ -317,6 +332,7 @@ function displayTimer() {
   pop();
 }
 
+
 function keyPressed() {
   if (state === `start`) {
     if (keyCode === 13) { //keycode for enter
@@ -334,6 +350,15 @@ function keyPressed() {
     }
   }
 
+  if(state === `win`){
+    if(keyCode === 82){
+      state = `start`;
+    }
+  }
 
-
+  if(state === `lose`){
+    if(keyCode === 82){
+      state = `start`;
+    }
+  }
 }
