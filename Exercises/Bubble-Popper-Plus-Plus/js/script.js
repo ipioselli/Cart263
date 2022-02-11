@@ -37,6 +37,12 @@ let handpose =  undefined;
 
 let predictions = [];
 
+let sparkles = [];
+
+let canShoot = true;
+
+let sparkleImg;
+
 let angel;
 
 let wand = {
@@ -58,7 +64,10 @@ let loseBg;
 let angelImg;
 let wandImg;
 let angelsKilled = 0;
-let maxAngelsKilled = 7;
+let maxAngelsKilled = 7; //lucky angel number
+
+let timer = 10000;
+let timerDone = false;
 
 let titleFont;
 
@@ -72,6 +81,7 @@ function preload(){
 
   angelImg = loadImage(`assets/images/angel.png`);
   wandImg = loadImage(`assets/images/wand.png`);
+  sparkleImg = loadImage(`assets/images/sparkle.png`);
 
 }
 /**
@@ -121,6 +131,8 @@ function start(){
   imageMode(CENTER, CENTER);
   image(startBg, width/2, height/2, 640, 480);
   push();
+  textSize(50);
+  textAlign(CENTER, CENTER);
   textFont(titleFont);
   fill(255, 255, 255);
   text(`Neon Genesis Magical Girl`, width/2, height/2);
@@ -132,6 +144,12 @@ function instructions(){
   background(255, 255, 0);
 }
 
+function win(){
+  background(0);
+
+
+
+}
 
 
 function loading(){
@@ -166,17 +184,20 @@ function game(){
     if(d < angel.size/2){
 
       angelsKilled++;
-      angelsKilled();
-      resetAngel();
+      angel.vy--;
 
+      resetAngel();
     }
-    displayWand();
+      displayWand();
   }
+  //updateSparkles();
   checkScore();
+  checkTimer();
   moveAngel();
   checkOutofBounds();
   displayAngel();
   displayScore();
+  displayTimer();
 }
 
 function checkScore(){
@@ -184,6 +205,28 @@ function checkScore(){
     state = `win`;
   }
 }
+
+
+function checkTimer(){
+  timer -= 1;
+  if(timer <=0){
+    timer = true;
+  }
+
+  if (timerDone){
+    state = `lose`;
+  }
+}
+
+function displayTimer(){
+  push();
+  textFont(titleFont);
+  textAlign(CENTER, CENTER);
+  text(`Timer: ${timer}`, width/2 + 200, height/2);
+  pop();
+}
+
+
 
 function updateWand(prediction){
   wand.x = prediction.annotations.indexFinger[3][0];
@@ -208,17 +251,17 @@ function checkOutofBounds(){
 
 function displayAngel(){
   imageMode(CENTER, CENTER);
-  // image(angelImg, width/2, height/2, 640, 480);
+
   image(angelImg, angel.x, angel.y, angel.size, angel.size);
 
 }
 
 function displayWand(){
-  // push();
-  // stroke(255);
-  // strokeWeight(2);
-  // line(wand.x, wand.y,);
-  // pop();
+  push();
+  stroke(255);
+  strokeWeight(2);
+  line(wand.x, wand.y,);
+  pop();
   imageMode(CENTER, CENTER);
   image(wandImg, wand.x, wand.y, wand.size, wand.size);
 }
