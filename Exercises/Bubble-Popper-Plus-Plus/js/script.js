@@ -23,7 +23,7 @@ I wanted to include an image for the pin but it lagged way too much T-T
 
 let state = `start`; //start state
 
-let video = undefined; //user's webcame
+let video = undefined; //user's webcam
 let modelName = `HANDPOSE`; //name of the model
 let handpose = undefined;// handpose object
 
@@ -268,7 +268,7 @@ function checkTimer() {
   if (timer <= 0) {
     timer = true; //changes timer to true when it reaches 0
   }
-  
+
   if (timerDone) {
     state = `lose`; //calls the lose state once its true
   }
