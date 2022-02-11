@@ -1,6 +1,25 @@
 /**
-Activity 4 : Bubble popper
+Exercise 4: Bubble popper
 Ines Pioselli
+
+Brief:
+- count the bubbles that have been popped
+- improve visuals and add sound effects (sound when popped)
+- add states: title, loading and ending
+- make it harder to pop the bubble over time
+in update increase the velocity
+- add many bubbles
+
+steps:
+- add bubble js file
+- bubble images
+
+Game:
+- have bubble move across the screen and get faster eachtime
+if the pin is too close it change the position. Time limit and if you pop a certain amount of bubbles
+you win if not you lose.
+-
+
 
 */
 
@@ -14,6 +33,18 @@ let handpose =  undefined;
 let predictions = [];
 
 let bubble = undefined;
+let bubblesImages = [];
+let bubbles = [];
+
+
+let bubblePopSFX;
+
+
+
+
+function preload(){
+
+}
 /**
 Description of setup
 */
@@ -30,17 +61,10 @@ function setup() {
     });
 
     handpose.on(`predict`, function(results){
-      console.log(results);
       predictions = results;
     });
 
-    bubble = {
-      x:random(width),
-      y: height,
-      size:100,
-      vx: 0,
-      vy:-2,
-    }
+
 }
 
 
