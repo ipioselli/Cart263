@@ -37,15 +37,16 @@ let handpose =  undefined;
 
 let predictions = [];
 
-let angel = undefined;
+let angel;
 
 let wand = {
-  x: undefined,
-  y: undefined,
-  size: 20,
+  x: 0,
+  y: 0,
+  size: 50,
+  image:undefined,
 };
 
-let bubblePopSFX;
+let angelKillSFX;
 let gameSong;
 
 let startBg;
@@ -54,16 +55,23 @@ let gameBg;
 let winBg;
 let loseBg;
 
+let angelImg;
+let wandImg;
 let angelsKilled = 0;
-let maxAngelsKilled = 0;
+let maxAngelsKilled = 7;
+
+let titleFont;
 
 
 
 
 function preload(){
 
-  angel.image = loadImage(`assets/images/angel.png`);
-  wand.image = loadImage(`assets/images/wand.png`);
+  titleFont = loadFont(`assets/fonts/bodoni-mt-5.otf`);
+  startBg = loadImage(`assets/images/startBg.png`);
+
+  angelImg = loadImage(`assets/images/angel.png`);
+  wandImg = loadImage(`assets/images/wand.png`);
 
 }
 /**
@@ -72,16 +80,13 @@ Description of setup
 function setup() {
   createCanvas(640, 480);
 
-
-
-
-
     angel = {
       x: random(width),
       y: height,
       size: 100,
       vx:0,
-      vy: -2
+      vy: -3,
+
     }
 
 }
@@ -92,7 +97,7 @@ function draw(){
 
 function changeState(){
   if(state === `start`){
-    state();
+    start();
   }
   else if(state === `instructions`){
     instructions();
@@ -113,7 +118,13 @@ function changeState(){
 
 
 function start(){
-  background(0);
+  imageMode(CENTER, CENTER);
+  image(startBg, width/2, height/2, 640, 480);
+  push();
+  textFont(titleFont);
+  fill(255, 255, 255);
+  text(`Neon Genesis Magical Girl`, width/2, height/2);
+  pop();
 
 }
 
@@ -121,7 +132,11 @@ function instructions(){
   background(255, 255, 0);
 }
 
+
+
 function loading(){
+  background(255, 0, 0);
+
   handpose = ml5.handpose(video,{
     flipHorizontal: true //flips camera
     }, function(){
@@ -136,36 +151,48 @@ function loading(){
   textSize(32);
   textStyle(BOLD);
   textAlign(CENTER, CENTER);
-  text(`Loading ${modelName} ....,` width/2, height/2);
+  text(`Loading ${modelName} ....,`, width/2, height/2);
   pop();
 
 }
 
 function game(){
-  background(0);
-  
+  background(255, 0, 255);
+
   if(predictions.length>0){
     updateWand(predictions[0]);
 
     let d = dist(wand.x, wand.y, angel.x, angel.y);
     if(d < angel.size/2){
+
+      angelsKilled++;
+      angelsKilled();
       resetAngel();
+
     }
     displayWand();
   }
+  checkScore();
   moveAngel();
   checkOutofBounds();
   displayAngel();
+  displayScore();
+}
+
+function checkScore(){
+  if(angelsKilled === maxAngelsKilled){
+    state = `win`;
+  }
 }
 
 function updateWand(prediction){
-  angel.x = prediction.annotations.indexFinger[3][0];
-  angel.y = prediction.annotations.indexFinger[3][1];
+  wand.x = prediction.annotations.indexFinger[3][0];
+  wand.y = prediction.annotations.indexFinger[3][1];
 }
 
 function resetAngel(){
-  bubble.x = random(width);
-  bubble.y = height;
+  angel.x = random(width);
+  angel.y = height;
 }
 
 function moveAngel(){
@@ -173,22 +200,33 @@ function moveAngel(){
   angel.y += angel.vy;
 }
 
+function checkOutofBounds(){
+  if(angel.y < 0){
+    resetAngel();
+  }
+}
+
 function displayAngel(){
-  push();
-  image(angel.image, angel.x, angel.y, angel.size, angel.size);
-  pop();
+  imageMode(CENTER, CENTER);
+  // image(angelImg, width/2, height/2, 640, 480);
+  image(angelImg, angel.x, angel.y, angel.size, angel.size);
+
 }
 
 function displayWand(){
-  push();
-  image(wand.image, wand.x, wand.y, wand.size, wand.size);
-  pop();
+  // push();
+  // stroke(255);
+  // strokeWeight(2);
+  // line(wand.x, wand.y,);
+  // pop();
+  imageMode(CENTER, CENTER);
+  image(wandImg, wand.x, wand.y, wand.size, wand.size);
 }
 
 function displayScore(){
   push();
   textSize(20);
-  text()
+  text(`Score: ${angelsKilled}`, width/2, height/2);
   pop();
 }
 
