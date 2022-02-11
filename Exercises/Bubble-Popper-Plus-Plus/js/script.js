@@ -15,34 +15,55 @@ steps:
 - bubble images
 
 Game:
+- neon genesis and sailor moon crossover
+- kill the angels with your magic wand
+- add a counter for how many angels you kill
 - have bubble move across the screen and get faster eachtime
-if the pin is too close it change the position. Time limit and if you pop a certain amount of bubbles
+- Time limit and if you pop a certain amount of bubbles
 you win if not you lose.
--
+
+
 
 
 */
 
 "use strict";
 
+let state = `start`;
 
 let video = undefined;
-
+let modelName = `Handpose`;
 let handpose =  undefined;
 
 let predictions = [];
 
-let bubble = undefined;
-let bubblesImages = [];
-let bubbles = [];
+let angel = undefined;
 
+let wand = {
+  x: undefined,
+  y: undefined,
+  size: 20,
+};
 
 let bubblePopSFX;
+let gameSong;
+
+let startBg;
+let instructionsBg;
+let gameBg;
+let winBg;
+let loseBg;
+
+let angelsKilled = 0;
+let maxAngelsKilled = 0;
 
 
 
 
 function preload(){
+
+  angel.image = loadImage(`assets/images/angel.png`);
+  wand.image = loadImage(`assets/images/wand.png`);
 
 }
 /**
@@ -57,17 +78,43 @@ function setup() {
   handpose = ml5.handpose(video,{
     flipHorizontal: true //flips camera
     }, function(){
-      console.log(`Model loaded.`);
+
     });
 
     handpose.on(`predict`, function(results){
       predictions = results;
     });
 
+    angel = {
+      x: random(width),
+      y: height,
+      size: 100,
+      vx:0,
+      vy: -2
+    }
 
 }
 
-
+function changeState(){
+  if(state === `start`){
+    state();
+  }
+  else if(state === `instructions`){
+    instructions();
+  }
+  else if(state === `loading`){
+    loading();
+  }
+  else if(state === `game`){
+    game();
+  }
+  else if(state === `win`){
+    win();
+  }
+  else if(state === `lose`){
+    lose();
+  }
+}
 /**
 Description of draw()
 */
