@@ -1,3 +1,6 @@
-# Template p5 project
+Exercise 04: Bubble Popper
 
-This is the README file for the entire project. For more official projects you should write information here about the nature of the project, your name, any special explanations of how the project works, etc.
+This program takes inspiration from the show Neon Genesis Evangelion
+Instead of a bubble you must stab the angel with the pin to save the world.
+There are seven angels to kill. Each time you kill one their speed gets faster and size gets
+smaller. There is also a timer of 5 seconds so you must kill all the angels before the timer runs out.

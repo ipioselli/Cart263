@@ -3,23 +3,17 @@ Exercise 4: Bubble popper
 Ines Pioselli
 
 Brief:
-- count the bubbles that have been popped --> done
-- improve visuals and add sound effects (sound when popped) --> done
-- add states: title, loading and ending --> done
-- make it harder to pop the bubble over time --> done
-
-
-steps:
-- add bubble js file
-- bubble images
+- count the bubbles that have been popped √
+- improve visuals and add sound effects (sound when popped) √
+- add states: title, loading and ending √
+- make it harder to pop the bubble over time √
 
 Game:
-- neon genesis
-- kill the angels with your magic wand
-- add a counter for how many angels you kill
-- have bubble move across the screen and get faster eachtime
-- Time limit and if you pop a certain amount of bubbles
-you win if not you lose.
+
+Inspired by neon genesis evangelion. The user must kill the angel with the red pin.
+There are seven angels to kill and you have 5 seconds to kill them all. Each time you
+kill one angel, the speed gets faster and the angel gets smaller. After you win or lose
+you can restart the game.
 
 I wanted to include an image for the pin but it lagged way too much T-T
 
@@ -27,16 +21,17 @@ I wanted to include an image for the pin but it lagged way too much T-T
 
 "use strict";
 
-let state = `lose`;
+let state = `start`; //start state
 
-let video = undefined;
-let modelName = `HANDPOSE`;
-let handpose = undefined;
+let video = undefined; //user's webcame
+let modelName = `HANDPOSE`; //name of the model
+let handpose = undefined;// handpose object
 
-let predictions = [];
+let predictions = []; //array of predictions made by handpose
 
-let angel;
+let angel; // angel to kill
 
+//pin that stabs the angel
 let pin = {
   tip: {
     x: undefined,
@@ -49,62 +44,70 @@ let pin = {
   }
 };
 
-let angelKillSFX;
-let instructionsSong;
+let angelKillSFX; //sfx for when you stab the angel
+let instructionsSong; //song for the instructions state
 
+//image background variables
 let startBg;
 let instructionsBg;
 let gameBg;
 let winBg;
 let loseBg;
 
+//angel image
 let angelImg;
-let pinImg;
 
-let angelsKilled = 0;
+//variables for counter
+let angelsKilled = 0; //number of angels killed
 let maxAngelsKilled = 7; //lucky angel number
 
-let timer = 5000;
+//variables for the counter
+let timer = 5000; //5 seconds
 let timerDone = false;
 
-let titleFont;
+let titleFont; //main font
 
 
-
+//loads all the assets for this project
 function preload() {
 
-  titleFont = loadFont(`assets/fonts/bodoni-mt-5.otf`);
+  //loads background images
   startBg = loadImage(`assets/images/startBg.png`);
   instructionsBg = loadImage(`assets/images/instructionsBg.png`);
   gameBg = loadImage(`assets/images/gameBg.png`);
   loseBg = loadImage(`assets/images/loseBg.png`);
 
+  //fonts
+  titleFont = loadFont(`assets/fonts/bodoni-mt-5.otf`);
+
+  //angel
   angelImg = loadImage(`assets/images/angel.png`);
 
+  //sounds
   angelKillSFX = loadSound(`assets/sounds/kill.mp3`);
   instructionsSong = loadSound(`assets/sounds/win.mp3`);
-
 }
 
 
-
 function setup() {
-  createCanvas(640, 480);
+  createCanvas(640, 480);//canvas
 
+  //variables for the angel
   angel = {
     x: random(width),
     y: height,
     size: 150,
     vx: 0,
     vy: -3,
-
   }
 }
 
+//calls the function the change states
 function draw() {
   changeState();
 }
 
+//function to change all the states
 function changeState() {
   if (state === `start`) {
     start();
@@ -233,13 +236,12 @@ function lose(){
   textFont(titleFont);
   textAlign(CENTER, CENTER);
   textSize(50);
-  text(`YAY YOU DEFEATED THE ANGELS`, width/2, height/2 +50);
+  text(`RIP THE WORLD ENDED`, width/2, height/2 +50);
   textSize(30);
   text(`Press R to restart the game`, width/2, height/2 +100 );
   pop();
 
 }
-
 
 function checkScore() {
   if (angelsKilled === maxAngelsKilled) {
