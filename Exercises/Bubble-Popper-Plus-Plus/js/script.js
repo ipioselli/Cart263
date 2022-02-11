@@ -15,7 +15,7 @@ steps:
 - bubble images
 
 Game:
-- neon genesis and sailor moon crossover
+- neon genesis
 - kill the angels with your magic wand
 - add a counter for how many angels you kill
 - have bubble move across the screen and get faster eachtime
@@ -29,7 +29,7 @@ you win if not you lose.
 
 "use strict";
 
-let state = `start`;
+let state = `instructions`;
 
 let video = undefined;
 let modelName = `Handpose`;
@@ -37,11 +37,10 @@ let handpose =  undefined;
 
 let predictions = [];
 
-let sparkles = [];
 
 let canShoot = true;
 
-let sparkleImg;
+
 
 let angel;
 
@@ -63,6 +62,7 @@ let loseBg;
 
 let angelImg;
 let wandImg;
+
 let angelsKilled = 0;
 let maxAngelsKilled = 7; //lucky angel number
 
@@ -78,10 +78,10 @@ function preload(){
 
   titleFont = loadFont(`assets/fonts/bodoni-mt-5.otf`);
   startBg = loadImage(`assets/images/startBg.png`);
+  instructionsBg = loadImage(`assets/images/instructionsBg.png`);
 
   angelImg = loadImage(`assets/images/angel.png`);
   wandImg = loadImage(`assets/images/wand.png`);
-  sparkleImg = loadImage(`assets/images/sparkle.png`);
 
 }
 /**
@@ -98,7 +98,6 @@ function setup() {
       vy: -3,
 
     }
-
 }
 
 function draw(){
@@ -135,13 +134,26 @@ function start(){
   textAlign(CENTER, CENTER);
   textFont(titleFont);
   fill(255, 255, 255);
-  text(`Neon Genesis Magical Girl`, width/2, height/2);
+  text(`DEFEAT THE ANGELS`, width/2, height/2-100);
+  textSize(30);
+  text(`Press ENTER to start`, width/2, height/2 - 50);
   pop();
 
 }
 
 function instructions(){
-  background(255, 255, 0);
+  imageMode(CENTER, CENTER);
+  image(instructionsBg, width/2, height/2, 640, 480);
+  push();
+  fill(255);
+  textFont(titleFont);
+  textAlign(CENTER, CENTER);
+  textSize(30);
+  text(`1. Place your index in front of the camera and stab \n the angel with the pin. \n 2. Kill 7 angels to win the game \n 3. If you take too long you lose.`, width/2, height/2-100);
+  pop();
+
+  sparkles();
+
 }
 
 function win(){
@@ -224,6 +236,16 @@ function displayTimer(){
   textAlign(CENTER, CENTER);
   text(`Timer: ${timer}`, width/2 + 200, height/2);
   pop();
+}
+
+
+function sparkles(){
+  for (let i = 0; i < 1000; i++) {
+    let x = random(0, width);
+    let y = random(0, height);
+    stroke(400);
+    point(x, y);
+  }
 }
 
 
