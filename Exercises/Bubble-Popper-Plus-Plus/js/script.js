@@ -72,18 +72,9 @@ Description of setup
 function setup() {
   createCanvas(640, 480);
 
-  video = createCapture(VIDEO);
-  video.hide();
 
-  handpose = ml5.handpose(video,{
-    flipHorizontal: true //flips camera
-    }, function(){
 
-    });
 
-    handpose.on(`predict`, function(results){
-      predictions = results;
-    });
 
     angel = {
       x: random(width),
@@ -93,6 +84,10 @@ function setup() {
       vy: -2
     }
 
+}
+
+function draw(){
+  changeState();
 }
 
 function changeState(){
@@ -115,56 +110,104 @@ function changeState(){
     lose();
   }
 }
-/**
-Description of draw()
-*/
-function draw() {
 
+
+function start(){
   background(0);
 
-  if(predictions.length>0){
-    let hand = predictions[0];
-    let index = hand.annotations.indexFinger;
-    let tip = index[3];
-    let base = index[0];
-    let tipX = tip[0];
-    let tipY = tip[1];
-    let baseX = base[0];
-    let baseY = base[1];
+}
 
-    push();
-    noFill();
-    stroke(255, 255, 255);
-    strokeWeight(2);
-    line(baseX, baseY, tipX, tipY);
-    pop();
+function instructions(){
+  background(255, 255, 0);
+}
 
-    push();
-    noStroke();
-    fill(255, 0, 0);
-    ellipse(baseX, baseY, 20);
-    pop();
+function loading(){
+  handpose = ml5.handpose(video,{
+    flipHorizontal: true //flips camera
+    }, function(){
+      state = `game`
+    });
 
-    let d = dist(tipX, tipY, bubble.x, bubble.y);
-    if(d < bubble.size/2){
-      bubble.x = random(width);
-      bubble.y = height;
-
-    }
-  }
-
-  bubble.x += bubble.vx;
-  bubble.y += bubble.vy;
-
-  if(bubble.y < 0){
-    bubble.x = random(width);
-    bubble.y = height;
-  }
+    handpose.on(`predict`, function(results){
+      predictions = results;
+    });
 
   push();
-  fill(0, 100, 200);
-  noStroke();
-  ellipse(bubble.x, bubble.y, bubble.size);
+  textSize(32);
+  textStyle(BOLD);
+  textAlign(CENTER, CENTER);
+  text(`Loading ${modelName} ....,` width/2, height/2);
   pop();
 
 }
+
+function game(){
+  background(0);
+  
+  if(predictions.length>0){
+    updateWand(predictions[0]);
+
+    let d = dist(wand.x, wand.y, angel.x, angel.y);
+    if(d < angel.size/2){
+      resetAngel();
+    }
+    displayWand();
+  }
+  moveAngel();
+  checkOutofBounds();
+  displayAngel();
+}
+
+function updateWand(prediction){
+  angel.x = prediction.annotations.indexFinger[3][0];
+  angel.y = prediction.annotations.indexFinger[3][1];
+}
+
+function resetAngel(){
+  bubble.x = random(width);
+  bubble.y = height;
+}
+
+function moveAngel(){
+  angel.x += angel.vx;
+  angel.y += angel.vy;
+}
+
+function displayAngel(){
+  push();
+  image(angel.image, angel.x, angel.y, angel.size, angel.size);
+  pop();
+}
+
+function displayWand(){
+  push();
+  image(wand.image, wand.x, wand.y, wand.size, wand.size);
+  pop();
+}
+
+function displayScore(){
+  push();
+  textSize(20);
+  text()
+  pop();
+}
+
+
+
+  function keyPressed(){
+    if(state === `start`){
+      if(keyCode === 13){  //keycode for enter
+        state = `instructions`;
+      }
+    }
+    if(state === `instructions`){
+      if(keyCode === 32){ //keycode for spacebar
+        state = `loading`;
+        video = createCapture(VIDEO);
+        video.hide();
+
+      }
+
+    }
+
+  }
