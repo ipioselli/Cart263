@@ -3,12 +3,11 @@ Exercise 4: Bubble popper
 Ines Pioselli
 
 Brief:
-- count the bubbles that have been popped
-- improve visuals and add sound effects (sound when popped)
-- add states: title, loading and ending
-- make it harder to pop the bubble over time
-in update increase the velocity
-- add many bubbles
+- count the bubbles that have been popped --> done
+- improve visuals and add sound effects (sound when popped) --> done
+- add states: title, loading and ending --> done
+- make it harder to pop the bubble over time --> done
+
 
 steps:
 - add bubble js file
@@ -24,25 +23,17 @@ you win if not you lose.
 
 I wanted to include an image for the pin but it lagged way too much T-T
 
-
-
-
 */
 
 "use strict";
 
-let state = `win`;
+let state = `lose`;
 
 let video = undefined;
 let modelName = `HANDPOSE`;
 let handpose = undefined;
 
 let predictions = [];
-
-
-let canShoot = true;
-
-
 
 let angel;
 
@@ -59,7 +50,7 @@ let pin = {
 };
 
 let angelKillSFX;
-let winSong;
+let instructionsSong;
 
 let startBg;
 let instructionsBg;
@@ -80,18 +71,18 @@ let titleFont;
 
 
 
-
 function preload() {
 
   titleFont = loadFont(`assets/fonts/bodoni-mt-5.otf`);
   startBg = loadImage(`assets/images/startBg.png`);
   instructionsBg = loadImage(`assets/images/instructionsBg.png`);
   gameBg = loadImage(`assets/images/gameBg.png`);
+  loseBg = loadImage(`assets/images/loseBg.png`);
 
   angelImg = loadImage(`assets/images/angel.png`);
 
   angelKillSFX = loadSound(`assets/sounds/kill.mp3`);
-  winSong = loadSound(`assets/sounds/win.mp3`);
+  instructionsSong = loadSound(`assets/sounds/win.mp3`);
 
 }
 
@@ -164,28 +155,9 @@ function instructions() {
   sparkles();
 }
 
-function win() {
-  background(0);
-
-
-  push();
-  fill(255);
-  textFont(titleFont);
-  textAlign(CENTER, CENTER);
-  textSize(50);
-  text(`YAY YOU DEFEATED THE ANGELS`, width/2, height/2 -100);
-  textSize(30);
-  text(`Press R to restart the game`, width/2, height/2 );
-  pop();
-
-  sparkles();
-  resetGame();
-}
-
-
 
 function loading() {
-  background(255);
+  background(0);
 
   handpose = ml5.handpose(video, {
     flipHorizontal: true //flips camera
@@ -199,6 +171,7 @@ function loading() {
 
   push();
   textFont(titleFont);
+  fill(255);
   textSize(40);
   textStyle(BOLD);
   textAlign(CENTER, CENTER);
@@ -234,6 +207,39 @@ image(gameBg, width/2, height/2, 640, 480)
   displayScore();
   displayTimer();
 }
+
+function win() {
+  background(0);
+
+  push();
+  fill(255);
+  textFont(titleFont);
+  textAlign(CENTER, CENTER);
+  textSize(50);
+  text(`YAY YOU DEFEATED THE ANGELS`, width/2, height/2 -100);
+  textSize(30);
+  text(`Press R to restart the game`, width/2, height/2 );
+  pop();
+
+  sparkles();
+  resetGame();
+}
+
+function lose(){
+  imageMode(CENTER, CENTER);
+  image(loseBg, width/2, height/2, 640, 480);
+  push();
+  fill(255);
+  textFont(titleFont);
+  textAlign(CENTER, CENTER);
+  textSize(50);
+  text(`YAY YOU DEFEATED THE ANGELS`, width/2, height/2 +50);
+  textSize(30);
+  text(`Press R to restart the game`, width/2, height/2 +100 );
+  pop();
+
+}
+
 
 function checkScore() {
   if (angelsKilled === maxAngelsKilled) {
@@ -337,13 +343,13 @@ function keyPressed() {
   if (state === `start`) {
     if (keyCode === 13) { //keycode for enter
       state = `instructions`;
-      winSong.play();
+      instructionsSong.play();
     }
   }
   if (state === `instructions`) {
     if (keyCode === 32) { //keycode for spacebar
       state = `loading`;
-      winSong.stop();
+      instructionsSong.stop();
       video = createCapture(VIDEO);
       video.hide();
 
