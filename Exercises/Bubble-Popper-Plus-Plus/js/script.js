@@ -253,7 +253,7 @@ function lose(){
   text(`Press R to restart the game`, width/2, height/2 +100 );
   pop();
   
-  resetGame();
+  resetGame(); //resets the game variables after reloading
 }
 
 //function to check the score
