@@ -31,7 +31,7 @@ I wanted to include an image for the pin but it lagged way too much T-T
 
 "use strict";
 
-let state = `instructions`;
+let state = `start`;
 
 let video = undefined;
 let modelName = `HANDPOSE`;
@@ -59,7 +59,7 @@ let pin = {
 };
 
 let angelKillSFX;
-let gameSong;
+let winSong;
 
 let startBg;
 let instructionsBg;
@@ -73,7 +73,7 @@ let pinImg;
 let angelsKilled = 0;
 let maxAngelsKilled = 7; //lucky angel number
 
-let timer = 10000;
+let timer = 5000;
 let timerDone = false;
 
 let titleFont;
@@ -86,8 +86,12 @@ function preload() {
   titleFont = loadFont(`assets/fonts/bodoni-mt-5.otf`);
   startBg = loadImage(`assets/images/startBg.png`);
   instructionsBg = loadImage(`assets/images/instructionsBg.png`);
+  gameBg = loadImage(`assets/images/gameBg.png`);
 
   angelImg = loadImage(`assets/images/angel.png`);
+
+  angelKillSFX = loadSound(`assets/sounds/kill.mp3`);
+  winSong = loadSound(`assets/sounds/win.mp3`);
 
 }
 
@@ -99,7 +103,7 @@ function setup() {
   angel = {
     x: random(width),
     y: height,
-    size: 100,
+    size: 150,
     vx: 0,
     vy: -3,
 
@@ -190,16 +194,18 @@ function loading() {
 }
 
 function game() {
-  background(255, 0, 255);
+imageMode(CENTER, CENTER);
+image(gameBg, width/2, height/2, 640, 480)
 
   if (predictions.length > 0) {
     updatepin(predictions[0]);
 
     let d = dist(pin.tip.x, pin.tip.y, angel.x, angel.y);
     if (d < angel.size / 2) {
-
+      angelKillSFX.play();
       angelsKilled++;
-      angel.vy -= 2;
+      angel.vy= angel.vy - 2; //speeds up by 2 everytime you hit it
+      angel.size = angel.size -5;//gets smaller by 5px whenever you hit it
 
       resetAngel();
     }
@@ -207,6 +213,7 @@ function game() {
   }
 
   checkScore();
+
   checkTimer();
   moveAngel();
   checkOutofBounds();
@@ -218,10 +225,13 @@ function game() {
 function checkScore() {
   if (angelsKilled === maxAngelsKilled) {
     state = `win`;
+
+
   }
 }
 
 
+//calls the lose state once the timer is over
 function checkTimer() {
   timer -= 1;
   if (timer <= 0) {
@@ -273,6 +283,8 @@ function displayAngel() {
 
 }
 
+
+
 function displaypin() {
   push();
   stroke(255, 0, 0);
@@ -309,16 +321,19 @@ function keyPressed() {
   if (state === `start`) {
     if (keyCode === 13) { //keycode for enter
       state = `instructions`;
+      winSong.play();
     }
   }
   if (state === `instructions`) {
     if (keyCode === 32) { //keycode for spacebar
       state = `loading`;
+      winSong.stop();
       video = createCapture(VIDEO);
       video.hide();
 
     }
-
   }
+
+
 
 }
