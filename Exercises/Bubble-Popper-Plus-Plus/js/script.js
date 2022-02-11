@@ -42,7 +42,7 @@ let angel;
 let wand = {
   x: 0,
   y: 0,
-  size: 50,
+  size: 100,
   image:undefined,
 };
 
