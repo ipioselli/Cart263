@@ -1,18 +1,33 @@
 /**
-Title of Project
-Author Name
+Project 01
+Ines Pioselli
 
-This is a template. You must fill in the title,
-author, and this description to match your project!
+Ratatouille simulator
+ideas:
+  - chase remi with the broom
+  - remi runs away from mouse traps
+  - object identification to make meal
+  -
 */
 
 "use strict";
 
+let disneyFont;
 
-/**
-Description of preload
-*/
+let startBg;
+let menuBg;
+
+let menuSong;
+
+let state = `start`;
+
+
+
 function preload() {
+
+  disneyFont = loadFont(`assets/fonts/waltograph42.otf`);
+
+  menuSong = loadSound(`assets/sounds/Le-Festin.mp3`);
 
 }
 
@@ -21,13 +36,46 @@ function preload() {
 Description of setup
 */
 function setup() {
+  createCanvas(800, 800);
 
 }
 
 
-/**
-Description of draw()
-*/
 function draw() {
+
+changeState();
+}
+
+
+function changeState(){
+  if (state === `start`){
+    start();
+  }
+  else if(state === `menu`){
+    menu();
+  }
+}
+
+
+function start(){
+  background(0);
+
+  push();
+  textAlign(CENTER, CENTER);
+  textFont(disneyFont);
+  fill(255);
+  textSize(50);
+  text(`Ines Pioselli Presents`, width/2, height/2);
+  pop();
+}
+
+function keyPressed(){
+
+  if(state === `start`){
+    if(keyCode === 13){ //keycode for ENTER
+      state = `menu`;
+      menuSong.play();
+    }
+  }
 
 }
