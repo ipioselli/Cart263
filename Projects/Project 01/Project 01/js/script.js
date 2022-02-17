@@ -7,7 +7,8 @@ ideas:
   - chase remi with the broom
   - remi runs away from mouse traps
   - object identification to make meal
-  -
+  - say ingredients with annyang to get 5 stars
+  - pick up the ingredients in the kitchen without getting caught
 */
 
 "use strict";
@@ -32,15 +33,13 @@ function preload() {
 }
 
 
-/**
-Description of setup
-*/
+//setup of the canvas
 function setup() {
   createCanvas(800, 800);
 
 }
 
-
+//calls changeState function to switch from state to state
 function draw() {
 
 changeState();
@@ -66,7 +65,13 @@ function start(){
   fill(255);
   textSize(50);
   text(`Ines Pioselli Presents`, width/2, height/2);
+  text(`Ratatouille`, width/2, height/2+100);
+  text(`ENTER to begin`, width/2, height/2+200);
   pop();
+}
+
+function menu(){
+  background(0);
 }
 
 function keyPressed(){

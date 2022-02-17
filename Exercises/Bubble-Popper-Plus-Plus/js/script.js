@@ -16,7 +16,7 @@ kill one angel, the speed gets faster and the angel gets smaller. After you win 
 you can restart the game.
 
 I wanted to include an image for the pin but it lagged way too much T-T
-
+=
 */
 
 "use strict";
@@ -62,7 +62,7 @@ let angelsKilled = 0; //number of angels killed
 let maxAngelsKilled = 7; //lucky angel number
 
 //variables for the counter
-let timer = 5000; //5 seconds
+let timer = 10000; //5 seconds
 let timerDone = false;
 
 let titleFont; //main font
@@ -162,17 +162,7 @@ function instructions() {
 function loading() {
   background(0);
 
-  // Start the Handpose model and switch to our game state when it loads
-  handpose = ml5.handpose(video, {
-    flipHorizontal: true //flips camera
-  }, function() {
-    state = `game` //calls the game state
-  });
-  // Listen for prediction events from Handpose and store the results in our
-  // predictions array when they occur
-  handpose.on(`predict`, function(results) {
-    predictions = results;
-  });
+
 
   //text
   push();
@@ -252,7 +242,7 @@ function lose(){
   textSize(30);
   text(`Press R to restart the game`, width/2, height/2 +100 );
   pop();
-  
+
   resetGame(); //resets the game variables after reloading
 }
 
@@ -376,6 +366,17 @@ function keyPressed() {
       instructionsSong.stop();
       video = createCapture(VIDEO);
       video.hide();
+      // Start the Handpose model and switch to our game state when it loads
+      handpose = ml5.handpose(video, {
+        flipHorizontal: true //flips camera
+      }, function() {
+        state = `game` //calls the game state
+      });
+      // Listen for prediction events from Handpose and store the results in our
+      // predictions array when they occur
+      handpose.on(`predict`, function(results) {
+        predictions = results;
+      });
     }
   }
   if(state === `win`){
