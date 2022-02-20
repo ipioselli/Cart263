@@ -2,7 +2,22 @@
 //video 6.4
 
 let paragraph = document.getElementById(`paragraph`);
-let originalText = paragraph.innerText;
+//let originalText = paragraph.innerText;
+
+
+document.addEventListener(`keydown`, function(event){
+  paragraph.innerText = paragraph.innerText + event.key;
+});
+
+
+// //press enter to change color
+// document.addEventListener(`keydown`, function(event){
+//   if(event.keyCode === 32){
+//
+//   }
+//   paragraph.style[`color`] = `#ff0000`;
+// });
+
 
 
 ////hover over with mouse
@@ -10,13 +25,13 @@ let originalText = paragraph.innerText;
 //   event.target.innerText = `SECRET MESSAGE`;
 // });
 
-paragraph.addEventListener(`contextmenu`, function(event){
-  event.target.innerText = `SECRET MESSAGE`;
-});
-
-paragraph.addEventListener(`mouseleave`, function(event){
-  event.target.innerText = originalText;
-});
+// paragraph.addEventListener(`contextmenu`, function(event){
+//   event.target.innerText = `SECRET MESSAGE`;
+// });
+//
+// paragraph.addEventListener(`mouseleave`, function(event){
+//   event.target.innerText = originalText;
+// });
 
 
 
