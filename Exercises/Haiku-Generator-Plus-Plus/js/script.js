@@ -4,6 +4,13 @@ Ines Pioselli
 
 Generates a random haiku
 
+Brief:
+ - tidy up the program
+ - improve html and css
+ - add a title for the poem --check
+ - add css animations
+ - add synthesized voice read the poem
+
 
 */
 
@@ -26,23 +33,44 @@ let sevenSyllableLines = [
   `They will not come back again`
 ];
 
-let line1 = random(fiveSyllableLines);
-let line2 = random(sevenSyllableLines);
-let line3 = random(fiveSyllableLines);
+let titles = [
+  `Cold Butterfly`,
+  `The Invisible Crying`,
+  `Ice of Willow`,
+  `The Light's Beginning`,
+  `Dragon of Doors`,
+  `Forgotten Destiny`,
 
+]
+
+
+let poemTitle = document.getElementById(`title`);
 let line1P = document.getElementById(`line-1`);
 let line2P =  document.getElementById(`line-2`);
 let line3P = document.getElementById(`line-3`);
 
-line1P.innerText = line1;
-line2P.innerText = line2;
-line3P.innerText = line3;
+
+setupLines();
+
+addListeners();
 
 
-line1P.addEventListener(`click`, lineClicked);
-line2P.addEventListener(`click`, lineClicked);
-line3P.addEventListener(`click`, lineClicked);
 
+function setupLines(){
+  line1P.innerText = random(fiveSyllableLines);
+  line2P.innerText = random(sevenSyllableLines);
+  line3P.innerText = random(fiveSyllableLines);
+  poemTitle.innerText = random(titles);
+}
+
+
+
+function addListeners(){
+  poemTitle.addEventListener(`click`, lineClicked);
+  line1P.addEventListener(`click`, lineClicked);
+  line2P.addEventListener(`click`, lineClicked);
+  line3P.addEventListener(`click`, lineClicked);
+}
 
 function lineClicked(event){
   fadeOut(event.target, 1);
@@ -81,6 +109,9 @@ function setNewLine(element){
   }
   else if(element === line2P){
     element.innerText = random(sevenSyllableLines);
+  }
+  else if(element === poemTitle){
+    element.innerText =  random(titles);
   }
 }
 

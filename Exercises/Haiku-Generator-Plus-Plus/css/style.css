@@ -20,8 +20,12 @@ body {
   overflow: hidden; /* Hide anything that goes off the window size */
 }
 
+
+
 #haiku {
+color:red;
 font-family: Helvetica, sans-serif;
 font-size: 2rem;
 font-weight: bold;
+background-color:white;
 }
