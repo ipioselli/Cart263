@@ -7,9 +7,9 @@ Generates a random haiku
 Brief:
  - tidy up the program
  - improve html and css
- - add a title for the poem --check
+ - add a title for the poem --> check
  - add css animations
- - add synthesized voice read the poem
+ - add synthesized voice read the poem --> check
 
 
 */
@@ -105,14 +105,25 @@ function fadeIn(element, opacity){
 
 function setNewLine(element){
   if(element === line1P || element === line3P){
-    element.innerText =  random(fiveSyllableLines);
+    let a = random(fiveSyllableLines);
+    element.innerText = a;
+    responsiveVoice.speak(a, "Japanese Female");
+
+
   }
   else if(element === line2P){
-    element.innerText = random(sevenSyllableLines);
+    let b = random(sevenSyllableLines);
+    element.innerText =  b;
+    responsiveVoice.speak(b, "Japanese Female");
+
   }
   else if(element === poemTitle){
-    element.innerText =  random(titles);
+    let p = random(titles);
+    element.innerText =  p;
+    responsiveVoice.speak(p, "Japanese Female");
+
   }
+
 }
 
 
@@ -120,6 +131,7 @@ function random(array){
   let index = Math.floor(Math.random() * array.length);
   return array[index];
 }
+
 
 /**
 Description of preload
