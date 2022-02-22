@@ -23,6 +23,15 @@ let disneyFont;
 
 let startBg;
 let menuBg;
+let instructionsBg;
+
+let gameButton = { // button to access the tutorial state
+  x: 400,
+  y: 300,
+  size: 600,
+
+};
+
 
 let menuSong;
 
@@ -32,16 +41,23 @@ let state = `start`;
 
 function preload() {
 
+  //fonts
   disneyFont = loadFont(`assets/fonts/waltograph42.otf`);
 
+  //sounds
   menuSong = loadSound(`assets/sounds/Le-Festin.mp3`);
 
+  //background images
+  menuBg = loadImage(`assets/images/menuBg.png`);
+
+  //buttons
+  gameButton.image = loadImage(`assets/images/gameButton.png`);
 }
 
 
 //setup of the canvas
 function setup() {
-  createCanvas(800, 800);
+  createCanvas(1280, 720);
 
 }
 
@@ -58,6 +74,12 @@ function changeState(){
   }
   else if(state === `menu`){
     menu();
+  }
+  else if(state === `instructions`){
+    instructions();
+  }
+  else if(state === `game`){
+    game();
   }
 }
 
@@ -77,8 +99,53 @@ function start(){
 }
 
 function menu(){
-  background(0);
+  imageMode(CENTER, CENTER);
+  image(menuBg, width/2 , height/2, 1280, 720);
+
+  buttonGame();
+  mouseOver();
 }
+
+
+function game(){
+  background(255);
+}
+
+function buttonGame(){
+  imageMode(CENTER, CENTER);
+  image(gameButton.image, gameButton.x, gameButton.y, gameButton.size, gameButton.size);
+}
+
+function buttonInstructions(){
+
+}
+
+//hovering over button effect
+function mouseOver(){
+  let d = dist(mouseX, mouseY, gameButton.x, gameButton.y);
+  if (state === `menu`) {
+    if (d < gameButton.size / 2 - 250) { // -60 is added so the mouse only clicks on the button and not dead space around it
+      gameButton.size = gameButton.size + 20;
+      if(gameButton.size > 700){
+        gameButton.size = 700;
+      }
+
+    }
+    else (gameButton.size = 600);
+  }
+}
+
+
+function mousePressed() {
+  let d = dist(mouseX, mouseY, gameButton.x, gameButton.y);
+  if (state === `menu`) {
+    if (d < gameButton.size / 2 - 60) { // -60 is added so the mouse only clicks on the button and not dead space around it
+      state = `game`;
+    }
+  }
+}
+
+
 
 function keyPressed(){
 

@@ -176,7 +176,7 @@ function preload() {
 //setups annyang and all the fruits
 function setup() {
   canvas = createCanvas(800, 800);
-  windowResized(); //responsive window resizing
+  //windowResized(); //responsive window resizing
   setupFruits(); //sets up all the fruit images for the start state
 
   //setups annyang for speech recognition
