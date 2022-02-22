@@ -13,19 +13,36 @@ body {
   background-color: #abcbab;
   padding: 0;
   margin: 0;
-  display: grid; /* Set up the grid and justify/align to center */
+
+}
+
+h4 {
+  font-family: Helvetica, sans-serif;
+  font-size: 60px;
+  color: pink;
+
+}
+
+#haiku {
+
   justify-content: center;
-  align-content: center;
-  height: 100vh; /* Body is the height of the viewport */
-  overflow: hidden; /* Hide anything that goes off the window size */
+  align-items: center;
+color:red;
+font-family: Helvetica, sans-serif;
+font-size: 40px;
+font-weight: bold;
+background-color:white;
+height:auto;
+margin-left: 200px;
+margin-right: 200px;
+margin-top: 50px;
+padding: 20px;
+min-height: 70vh;
+border-radius: 20px;
 }
 
 
-
-#haiku {
-color:red;
-font-family: Helvetica, sans-serif;
-font-size: 2rem;
-font-weight: bold;
-background-color:white;
+#title {
+  color: black;
+  font-size: 50px;
 }

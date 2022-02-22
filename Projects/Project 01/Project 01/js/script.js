@@ -2,6 +2,12 @@
 Project 01
 Ines Pioselli
 
+Requirements:
+- must be interactive
+- must use p5 √
+- must use one other library
+- must include an artist statement of 300 words
+
 Ratatouille simulator
 ideas:
   - chase remi with the broom
