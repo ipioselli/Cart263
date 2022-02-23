@@ -26,9 +26,20 @@ let menuBg;
 let instructionsBg;
 
 let gameButton = { // button to access the tutorial state
-  x: 400,
-  y: 300,
-  size: 600,
+  x: 1280/2,
+  y: 720/2 + 120,
+  size: 50,
+  maxSize: 400,
+  minSize: 300,
+
+};
+
+let helpButton = { // button to access the tutorial state
+  x: 1280/2,
+  y: 720/2 + 220,
+  size: 50,
+  maxSize: 400,
+  minSize: 300,
 
 };
 
@@ -61,6 +72,7 @@ function preload() {
 
   //buttons
   gameButton.image = loadImage(`assets/images/gameButton.png`);
+  helpButton.image = loadImage(`assets/images/helpButton.png`);
 }
 
 
@@ -125,7 +137,12 @@ function menu(){
   image(menuBg, width/2 , height/2, 1280, 720);
 
   buttonGame();
+  buttonInstructions();
   mouseOver();
+}
+
+function instructions(){
+    background(255);
 }
 
 
@@ -147,6 +164,8 @@ function buttonGame(){
 }
 
 function buttonInstructions(){
+  imageMode(CENTER, CENTER);
+  image(helpButton.image, helpButton.x, helpButton.y, helpButton.size, helpButton.size);
 
 }
 
@@ -154,14 +173,25 @@ function buttonInstructions(){
 function mouseOver(){
   let d = dist(mouseX, mouseY, gameButton.x, gameButton.y);
   if (state === `menu`) {
-    if (d < gameButton.size / 2 - 250) { // -60 is added so the mouse only clicks on the button and not dead space around it
+    if (d < gameButton.size / 2 - 120) { // -60 is added so the mouse only clicks on the button and not dead space around it
       gameButton.size = gameButton.size + 20;
-      if(gameButton.size > 700){
-        gameButton.size = 700;
+      if(gameButton.size > gameButton.maxSize){
+        gameButton.size = gameButton.maxSize;
       }
 
     }
-    else (gameButton.size = 600);
+    else (gameButton.size = gameButton.minSize);
+  }
+
+  let d2 = dist(mouseX, mouseY, helpButton.x, helpButton.y);
+  if(state === `menu`){
+    if( d2 < helpButton.size/2  - 120){
+      helpButton.size = helpButton.size + 20;
+      if(helpButton.size > helpButton.maxSize){
+        helpButton.size = helpButton.maxSize;
+      }
+    }
+    else (helpButton.size = helpButton.minSize);
   }
 }
 
@@ -171,6 +201,13 @@ function mousePressed() {
   if (state === `menu`) {
     if (d < gameButton.size / 2 - 60) { // -60 is added so the mouse only clicks on the button and not dead space around it
       state = `game`;
+    }
+  }
+
+  let d2 = dist(mouseX, mouseY, helpButton.x, helpButton.y);
+  if(state === `menu`){
+    if(d2 < helpButton.size /2 - 60){
+      state = `instructions`;
     }
   }
 }
