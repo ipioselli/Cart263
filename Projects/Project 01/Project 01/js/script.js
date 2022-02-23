@@ -32,6 +32,11 @@ let gameButton = { // button to access the tutorial state
 
 };
 
+let numVeggiesImages = 5;
+let numVeggies = 30;
+let veggieImages = [];
+let veggies = [];
+
 
 let menuSong;
 
@@ -40,7 +45,10 @@ let state = `start`;
 
 
 function preload() {
-
+  for (let i = 0; i < numVeggiesImages; i++) {
+    let veggieImage = loadImage(`assets/images/veggie${i}.png`);
+    veggieImages.push(veggieImage);
+  }
   //fonts
   disneyFont = loadFont(`assets/fonts/waltograph42.otf`);
 
@@ -60,6 +68,18 @@ function preload() {
 function setup() {
   createCanvas(1280, 720);
 
+  setupVeggies();
+
+}
+
+function setupVeggies(){
+  for(let i = 0; i < numVeggies; i++){
+      let x = random(0, width);
+      let y = random(0, height);
+      let veggieImage = random(veggieImages);
+      let veggie = new Veggies(x, y, veggieImage);
+      veggies.push(veggie);
+    }
 }
 
 //calls changeState function to switch from state to state
@@ -96,6 +116,8 @@ function start(){
   textSize(50);
   text(`ENTER to begin`, width/2, height/2-300);
   pop();
+
+  updateVeggies();
 }
 
 function menu(){
@@ -107,8 +129,16 @@ function menu(){
 }
 
 
+
 function game(){
   background(255);
+}
+
+function updateVeggies(){
+  for(let i=0; i<veggies.length; i++){
+    let veggie = veggies[i];
+    veggies[i].update();
+  }
 }
 
 function buttonGame(){

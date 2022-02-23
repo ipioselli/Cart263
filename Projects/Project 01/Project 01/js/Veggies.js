@@ -2,14 +2,16 @@ class Veggies {
   constructor(x,y, image){
     this.x = x;
     this.y = y;
-    this.vy = vy;
-    this.vx = vx;
+
+    this.vx = 1;
+    this.vy =1;
 
     this.ax = 0;
     this.ay= 0;
     this.maxSpeed = 10;
     this.size = 50;
     this.image = image;
+    this.angle = 0;
   }
 
 
@@ -20,13 +22,13 @@ class Veggies {
 
   move(){
 
-    this.vx = this.vx + this.ax;
-    this.vy = this.vy + this.ay;
+    // this.vx = this.vx + this.ax;
+    // this.vy = this.vy + this.ay;
 
-    //constrain the velocity
-    this.vx = constrain(this.vx, -this.maxSpeed, this.maxSpeed);
-    this.vy = constrain(this.vy, -this.maxSpeed, this.maxSpeed);
-
+    // //constrain the velocity
+    // this.vx = constrain(this.vx, -this.maxSpeed, this.maxSpeed);
+    // this.vy = constrain(this.vy, -this.maxSpeed, this.maxSpeed);
+  
     //update the position with velocity
     this.x = this.x + this.vx;
     this.y = this.y + this.vy;
@@ -39,7 +41,7 @@ class Veggies {
     if (this.x >= width || this.x <= 0) {
       this.vx = -this.vx;
     }
-    if (this.y >= width || this.y <= 0) {
+    if (this.y >= height || this.y <= 0) {
       this.vy = -this.vy;
     }
 
