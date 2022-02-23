@@ -48,6 +48,7 @@ function preload() {
   menuSong = loadSound(`assets/sounds/Le-Festin.mp3`);
 
   //background images
+  startBg = loadImage(`assets/images/StartBg.gif`);
   menuBg = loadImage(`assets/images/menuBg.png`);
 
   //buttons
@@ -85,16 +86,15 @@ function changeState(){
 
 
 function start(){
-  background(0);
+  imageMode(CENTER, CENTER);
+  image(startBg, width/2 , height/2, 1280, 720);
 
   push();
   textAlign(CENTER, CENTER);
   textFont(disneyFont);
   fill(255);
   textSize(50);
-  text(`Ines Pioselli Presents`, width/2, height/2);
-  text(`Ratatouille`, width/2, height/2+100);
-  text(`ENTER to begin`, width/2, height/2+200);
+  text(`ENTER to begin`, width/2, height/2-300);
   pop();
 }
 
