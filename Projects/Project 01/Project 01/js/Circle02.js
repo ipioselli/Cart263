@@ -1,9 +1,9 @@
-class Circle01{
+class Circle02{
 
 constructor(x, y){
       this.x = x;
       this.y = y;
-      this.size = 50;
+      this.size = 100;
       this.fill = {
       r: random(255),
       g: random(255),
@@ -26,8 +26,8 @@ fadeAnimation() {
 
 display() {
   push();
-    fill(this.fill.r, this.fill.g, this.fill.b, this.fade);
-   noStroke();
+  noFill();
+   stroke(this.fill.r, this.fill.g, this.fill.b, this.fade);
    ellipse(this.x, this.y, this.size, this.size);
    pop();
 }

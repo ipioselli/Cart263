@@ -28,6 +28,8 @@ let copperplateFont;
 let startBg;
 let menuBg;
 let instructionsBg;
+let storyBg;
+let tvBg;
 
 let gameButton = { // button to access the game state
   x: 1280/2,
@@ -53,15 +55,19 @@ let veggieImages = [];
 let veggies = [];
 
 let circles = [];
-let maxCircles = 500;
+let maxCircles = 400;
 let totalCircles = 0;
 let circleTimer = 0;
 let newCircleDelay = 10;
 
 
 let menuSong;
+let storySong;
 
-let state = `instructions`;
+
+let storyNarrative = `Once upon a time there was a rat named remi. \n He loved to eat yummy food from the kitchen. \n But one day something terrible happened. Click space to continue`;
+
+let state = `start`;
 
 
 
@@ -77,11 +83,13 @@ function preload() {
 
   //sounds
   menuSong = loadSound(`assets/sounds/Le-Festin.mp3`);
+  storySong = loadSound(`assets/sounds/Cast-Of-Cooks.mp3`);
 
   //background images
   startBg = loadImage(`assets/images/StartBg.gif`);
   menuBg = loadImage(`assets/images/menuBg.png`);
   instructionsBg = loadImage(`assets/images/instructionsBg.png`);
+  storyBg = loadImage(`assets/images/storyBg.png`);
 
   //buttons
   gameButton.image = loadImage(`assets/images/gameButton.png`);
@@ -126,8 +134,11 @@ function changeState(){
   else if(state === `instructions`){
     instructions();
   }
-  else if(state === `game`){
-    game();
+  else if(state === `story`){
+    story();
+  }
+  else if(state === `tv`){
+    tv();
   }
 }
 
@@ -178,14 +189,23 @@ function instructions(){
 
 
 
-function game(){
-  background(0);
+function story(){
+  imageMode(CENTER, CENTER);
+  image(storyBg, width/2 , height/2, 1280, 720);
+  push();
+  textAlign(CENTER, CENTER);
+  fill(255);
+  textFont(copperplateFont);
+  textSize(30);
+  text(`click the screen for a surprise`, width/2, height/2 -250);
+  pop();
 
   circleTimer++;
   totalCircles++;
   if(totalCircles <= maxCircles){
     if(circleTimer >= newCircleDelay){
         circles.push(new Circle01(random(0, width), random(0, height)));
+        circles.push(new Circle02(random(0, width), random(0, height)));
       circleTimer = 0;
     }
   }
@@ -244,10 +264,19 @@ function mouseOver(){
 
 
 function mousePressed() {
+
+  if(state === `story`){
+    responsiveVoice.speak(storyNarrative, "French Female");
+  }
+
+
   let d = dist(mouseX, mouseY, gameButton.x, gameButton.y);
   if (state === `menu`) {
     if (d < gameButton.size / 2 - 60) { // -60 is added so the mouse only clicks on the button and not dead space around it
-      state = `game`;
+      state = `story`;
+      menuSong.stop();
+      storySong.loop();
+      storySong.setVolume(0.05);
     }
   }
 
@@ -257,6 +286,8 @@ function mousePressed() {
       state = `instructions`;
     }
   }
+
+
 }
 
 
@@ -272,6 +303,12 @@ function keyPressed(){
   if(state === `instructions`){
     if(keyCode === 8) {//keycode for backspace
       state = `menu`;
+    }
+  }
+
+  if(state === `story`){
+    if(keyCode === 32){
+      state = `tv`;
     }
   }
 
