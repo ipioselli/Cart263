@@ -10,12 +10,15 @@ Requirements:
 
 Ratatouille simulator
 ideas:
-  - chase remi with the broom
-  - remi runs away from mouse traps
-  - object identification to make meal
-  - say ingredients with annyang to get 5 stars
-  - pick up the ingredients in the kitchen without getting caught
-  - responsive voice read the story at the beginning
+  - start state -- √
+  - menu -- √
+  - backstory -- √
+  - gustavo on the tv
+  - swim to catch friends
+  - meet linguini
+  - handpose game
+  - ending
+
 */
 
 "use strict";
@@ -24,12 +27,22 @@ ideas:
 let disneyFont;
 let copperplateFont;
 
+let video = undefined;
+let modelName = `HANDPOSE`;
+let handpose = undefined;
+
+let predictions = [];
+
+
+
+
 //background images
 let startBg;
 let menuBg;
 let instructionsBg;
 let storyBg;
 let tvBg;
+let kitchenBg;
 
 let gameButton = { // button to access the game state
   x: 1280/2,
@@ -48,6 +61,9 @@ let helpButton = { // button to access the instructions state
   minSize: 300,
 
 };
+let tomatoImg;
+let tomatoes = [];
+let numTomatoes = 5;
 
 let numVeggiesImages = 5;
 let numVeggies = 30;
@@ -60,9 +76,17 @@ let totalCircles = 0;
 let circleTimer = 0;
 let newCircleDelay = 10;
 
+let spoon = {
+  x:0,
+  y:0,
+  size:100,
+  image:undefined,
+};
 
+let spoonImg;
 let menuSong;
 let storySong;
+let tvSong;
 
 
 let storyNarrative = `Once upon a time there was a rat named remi. \n He loved to eat yummy food from the kitchen. \n But one day something terrible happened. Click space to continue`;
@@ -77,6 +101,11 @@ function preload() {
     let veggieImage = loadImage(`assets/images/veggie${i}.png`);
     veggieImages.push(veggieImage);
   }
+
+  //icons
+  spoonImg = loadImage(`assets/images/spoon.png`);
+
+  tomatoImg = loadImage(`assets/images/veggie1.png`);
   //fonts
   disneyFont = loadFont(`assets/fonts/waltograph42.otf`);
   copperplateFont = loadFont(`assets/fonts/Copperplate.otf`);
@@ -84,12 +113,14 @@ function preload() {
   //sounds
   menuSong = loadSound(`assets/sounds/Le-Festin.mp3`);
   storySong = loadSound(`assets/sounds/Cast-Of-Cooks.mp3`);
+  tvSong = loadSound(`assets/sounds/Granny-Get-Your-Gun.mp3`);
 
   //background images
   startBg = loadImage(`assets/images/StartBg.gif`);
   menuBg = loadImage(`assets/images/menuBg.png`);
   instructionsBg = loadImage(`assets/images/instructionsBg.png`);
   storyBg = loadImage(`assets/images/storyBg.png`);
+  kitchenBg =loadImage(`assets/images/kitchenBg.png`);
 
   //buttons
   gameButton.image = loadImage(`assets/images/gameButton.png`);
@@ -102,9 +133,19 @@ function setup() {
   createCanvas(1280, 720);
 
   setupVeggies();
+  setupFood();
 
   //circles.push(new Circle01(random(0, width), random(0, height)));
 
+}
+
+function setupFood(){
+  for(let i = 0; i<numTomatoes; i++){
+    let x = random(0, width);
+    let y = random(0, height);
+    let ingredient01 = new Food(x, y, tomatoImg);
+    tomatoes.push(ingredient01);
+  }
 }
 
 function setupVeggies(){
@@ -139,6 +180,12 @@ function changeState(){
   }
   else if(state === `tv`){
     tv();
+  }
+  // else if(state === `chase`){
+  //   chase();
+  // }
+  else if(state === `loading`){
+    loading();
   }
 }
 
@@ -186,9 +233,6 @@ function instructions(){
   pop();
 }
 
-
-
-
 function story(){
   imageMode(CENTER, CENTER);
   image(storyBg, width/2 , height/2, 1280, 720);
@@ -200,6 +244,51 @@ function story(){
   text(`click the screen for a surprise`, width/2, height/2 -250);
   pop();
 
+  setupCircles();
+}
+
+function loading(){
+  background(0);
+
+  push();
+  textFont(disneyFont);
+  fill(255);
+  textSize(40);
+  textStyle(BOLD);
+  textAlign(CENTER, CENTER);
+  text(`LOADING ${modelName} ...`, width / 2, height / 2);
+  pop();
+}
+
+function tv() {
+  imageMode(CENTER, CENTER);
+  image(kitchenBg, width / 2, height / 2, 1280, 720);
+
+  if (predictions.length > 0) {
+    updatespoon(predictions[0]);
+
+    for (let i = 0; i < numTomatoes; i++) {
+      let d = dist(spoon.x, spoon.y, tomatoes[i].x, tomatoes[i].y);
+      if (d < tomatoes[i].size / 2) {
+        tomatoes[i].y < 0;
+        tomatoes[i].x < 0;
+      }
+      displayspoon();
+    }
+
+  }
+  updateTomatoes();
+}
+
+
+function updatespoon(prediction) {
+  spoon.x = prediction.annotations.indexFinger[3][0];
+  spoon.y = prediction.annotations.indexFinger[3][1];
+}
+
+
+
+function setupCircles(){
   circleTimer++;
   totalCircles++;
   if(totalCircles <= maxCircles){
@@ -209,7 +298,6 @@ function story(){
       circleTimer = 0;
     }
   }
-
 
   for(let i =0; i<circles.length; i ++){
     let circle = circles[i];
@@ -224,6 +312,23 @@ function updateVeggies(){
     veggies[i].update();
   }
 }
+
+function updateTomatoes(){
+  for(let i = 0; i<numTomatoes; i++){
+    let inegredient01 = tomatoes[i];
+    tomatoes[i].update();
+  }
+}
+
+function displayspoon(){
+  push();
+  imageMode(CENTER, CENTER);
+  image(spoonImg, spoon.x, spoon.y, spoon.size, spoon.size);
+  pop();
+
+}
+
+
 
 function buttonGame(){
   imageMode(CENTER, CENTER);
@@ -279,18 +384,13 @@ function mousePressed() {
       storySong.setVolume(0.05);
     }
   }
-
   let d2 = dist(mouseX, mouseY, helpButton.x, helpButton.y);
-  if(state === `menu`){
-    if(d2 < helpButton.size /2 - 60){
+  if (state === `menu`) {
+    if (d2 < helpButton.size / 2 - 60) {
       state = `instructions`;
     }
   }
-
-
 }
-
-
 
 function keyPressed(){
 
@@ -308,8 +408,31 @@ function keyPressed(){
 
   if(state === `story`){
     if(keyCode === 32){
-      state = `tv`;
+      state = `loading`;
+      storySong.stop();
+      tvSong.loop();
+      tvSong.setVolume(0.05);
+
+      video = createCapture(VIDEO);
+      video.hide();
+      // Start the Handpose model and switch to our game state when it loads
+      handpose = ml5.handpose(video, {
+        flipHorizontal: true //flips camera
+      }, function() {
+        state = `tv` //calls the game state
+      });
+      // Listen for prediction events from Handpose and store the results in our
+      // predictions array when they occur
+      handpose.on(`predict`, function(results) {
+        predictions = results;
+      });
     }
   }
+  // if(state === `tv`){
+  //   if(keyCode === 13){
+  //     state = `chase`;
+  //     tvSong.stop();
+  //   }
+  // }
 
 }
