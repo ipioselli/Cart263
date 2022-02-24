@@ -68,6 +68,9 @@ let numTomatoes = 5;
 let zucchiniImg;
 let zucchinis = [];
 let numZucchinis = 5;
+let maxZucchinisInPot = 5;
+let zucchinisInPot = 0;
+let zucchiniIsReady = false;
 
 let numVeggiesImages = 5;
 let numVeggies = 30;
@@ -151,8 +154,6 @@ function setupFood(){
     let ingredient01 = new Food(x, y, tomatoImg);
     tomatoes.push(ingredient01);
   }
-
-
 }
 
 function setupZucchini(){
@@ -202,6 +203,9 @@ function changeState(){
   // }
   else if(state === `loading`){
     loading();
+  }
+  else if(state === `done`){
+    done();
   }
 }
 
@@ -276,6 +280,10 @@ function loading(){
   pop();
 }
 
+function done(){
+  background(255);
+}
+
 function tv() {
   imageMode(CENTER, CENTER);
   image(kitchenBg, width / 2, height / 2, 1280, 720);
@@ -288,6 +296,7 @@ function tv() {
       if (d < tomatoes[i].size / 2) {
         tomatoes[i].y = 0;
         tomatoes[i].x = 0;
+
       }
 
     }
@@ -295,8 +304,9 @@ function tv() {
     for (let i = 0; i<numZucchinis; i++){
       let d2 = dist(spoon.x, spoon.y, zucchinis[i].x, zucchinis[i].y);
       if(d2 < zucchinis[i].size /2){
-        zucchinis[i].x = 0;
-        zucchinis[i].y = 0;
+        zucchinis[i].x = constrain(100, 100);
+        zucchinis[i].y = constrain(100, 200);
+        zucchinisInPot++;
       }
     }
 
@@ -304,6 +314,9 @@ function tv() {
   displayspoon();
   updateTomatoes();
   updateZucchinis();
+  checkScore();
+  recipeDone();
+  displayScore();
 }
 
 
@@ -312,6 +325,18 @@ function updatespoon(prediction) {
   spoon.y = prediction.annotations.indexFinger[3][1];
 }
 
+
+function checkScore(){
+  if(zucchinisInPot === maxZucchinisInPot){
+    zucchiniIsReady = true;
+  }
+}
+
+function recipeDone(){
+  if(zucchiniIsReady){
+    state = `done`;
+  }
+}
 
 
 function setupCircles(){
@@ -361,6 +386,10 @@ function displayspoon(){
   image(spoonImg, spoon.x, spoon.y, spoon.size, spoon.size);
   pop();
 
+}
+
+function displayScore(){
+  text(`Zucchini = ${zucchinisInPot} /5`, width/2, height/2);
 }
 
 
