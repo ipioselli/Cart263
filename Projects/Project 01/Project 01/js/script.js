@@ -108,7 +108,7 @@ let storyNarrative = `Once upon a time there was a rat named remi. \n He loved t
 let storyNarrative02 = `He always snuck into the kitchen to watch Gustavo the chef on the tv. He wanted to become just like him. Sadly, he got caught and was chased
 out of the house.`;
 
-let state = `start`;
+let state = `tv`;
 
 
 
@@ -141,6 +141,7 @@ function preload() {
   instructionsBg = loadImage(`assets/images/instructionsBg.png`);
   storyBg = loadImage(`assets/images/storyBg.png`);
   kitchenBg =loadImage(`assets/images/kitchenBg.png`);
+  tvBg = loadImage(`assets/images/tvBg.png`);
 
   //buttons
   gameButton.image = loadImage(`assets/images/gameButton.png`);
@@ -199,6 +200,8 @@ function setupVeggies(){
 
 function setupHandpose(){
   video = createCapture(VIDEO);
+  video.size(width, height);
+  xRatio =
   video.hide();
   // Start the Handpose model and switch to our game state when it loads
   handpose = ml5.handpose(video, {
@@ -309,7 +312,8 @@ function story(){
 }
 
 function tv(){
-  background(32);
+  imageMode(CENTER, CENTER);
+  image(tvBg, width/2, height/2, 1280, 720);
 }
 
 function loading(){
@@ -359,7 +363,7 @@ function cookingGame() {
       let d2 = dist(spoon.x, spoon.y, zucchinis[i].x, zucchinis[i].y);
       if(d2 < zucchinis[i].size /2){
         if(zucchinisInPot < maxZucchinisInPot && !zucchinis[i].added){
-          putInPotFood();
+          zucchinis[i].addedInPot(900, 200, 100, 100 );
           zucchinisInPot++;
         }
       }
@@ -458,12 +462,12 @@ function updatePeppers(){
 }
 
 
-function putInPotFood(){
-  for(let i = 0; i<numZucchinis; i++){
-    let ingredient02 = zucchinis[i];
-    zucchinis[i].addedInPot(800, 200, 100, 100 );
-  }
-}
+// function putInPotFood(){
+//   for(let i = 0; i<numZucchinis; i++){
+//     let ingredient02 = zucchinis[i];
+//     zucchinis[i].addedInPot(800, 200, 100, 100 );
+//   }
+// }
 
 
 
@@ -527,6 +531,10 @@ function mousePressed() {
 
   if(state === `story`){
     responsiveVoice.speak(storyNarrative, "French Female");
+  }
+
+  if(state === `tv`){
+    responsiveVoice.speak(storyNarrative02, "French Female");
   }
 
 
