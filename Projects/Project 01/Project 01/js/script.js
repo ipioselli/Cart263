@@ -52,6 +52,12 @@ let numVeggies = 30;
 let veggieImages = [];
 let veggies = [];
 
+let circles = [];
+let maxCircles = 500;
+let totalCircles = 0;
+let circleTimer = 0;
+let newCircleDelay = 10;
+
 
 let menuSong;
 
@@ -88,6 +94,8 @@ function setup() {
   createCanvas(1280, 720);
 
   setupVeggies();
+
+  //circles.push(new Circle01(random(0, width), random(0, height)));
 
 }
 
@@ -169,8 +177,25 @@ function instructions(){
 
 
 
+
 function game(){
-  background(255);
+  background(0);
+
+  circleTimer++;
+  totalCircles++;
+  if(totalCircles <= maxCircles){
+    if(circleTimer >= newCircleDelay){
+        circles.push(new Circle01(random(0, width), random(0, height)));
+      circleTimer = 0;
+    }
+  }
+
+
+  for(let i =0; i<circles.length; i ++){
+    let circle = circles[i];
+    circle.display();
+    circle.fadeAnimation();
+  }
 }
 
 function updateVeggies(){
