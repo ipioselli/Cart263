@@ -5,10 +5,6 @@ class Veggies {
 
     this.vx = 1;
     this.vy =1;
-
-    this.ax = 0;
-    this.ay= 0;
-    this.maxSpeed = 10;
     this.size = 50;
     this.image = image;
     this.angle = 0;
@@ -22,14 +18,7 @@ class Veggies {
 
   move(){
 
-    // this.vx = this.vx + this.ax;
-    // this.vy = this.vy + this.ay;
-
-    // //constrain the velocity
-    // this.vx = constrain(this.vx, -this.maxSpeed, this.maxSpeed);
-    // this.vy = constrain(this.vy, -this.maxSpeed, this.maxSpeed);
-  
-    //update the position with velocity
+      //update the position with velocity
     this.x = this.x + this.vx;
     this.y = this.y + this.vy;
 

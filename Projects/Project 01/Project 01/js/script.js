@@ -15,17 +15,21 @@ ideas:
   - object identification to make meal
   - say ingredients with annyang to get 5 stars
   - pick up the ingredients in the kitchen without getting caught
+  - responsive voice read the story at the beginning
 */
 
 "use strict";
 
+//fonts
 let disneyFont;
+let copperplateFont;
 
+//background images
 let startBg;
 let menuBg;
 let instructionsBg;
 
-let gameButton = { // button to access the tutorial state
+let gameButton = { // button to access the game state
   x: 1280/2,
   y: 720/2 + 120,
   size: 50,
@@ -34,7 +38,7 @@ let gameButton = { // button to access the tutorial state
 
 };
 
-let helpButton = { // button to access the tutorial state
+let helpButton = { // button to access the instructions state
   x: 1280/2,
   y: 720/2 + 220,
   size: 50,
@@ -51,17 +55,19 @@ let veggies = [];
 
 let menuSong;
 
-let state = `start`;
+let state = `instructions`;
 
 
 
 function preload() {
+  //floating veggies
   for (let i = 0; i < numVeggiesImages; i++) {
     let veggieImage = loadImage(`assets/images/veggie${i}.png`);
     veggieImages.push(veggieImage);
   }
   //fonts
   disneyFont = loadFont(`assets/fonts/waltograph42.otf`);
+  copperplateFont = loadFont(`assets/fonts/Copperplate.otf`);
 
   //sounds
   menuSong = loadSound(`assets/sounds/Le-Festin.mp3`);
@@ -69,6 +75,7 @@ function preload() {
   //background images
   startBg = loadImage(`assets/images/StartBg.gif`);
   menuBg = loadImage(`assets/images/menuBg.png`);
+  instructionsBg = loadImage(`assets/images/instructionsBg.png`);
 
   //buttons
   gameButton.image = loadImage(`assets/images/gameButton.png`);
@@ -142,7 +149,22 @@ function menu(){
 }
 
 function instructions(){
-    background(255);
+
+  imageMode(CENTER, CENTER);
+  image(instructionsBg, width/2 , height/2, 1280, 720);
+
+  push();
+  textAlign(CENTER, CENTER);
+  textFont(copperplateFont);
+  textSize(30);
+  fill(0);
+  text(`A Night at the Movies`, width/2, height/2);
+  textSize(20);
+  text(`Follow the story of the lil rat chef, Remi \n and learn about his adventures in Paris`, width/2, height/2 +100);
+  textSize(30);
+  textFont(disneyFont);
+  text(`press BACK to go to the menu`, width/2, height/2 + 200);
+  pop();
 }
 
 
@@ -220,6 +242,11 @@ function keyPressed(){
     if(keyCode === 13){ //keycode for ENTER
       state = `menu`;
       menuSong.play();
+    }
+  }
+  if(state === `instructions`){
+    if(keyCode === 8) {//keycode for backspace
+      state = `menu`;
     }
   }
 
