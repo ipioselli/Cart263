@@ -33,9 +33,6 @@ let handpose = undefined;
 
 let predictions = [];
 
-
-
-
 //background images
 let startBg;
 let menuBg;
@@ -64,6 +61,9 @@ let helpButton = { // button to access the instructions state
 let tomatoImg;
 let tomatoes = [];
 let numTomatoes = 5;
+let tomatoesInPot = 0;
+let maxTomatoesInPot = 5;
+let tomatoIsReady = false;
 
 let zucchiniImg;
 let zucchinis = [];
@@ -71,6 +71,13 @@ let numZucchinis = 5;
 let maxZucchinisInPot = 5;
 let zucchinisInPot = 0;
 let zucchiniIsReady = false;
+
+let pepperImg;
+let peppers = [];
+let numPeppers = 5;
+let peppersInPot = 0;
+let maxPeppersInPot = 5;
+let pepperIsReady = 5;
 
 let numVeggiesImages = 5;
 let numVeggies = 30;
@@ -94,9 +101,12 @@ let spoonImg;
 let menuSong;
 let storySong;
 let tvSong;
+let chaseSong;
 
 
 let storyNarrative = `Once upon a time there was a rat named remi. \n He loved to eat yummy food from the kitchen. \n But one day something terrible happened. Click space to continue`;
+let storyNarrative02 = `He always snuck into the kitchen to watch Gustavo the chef on the tv. He wanted to become just like him. Sadly, he got caught and was chased
+out of the house.`;
 
 let state = `start`;
 
@@ -114,6 +124,7 @@ function preload() {
 
   tomatoImg = loadImage(`assets/images/veggie1.png`);
   zucchiniImg = loadImage(`assets/images/veggie3.png`);
+  pepperImg = loadImage(`assets/images/veggie4.png`);
   //fonts
   disneyFont = loadFont(`assets/fonts/waltograph42.otf`);
   copperplateFont = loadFont(`assets/fonts/Copperplate.otf`);
@@ -121,7 +132,8 @@ function preload() {
   //sounds
   menuSong = loadSound(`assets/sounds/Le-Festin.mp3`);
   storySong = loadSound(`assets/sounds/Cast-Of-Cooks.mp3`);
-  tvSong = loadSound(`assets/sounds/Granny-Get-Your-Gun.mp3`);
+  tvSong = loadSound(`assets/sounds/A-Real-Gourmet-Kitchen.mp3`);
+  chaseSong = loadSound(`assets/sounds/Granny-Get-Your-Gun.mp3`);
 
   //background images
   startBg = loadImage(`assets/images/StartBg.gif`);
@@ -143,6 +155,7 @@ function setup() {
   setupVeggies();
   setupFood();
   setupZucchini();
+  setupPeppers();
 
 
 }
@@ -165,6 +178,15 @@ function setupZucchini(){
   }
 }
 
+function setupPeppers(){
+  for(let i = 0; i<numPeppers; i++){
+    let x = random(0, width);
+    let y = random(0, height);
+    let ingredient03 = new Food(x, y, pepperImg);
+    peppers.push(ingredient03);
+  }
+}
+
 function setupVeggies(){
   for(let i = 0; i < numVeggies; i++){
       let x = random(0, width);
@@ -173,6 +195,22 @@ function setupVeggies(){
       let veggie = new Veggies(x, y, veggieImage);
       veggies.push(veggie);
     }
+}
+
+function setupHandpose(){
+  video = createCapture(VIDEO);
+  video.hide();
+  // Start the Handpose model and switch to our game state when it loads
+  handpose = ml5.handpose(video, {
+    flipHorizontal: true //flips camera
+  }, function() {
+    state = `cookingGame` //calls the game state
+  });
+  // Listen for prediction events from Handpose and store the results in our
+  // predictions array when they occur
+  handpose.on(`predict`, function(results) {
+    predictions = results;
+  });
 }
 
 //calls changeState function to switch from state to state
@@ -197,6 +235,9 @@ function changeState(){
   }
   else if(state === `tv`){
     tv();
+  }
+  else if(state === `cookingGame`){
+    cookingGame();
   }
   // else if(state === `chase`){
   //   chase();
@@ -267,6 +308,10 @@ function story(){
   setupCircles();
 }
 
+function tv(){
+  background(32);
+}
+
 function loading(){
   background(0);
 
@@ -284,9 +329,17 @@ function done(){
   background(255);
 }
 
-function tv() {
+function cookingGame() {
   imageMode(CENTER, CENTER);
   image(kitchenBg, width / 2, height / 2, 1280, 720);
+  push();
+  textAlign(CENTER, CENTER);
+  textFont(copperplateFont);
+  textSize(30);
+  text(`Make Ratatouille with remi`, width/2, height/2-300);
+  pop();
+
+
 
   if (predictions.length > 0) {
     updatespoon(predictions[0]);
@@ -294,26 +347,38 @@ function tv() {
     for (let i = 0; i < numTomatoes; i++) {
       let d = dist(spoon.x, spoon.y, tomatoes[i].x, tomatoes[i].y);
       if (d < tomatoes[i].size / 2) {
-        tomatoes[i].y = 0;
-        tomatoes[i].x = 0;
-
+        if(tomatoesInPot < maxTomatoesInPot){
+          tomatoes[i].y = 0;
+          tomatoes[i].x = 0;
+          tomatoesInPot++;
+        }
       }
-
     }
 
     for (let i = 0; i<numZucchinis; i++){
       let d2 = dist(spoon.x, spoon.y, zucchinis[i].x, zucchinis[i].y);
       if(d2 < zucchinis[i].size /2){
-        zucchinis[i].x = constrain(100, 100);
-        zucchinis[i].y = constrain(100, 200);
-        zucchinisInPot++;
+        if(zucchinisInPot < maxZucchinisInPot && !zucchinis[i].added){
+          putInPotFood();
+          zucchinisInPot++;
+        }
       }
     }
 
+    for(let i = 0; i<numPeppers; i++){
+      let d3 = dist(spoon.x, spoon.y, peppers[i].x, peppers[i].y);
+      if(d3 < peppers[i].size /2){
+        if(peppersInPot < maxPeppersInPot){
+          peppersInPot++;
+        }
+      }
+    }
   }
+
   displayspoon();
   updateTomatoes();
   updateZucchinis();
+  updatePeppers();
   checkScore();
   recipeDone();
   displayScore();
@@ -330,10 +395,16 @@ function checkScore(){
   if(zucchinisInPot === maxZucchinisInPot){
     zucchiniIsReady = true;
   }
+  if(tomatoesInPot === maxTomatoesInPot){
+    tomatoIsReady = true;
+  }
+  if(peppersInPot === maxPeppersInPot){
+    pepperIsReady = true;
+  }
 }
 
 function recipeDone(){
-  if(zucchiniIsReady){
+  if(zucchiniIsReady && tomatoIsReady && pepperIsReady){
     state = `done`;
   }
 }
@@ -364,6 +435,7 @@ function updateVeggies(){
   }
 }
 
+
 function updateTomatoes(){
   for(let i = 0; i<numTomatoes; i++){
     let ingredient01 = tomatoes[i];
@@ -378,6 +450,21 @@ function updateZucchinis(){
   }
 }
 
+function updatePeppers(){
+  for(let i = 0; i< numPeppers; i++){
+    let ingredient03 = peppers[i];
+    peppers[i].update();
+  }
+}
+
+
+function putInPotFood(){
+  for(let i = 0; i<numZucchinis; i++){
+    let ingredient02 = zucchinis[i];
+    zucchinis[i].addedInPot(800, 200, 100, 100 );
+  }
+}
+
 
 
 function displayspoon(){
@@ -389,7 +476,10 @@ function displayspoon(){
 }
 
 function displayScore(){
-  text(`Zucchini = ${zucchinisInPot} /5`, width/2, height/2);
+  textSize(20);
+  text(`Zucchini = ${zucchinisInPot} /5`, width/2-500, height/2-100);
+  text(`Tomato = ${tomatoesInPot} /5`, width/2-500, height/2 -140);
+  text(`Pepper = ${peppersInPot} /5`, width/2-500, height/2 -180);
 }
 
 
@@ -432,6 +522,7 @@ function mouseOver(){
 }
 
 
+
 function mousePressed() {
 
   if(state === `story`){
@@ -445,7 +536,7 @@ function mousePressed() {
       state = `story`;
       menuSong.stop();
       storySong.loop();
-      storySong.setVolume(0.05);
+      storySong.setVolume(0.1);
     }
   }
   let d2 = dist(mouseX, mouseY, helpButton.x, helpButton.y);
@@ -472,31 +563,19 @@ function keyPressed(){
 
   if(state === `story`){
     if(keyCode === 32){
-      state = `loading`;
+      state = `tv`;
       storySong.stop();
       tvSong.loop();
-      tvSong.setVolume(0.05);
-
-      video = createCapture(VIDEO);
-      video.hide();
-      // Start the Handpose model and switch to our game state when it loads
-      handpose = ml5.handpose(video, {
-        flipHorizontal: true //flips camera
-      }, function() {
-        state = `tv` //calls the game state
-      });
-      // Listen for prediction events from Handpose and store the results in our
-      // predictions array when they occur
-      handpose.on(`predict`, function(results) {
-        predictions = results;
-      });
+      tvSong.setVolume(0.5);
     }
   }
-  // if(state === `tv`){
-  //   if(keyCode === 13){
-  //     state = `chase`;
-  //     tvSong.stop();
-  //   }
-  // }
+
+  if(state === `tv`){
+    if(keyCode === 13){
+      state = `loading`;
+      tvSong.stop();
+      setupHandpose();
+    }
+  }
 
 }
