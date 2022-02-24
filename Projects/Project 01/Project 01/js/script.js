@@ -270,8 +270,8 @@ function tv() {
     for (let i = 0; i < numTomatoes; i++) {
       let d = dist(spoon.x, spoon.y, tomatoes[i].x, tomatoes[i].y);
       if (d < tomatoes[i].size / 2) {
-        tomatoes[i].y < 0;
-        tomatoes[i].x < 0;
+        tomatoes[i].y = 0;
+        tomatoes[i].x = 0;
       }
       displayspoon();
     }
