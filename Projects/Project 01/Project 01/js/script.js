@@ -65,6 +65,10 @@ let tomatoImg;
 let tomatoes = [];
 let numTomatoes = 5;
 
+let zucchiniImg;
+let zucchinis = [];
+let numZucchinis = 5;
+
 let numVeggiesImages = 5;
 let numVeggies = 30;
 let veggieImages = [];
@@ -79,7 +83,7 @@ let newCircleDelay = 10;
 let spoon = {
   x:0,
   y:0,
-  size:100,
+  size:200,
   image:undefined,
 };
 
@@ -106,6 +110,7 @@ function preload() {
   spoonImg = loadImage(`assets/images/spoon.png`);
 
   tomatoImg = loadImage(`assets/images/veggie1.png`);
+  zucchiniImg = loadImage(`assets/images/veggie3.png`);
   //fonts
   disneyFont = loadFont(`assets/fonts/waltograph42.otf`);
   copperplateFont = loadFont(`assets/fonts/Copperplate.otf`);
@@ -134,8 +139,8 @@ function setup() {
 
   setupVeggies();
   setupFood();
+  setupZucchini();
 
-  //circles.push(new Circle01(random(0, width), random(0, height)));
 
 }
 
@@ -145,6 +150,17 @@ function setupFood(){
     let y = random(0, height);
     let ingredient01 = new Food(x, y, tomatoImg);
     tomatoes.push(ingredient01);
+  }
+
+
+}
+
+function setupZucchini(){
+  for(let i = 0; i<numZucchinis; i++){
+    let x = random(0, width);
+    let y = random(0, height);
+    let ingredient02 = new Food(x, y, zucchiniImg);
+    zucchinis.push(ingredient02);
   }
 }
 
@@ -273,11 +289,21 @@ function tv() {
         tomatoes[i].y = 0;
         tomatoes[i].x = 0;
       }
-      displayspoon();
+
+    }
+
+    for (let i = 0; i<numZucchinis; i++){
+      let d2 = dist(spoon.x, spoon.y, zucchinis[i].x, zucchinis[i].y);
+      if(d2 < zucchinis[i].size /2){
+        zucchinis[i].x = 0;
+        zucchinis[i].y = 0;
+      }
     }
 
   }
+  displayspoon();
   updateTomatoes();
+  updateZucchinis();
 }
 
 
@@ -315,10 +341,19 @@ function updateVeggies(){
 
 function updateTomatoes(){
   for(let i = 0; i<numTomatoes; i++){
-    let inegredient01 = tomatoes[i];
+    let ingredient01 = tomatoes[i];
     tomatoes[i].update();
   }
 }
+
+function updateZucchinis(){
+  for(let i = 0; i<numZucchinis; i++){
+    let ingredient02 = zucchinis[i];
+    zucchinis[i].update();
+  }
+}
+
+
 
 function displayspoon(){
   push();

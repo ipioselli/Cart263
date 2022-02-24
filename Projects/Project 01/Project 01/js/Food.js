@@ -3,8 +3,8 @@ class Food {
     this.x = x;
     this.y = y;
 
-    this.vx = random(-1, 1);
-    this.vy = random(-1,1);
+    this.vx = random(-5, 5);
+    this.vy = random(-5,5);
     this.size = 80;
     this.image = image;
   }

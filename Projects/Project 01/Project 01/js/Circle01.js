@@ -3,7 +3,7 @@ class Circle01{
 constructor(x, y){
       this.x = x;
       this.y = y;
-      this.size = 50;
+      this.size = random(20, 50);
       this.fill = {
       r: random(255),
       g: random(255),
