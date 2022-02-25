@@ -1,5 +1,5 @@
 /**
-Project 01
+Project 01 : A night at the movies
 Ines Pioselli
 
 Requirements:
@@ -15,10 +15,11 @@ ideas:
   - menu -- √
   - backstory -- √
   - gustavo on the tv
-  - swim to catch friends
+  - hide from mousetrap and poison
   - meet linguini
-  - handpose game
-  - ending
+  - handpose game --√
+  - good ending
+  - bad ending
 
 */
 
@@ -215,11 +216,6 @@ function setup() {
 
 }
 
-function setupPoison(){
-  let x = random(0, width);
-  let y = random(0, height);
-  poison = new Food(x, y, poisonImg);
-}
 
 function setupTomato(){
   for(let i = 0; i<numTomatoes; i++){
@@ -264,6 +260,13 @@ function setupSquash(){
     let ingredient05 = new Food(x, y, squashImg);
     squashes.push(ingredient05);
   }
+}
+
+
+function setupPoison(){
+  let x = random(0, width);
+  let y = random(0, height);
+  poison = new Food(x, y, poisonImg);
 }
 
 function setupVeggies(){
@@ -410,7 +413,7 @@ function loading(){
   background(0);
 
   push();
-  textFont(disneyFont);
+  textFont(copperplateFont);
   fill(255);
   textSize(40);
   textStyle(BOLD);
@@ -434,6 +437,7 @@ function cookingGame() {
   if (predictions.length > 0) {
     updatespoon(predictions[0]);
 
+    //calls all the overlap functions
     overlapTomatoes();
     overlapZucchinis();
     overlapPeppers();
@@ -444,13 +448,13 @@ function cookingGame() {
   }
   displayspoon();
 
-
   updateTomatoes();
   updateZucchinis();
   updatePeppers();
   updateEggplants();
   updateSquashes();
   updatePoison();
+
   checkTimer();
   checkScore();
   recipeDone();
@@ -468,15 +472,6 @@ function goodCook(){
   background(255, 0, 0);
 }
 
-function overlapPoison(){
-  let d6 = dist(spoon.x, spoon.y, poison.x, poison.y);
-  if(d6 < poison.size /2){
-    if(poisonCaught < maxPoison){
-        state = `badCook`;
-    }
-
-  }
-}
 
 
 function overlapTomatoes() {
@@ -543,6 +538,15 @@ function overlapSquashes() {
   }
 }
 
+function overlapPoison(){
+  let d6 = dist(spoon.x, spoon.y, poison.x, poison.y);
+  if(d6 < poison.size /2){
+    if(poisonCaught < maxPoison){
+        state = `badCook`;
+    }
+  }
+}
+
 
 function updatespoon(prediction) {
   spoon.x = prediction.annotations.indexFinger[3][0];
@@ -600,7 +604,6 @@ function recipeDone(){
     }
   }
 }
-
 
 function setupCircles(){
   circleTimer++;
@@ -662,6 +665,7 @@ function updateSquashes(){
     squashes[i].update();
   }
 }
+
 function updatePoison(){
   poison.update();
 }
@@ -718,7 +722,6 @@ function mouseOver(){
       if(gameButton.size > gameButton.maxSize){
         gameButton.size = gameButton.maxSize;
       }
-
     }
     else (gameButton.size = gameButton.minSize);
   }
@@ -754,11 +757,6 @@ function mousePressed() {
     responsiveVoice.speak(storyNarrative, "French Female");
   }
 
-  if(state === `tv`){
-
-  }
-
-
   let d = dist(mouseX, mouseY, gameButton.x, gameButton.y);
   if (state === `menu`) {
     if (d < gameButton.size / 2 - 60) { // -60 is added so the mouse only clicks on the button and not dead space around it
@@ -780,9 +778,9 @@ function mousePressed() {
     if(d3 < tvKnob.size/2 - 50){
       responsiveVoice.speak(storyNarrative02, "French Female");
     }
-
   }
 }
+
 
 function keyPressed(){
 
@@ -799,7 +797,7 @@ function keyPressed(){
   }
 
   if(state === `story`){
-    if(keyCode === 32){
+    if(keyCode === 32){ //keycode for spacebar
       state = `tv`;
       storySong.stop();
       tvSong.loop();
@@ -815,5 +813,4 @@ function keyPressed(){
       setupHandpose();
     }
   }
-
 }
