@@ -10,6 +10,7 @@ Requirements:
 
 Ratatouille simulator
 ideas:
+  - make ingredients green when they have been added to the pot
   - start state -- √
   - menu -- √
   - backstory -- √
@@ -58,12 +59,14 @@ let helpButton = { // button to access the instructions state
   minSize: 300,
 
 };
+
 let tomatoImg;
 let tomatoes = [];
 let numTomatoes = 5;
 let tomatoesInPot = 0;
 let maxTomatoesInPot = 5;
 let tomatoIsReady = false;
+let tomatoRatio = ` /5`;
 
 let zucchiniImg;
 let zucchinis = [];
@@ -71,13 +74,31 @@ let numZucchinis = 5;
 let maxZucchinisInPot = 5;
 let zucchinisInPot = 0;
 let zucchiniIsReady = false;
+let zucchiniRatio = ` /5`;
 
 let pepperImg;
 let peppers = [];
 let numPeppers = 5;
 let peppersInPot = 0;
 let maxPeppersInPot = 5;
-let pepperIsReady = 5;
+let pepperIsReady = false;
+let pepperRatio = ` /5`;
+
+let eggplantImg;
+let eggplants = [];
+let numEggplants = 5;
+let eggplantsInPot = 0;
+let maxEggplantsInPot = 5;
+let eggplantIsReady = false;
+let eggplantRatio = ` /5`;
+
+let squashImg;
+let squashes = [];
+let numSquashes = 5;
+let squashesInPot = 0;
+let maxSquashesInPot = 5;
+let squashIsReady = false;
+let squashRatio = ` /5`;
 
 let numVeggiesImages = 5;
 let numVeggies = 30;
@@ -98,6 +119,8 @@ let spoon = {
 };
 
 let spoonImg;
+
+//songs
 let menuSong;
 let storySong;
 let tvSong;
@@ -113,7 +136,8 @@ let state = `tv`;
 
 
 function preload() {
-  //floating veggies
+
+  //floating veggies at the start state
   for (let i = 0; i < numVeggiesImages; i++) {
     let veggieImage = loadImage(`assets/images/veggie${i}.png`);
     veggieImages.push(veggieImage);
@@ -122,9 +146,13 @@ function preload() {
   //icons
   spoonImg = loadImage(`assets/images/spoon.png`);
 
+  //ratatouille ingredients
   tomatoImg = loadImage(`assets/images/veggie1.png`);
   zucchiniImg = loadImage(`assets/images/veggie3.png`);
   pepperImg = loadImage(`assets/images/veggie4.png`);
+  eggplantImg = loadImage(`assets/images/veggie0.png`);
+  squashImg = loadImage(`assets/images/veggie2.png`);
+
   //fonts
   disneyFont = loadFont(`assets/fonts/waltograph42.otf`);
   copperplateFont = loadFont(`assets/fonts/Copperplate.otf`);
@@ -154,14 +182,16 @@ function setup() {
   createCanvas(1280, 720);
 
   setupVeggies();
-  setupFood();
+  setupTomato();
   setupZucchini();
-  setupPeppers();
+  setupPepper();
+  setupSquash();
+  setupEggplant();
 
 
 }
 
-function setupFood(){
+function setupTomato(){
   for(let i = 0; i<numTomatoes; i++){
     let x = random(0, width);
     let y = random(0, height);
@@ -179,12 +209,30 @@ function setupZucchini(){
   }
 }
 
-function setupPeppers(){
+function setupPepper(){
   for(let i = 0; i<numPeppers; i++){
     let x = random(0, width);
     let y = random(0, height);
     let ingredient03 = new Food(x, y, pepperImg);
     peppers.push(ingredient03);
+  }
+}
+
+function setupEggplant(){
+  for(let i =0; i<numEggplants; i++){
+    let x = random(0, width);
+    let y = random(0, height);
+    let ingredient04 = new Food(x, y, eggplantImg);
+    eggplants.push(ingredient04);
+  }
+}
+
+function setupSquash(){
+  for(let i =0; i<numSquashes; i++){
+    let x = random(0, width);
+    let y = random(0, height);
+    let ingredient05 = new Food(x, y, squashImg);
+    squashes.push(ingredient05);
   }
 }
 
@@ -200,8 +248,6 @@ function setupVeggies(){
 
 function setupHandpose(){
   video = createCapture(VIDEO);
-  video.size(width, height);
-  xRatio =
   video.hide();
   // Start the Handpose model and switch to our game state when it loads
   handpose = ml5.handpose(video, {
@@ -329,9 +375,6 @@ function loading(){
   pop();
 }
 
-function done(){
-  background(255);
-}
 
 function cookingGame() {
   imageMode(CENTER, CENTER);
@@ -341,51 +384,102 @@ function cookingGame() {
   textFont(copperplateFont);
   textSize(30);
   text(`Make Ratatouille with remi`, width/2, height/2-300);
+  fill(255);
+  rect(915, 450, 250, 250);
   pop();
-
 
 
   if (predictions.length > 0) {
     updatespoon(predictions[0]);
 
-    for (let i = 0; i < numTomatoes; i++) {
-      let d = dist(spoon.x, spoon.y, tomatoes[i].x, tomatoes[i].y);
-      if (d < tomatoes[i].size / 2) {
-        if(tomatoesInPot < maxTomatoesInPot){
-          tomatoes[i].y = 0;
-          tomatoes[i].x = 0;
-          tomatoesInPot++;
-        }
-      }
-    }
+    overlapTomatoes();
+    overlapZucchinis();
+    overlapPeppers();
+    overlapEggplants();
+    overlapSquashes();
 
-    for (let i = 0; i<numZucchinis; i++){
-      let d2 = dist(spoon.x, spoon.y, zucchinis[i].x, zucchinis[i].y);
-      if(d2 < zucchinis[i].size /2){
-        if(zucchinisInPot < maxZucchinisInPot && !zucchinis[i].added){
-          zucchinis[i].addedInPot(900, 200, 100, 100 );
-          zucchinisInPot++;
-        }
-      }
-    }
-
-    for(let i = 0; i<numPeppers; i++){
-      let d3 = dist(spoon.x, spoon.y, peppers[i].x, peppers[i].y);
-      if(d3 < peppers[i].size /2){
-        if(peppersInPot < maxPeppersInPot){
-          peppersInPot++;
-        }
-      }
-    }
   }
-
   displayspoon();
+
   updateTomatoes();
   updateZucchinis();
   updatePeppers();
+  updateEggplants();
+  updateSquashes();
+
   checkScore();
   recipeDone();
   displayScore();
+}
+
+function overlapTomatoes() {
+
+  for (let i = 0; i < numTomatoes; i++) {
+    let d = dist(spoon.x, spoon.y, tomatoes[i].x, tomatoes[i].y);
+    if (d < tomatoes[i].size / 2) {
+      if (tomatoesInPot < maxTomatoesInPot) {
+        tomatoes[i].addedInPot(915, 450, 250, 250);
+        tomatoesInPot++;
+      }
+    }
+  }
+}
+
+function overlapZucchinis(){
+  for (let i = 0; i<numZucchinis; i++){
+    let d2 = dist(spoon.x, spoon.y, zucchinis[i].x, zucchinis[i].y);
+    if(d2 < zucchinis[i].size /2){
+      if(zucchinisInPot < maxZucchinisInPot && !zucchinis[i].added){
+        zucchinis[i].addedInPot(915, 450, 250, 250);
+        zucchinisInPot++;
+      }
+    }
+  }
+}
+
+function overlapPeppers() {
+
+  for (let i = 0; i < numPeppers; i++) {
+    let d3 = dist(spoon.x, spoon.y, peppers[i].x, peppers[i].y);
+    if (d3 < peppers[i].size / 2) {
+      if (peppersInPot < maxPeppersInPot) {
+        peppers[i].addedInPot(915, 450, 250, 250);
+        peppersInPot++;
+      }
+    }
+  }
+}
+
+function overlapEggplants() {
+
+  for (let i = 0; i < numEggplants; i++) {
+    let d4 = dist(spoon.x, spoon.y, eggplants[i].x, eggplants[i].y);
+    if (d4 < eggplants[i].size / 2) {
+      if (eggplantsInPot < maxEggplantsInPot) {
+        eggplants[i].addedInPot(915, 450, 250, 250);
+        eggplantsInPot++;
+      }
+    }
+  }
+}
+
+function overlapSquashes() {
+
+  for (let i = 0; i < numSquashes; i++) {
+    let d5 = dist(spoon.x, spoon.y, squashes[i].x, squashes[i].y);
+    if (d5 < squashes[i].size / 2) {
+      if (squashesInPot < maxSquashesInPot) {
+        squashes[i].addedInPot(915, 450, 250, 250);
+        squashesInPot++;
+      }
+    }
+  }
+}
+
+
+
+function done(){
+  background(255);
 }
 
 
@@ -398,18 +492,35 @@ function updatespoon(prediction) {
 function checkScore(){
   if(zucchinisInPot === maxZucchinisInPot){
     zucchiniIsReady = true;
+    zucchinisInPot = `READY`;
+    zucchiniRatio = ``;
   }
   if(tomatoesInPot === maxTomatoesInPot){
     tomatoIsReady = true;
+    tomatoesInPot = `READY`;
+    tomatoRatio = ``;
   }
   if(peppersInPot === maxPeppersInPot){
     pepperIsReady = true;
+    peppersInPot = `READY`;
+    pepperRatio = ``;
+  }
+  if(eggplantsInPot === maxEggplantsInPot){
+    eggplantIsReady = true;
+    eggplantsInPot = `READY`;
+    eggplantRatio = ``;
+  }
+  if(squashesInPot === maxSquashesInPot){
+    squashIsReady = true;
+    squashesInPot = `READY`;
+    squashRatio = ``;
   }
 }
 
 function recipeDone(){
-  if(zucchiniIsReady && tomatoIsReady && pepperIsReady){
+  if(zucchiniIsReady && tomatoIsReady && pepperIsReady && eggplantIsReady && squashIsReady){
     state = `done`;
+    fill(0, 255, 0);
   }
 }
 
@@ -461,14 +572,19 @@ function updatePeppers(){
   }
 }
 
+function updateEggplants(){
+  for(let i = 0; i< numEggplants; i++){
+    let ingredient04 = eggplants[i];
+    eggplants[i].update();
+  }
+}
 
-// function putInPotFood(){
-//   for(let i = 0; i<numZucchinis; i++){
-//     let ingredient02 = zucchinis[i];
-//     zucchinis[i].addedInPot(800, 200, 100, 100 );
-//   }
-// }
-
+function updateSquashes(){
+  for(let i = 0; i< numSquashes; i++){
+    let ingredient05 = squashes[i];
+    squashes[i].update();
+  }
+}
 
 
 function displayspoon(){
@@ -481,9 +597,12 @@ function displayspoon(){
 
 function displayScore(){
   textSize(20);
-  text(`Zucchini = ${zucchinisInPot} /5`, width/2-500, height/2-100);
-  text(`Tomato = ${tomatoesInPot} /5`, width/2-500, height/2 -140);
-  text(`Pepper = ${peppersInPot} /5`, width/2-500, height/2 -180);
+  text(`Zucchini = ${zucchinisInPot}${zucchiniRatio}`, width/2-500, height/2-180);
+  text(`Tomato = ${tomatoesInPot}${tomatoRatio}`, width/2-500, height/2 -140);
+  text(`Pepper = ${peppersInPot}${pepperRatio}`, width/2-500, height/2 -100);
+  text(`Eggplant = ${eggplantsInPot}${eggplantRatio}`, width/2-500, height/2 -60);
+  text(`Squash = ${squashesInPot}${squashRatio}`, width/2-500, height/2 -20);
+
 }
 
 
