@@ -60,6 +60,14 @@ let helpButton = { // button to access the instructions state
 
 };
 
+let tvKnob = {
+  x: 1280/2 + 300,
+  y: 720/2 - 150,
+  size: 50,
+  maxSize: 250,
+  minSize: 200,
+}
+
 let cookingTimer = 10000;
 let  cookingTimerDone = false;
 
@@ -136,13 +144,14 @@ let menuSong;
 let storySong;
 let tvSong;
 let chaseSong;
-
+let cookingSong;
 
 let storyNarrative = `Once upon a time there was a rat named remi. \n He loved to eat yummy food from the kitchen. \n But one day something terrible happened. Click space to continue`;
+
 let storyNarrative02 = `He always snuck into the kitchen to watch Gustavo the chef on the tv. He wanted to become just like him. Sadly, he got caught and was chased
 out of the house.`;
 
-let state = `tv`;
+let state = `start`;
 
 
 
@@ -175,6 +184,7 @@ function preload() {
   storySong = loadSound(`assets/sounds/Cast-Of-Cooks.mp3`);
   tvSong = loadSound(`assets/sounds/A-Real-Gourmet-Kitchen.mp3`);
   chaseSong = loadSound(`assets/sounds/Granny-Get-Your-Gun.mp3`);
+  cookingSong = loadSound(`assets/sounds/Special-Order.mp3`);
 
   //background images
   startBg = loadImage(`assets/images/StartBg.gif`);
@@ -187,6 +197,7 @@ function preload() {
   //buttons
   gameButton.image = loadImage(`assets/images/gameButton.png`);
   helpButton.image = loadImage(`assets/images/helpButton.png`);
+  tvKnob.image = loadImage(`assets/images/knob.png`);
 }
 
 
@@ -201,7 +212,6 @@ function setup() {
   setupSquash();
   setupEggplant();
   setupPoison();
-
 
 }
 
@@ -391,6 +401,9 @@ function tv(){
   textSize(30)
   text(`click the TV knob`, width/2, height/2 - 320);
   pop();
+
+  mouseOver();
+  tvButton();
 }
 
 function loading(){
@@ -691,6 +704,11 @@ function buttonInstructions(){
 
 }
 
+function tvButton(){
+  imageMode(CENTER, CENTER);
+  image(tvKnob.image,tvKnob.x, tvKnob.y, tvKnob.size, tvKnob.size );
+}
+
 //hovering over button effect
 function mouseOver(){
   let d = dist(mouseX, mouseY, gameButton.x, gameButton.y);
@@ -715,6 +733,17 @@ function mouseOver(){
     }
     else (helpButton.size = helpButton.minSize);
   }
+
+  let d3 = dist(mouseX, mouseY, tvKnob.x, tvKnob.y);
+  if(state === `tv`){
+    if(d3 < tvKnob.size/2 - 50){
+      tvKnob.size = tvKnob.size + 20;
+      if(tvKnob.size > tvKnob.maxSize){
+        tvKnob.size  = tvKnob.maxSize;
+      }
+    }
+    else(tvKnob.size = tvKnob.minSize);
+  }
 }
 
 
@@ -726,7 +755,7 @@ function mousePressed() {
   }
 
   if(state === `tv`){
-    responsiveVoice.speak(storyNarrative02, "French Female");
+
   }
 
 
@@ -744,6 +773,14 @@ function mousePressed() {
     if (d2 < helpButton.size / 2 - 60) {
       state = `instructions`;
     }
+  }
+
+  let d3 = dist(mouseX, mouseY, tvKnob.x, tvKnob.y);
+  if(state === `tv`){
+    if(d3 < tvKnob.size/2 - 50){
+      responsiveVoice.speak(storyNarrative02, "French Female");
+    }
+
   }
 }
 
@@ -774,6 +811,7 @@ function keyPressed(){
     if(keyCode === 13){
       state = `loading`;
       tvSong.stop();
+      cookingSong.loop();
       setupHandpose();
     }
   }
