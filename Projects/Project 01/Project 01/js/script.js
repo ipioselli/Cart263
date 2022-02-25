@@ -60,6 +60,12 @@ let helpButton = { // button to access the instructions state
 
 };
 
+let cookingTimer = 10000;
+let  cookingTimerDone = false;
+
+let cookingTimerDelay = 100;
+let cookingTimerDelayDone = false;
+
 let tomatoImg;
 let tomatoes = [];
 let numTomatoes = 5;
@@ -294,8 +300,11 @@ function changeState(){
   else if(state === `loading`){
     loading();
   }
-  else if(state === `done`){
-    done();
+  else if(state === `goodCook`){
+    goodCook();
+  }
+  else if(state === `badCook`){
+    badCook();
   }
 }
 
@@ -385,7 +394,7 @@ function cookingGame() {
   textSize(30);
   text(`Make Ratatouille with remi`, width/2, height/2-300);
   fill(255);
-  rect(915, 450, 250, 250);
+  rect(915, 430, 250, 250);
   pop();
 
 
@@ -401,15 +410,27 @@ function cookingGame() {
   }
   displayspoon();
 
+
   updateTomatoes();
   updateZucchinis();
   updatePeppers();
   updateEggplants();
   updateSquashes();
-
+  checkTimer();
   checkScore();
   recipeDone();
   displayScore();
+  displayCookingTimer();
+}
+
+function badCook(){
+  background(0, 255, 0);
+}
+
+
+
+function goodCook(){
+  background(255, 0, 0);
 }
 
 function overlapTomatoes() {
@@ -477,12 +498,6 @@ function overlapSquashes() {
 }
 
 
-
-function done(){
-  background(255);
-}
-
-
 function updatespoon(prediction) {
   spoon.x = prediction.annotations.indexFinger[3][0];
   spoon.y = prediction.annotations.indexFinger[3][1];
@@ -517,9 +532,19 @@ function checkScore(){
   }
 }
 
+function checkTimer(){
+  cookingTimer -= 1;
+  if(cookingTimer <= 0){
+    cookingTimer = true;
+  }
+  if(cookingTimerDone){
+    state = `BadCook`;
+  }
+}
+
 function recipeDone(){
   if(zucchiniIsReady && tomatoIsReady && pepperIsReady && eggplantIsReady && squashIsReady){
-    state = `done`;
+    state = `goodCook`;
     fill(0, 255, 0);
   }
 }
@@ -596,16 +621,23 @@ function displayspoon(){
 }
 
 function displayScore(){
+  push();
   textSize(20);
-  text(`Zucchini = ${zucchinisInPot}${zucchiniRatio}`, width/2-500, height/2-180);
-  text(`Tomato = ${tomatoesInPot}${tomatoRatio}`, width/2-500, height/2 -140);
-  text(`Pepper = ${peppersInPot}${pepperRatio}`, width/2-500, height/2 -100);
-  text(`Eggplant = ${eggplantsInPot}${eggplantRatio}`, width/2-500, height/2 -60);
-  text(`Squash = ${squashesInPot}${squashRatio}`, width/2-500, height/2 -20);
+  text(`Zucchini = ${zucchinisInPot}${zucchiniRatio}`, width/2-520, height/2-160);
+  text(`Tomato = ${tomatoesInPot}${tomatoRatio}`, width/2-520, height/2 -120);
+  text(`Pepper = ${peppersInPot}${pepperRatio}`, width/2-520, height/2 -80);
+  text(`Eggplant = ${eggplantsInPot}${eggplantRatio}`, width/2-520, height/2 -40);
+  text(`Squash = ${squashesInPot}${squashRatio}`, width/2-520, height/2);
+  pop();
 
 }
 
-
+function displayCookingTimer(){
+  push();
+  textSize(20);
+  text(`${cookingTimer}`, width/2, height/2 - 160);
+  pop();
+}
 
 function buttonGame(){
   imageMode(CENTER, CENTER);

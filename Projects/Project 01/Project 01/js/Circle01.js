@@ -26,7 +26,7 @@ fadeAnimation() {
 
 display() {
   push();
-    fill(this.fill.r, this.fill.g, this.fill.b, this.fade);
+   fill(this.fill.r, this.fill.g, this.fill.b, this.fade);
    noStroke();
    ellipse(this.x, this.y, this.size, this.size);
    pop();
