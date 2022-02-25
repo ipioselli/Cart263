@@ -66,6 +66,7 @@ let  cookingTimerDone = false;
 let cookingTimerDelay = 100;
 let cookingTimerDelayDone = false;
 
+let poison;
 let poisonImg;
 let poisonCaught = 0;
 let maxPoison = 1;
@@ -382,6 +383,14 @@ function story(){
 function tv(){
   imageMode(CENTER, CENTER);
   image(tvBg, width/2, height/2, 1280, 720);
+
+  push();
+  textFont(copperplateFont);
+  fill(255);
+  textAlign(CENTER, CENTER);
+  textSize(30)
+  text(`click the TV knob`, width/2, height/2 - 320);
+  pop();
 }
 
 function loading(){
@@ -406,8 +415,6 @@ function cookingGame() {
   textFont(copperplateFont);
   textSize(30);
   text(`Make Ratatouille with remi`, width/2, height/2-300);
-  fill(255);
-  rect(915, 430, 250, 250);
   pop();
 
 
@@ -451,7 +458,10 @@ function goodCook(){
 function overlapPoison(){
   let d6 = dist(spoon.x, spoon.y, poison.x, poison.y);
   if(d6 < poison.size /2){
-    state = `badCook`;
+    if(poisonCaught < maxPoison){
+        state = `badCook`;
+    }
+
   }
 }
 
