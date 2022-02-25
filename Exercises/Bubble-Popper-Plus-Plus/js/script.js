@@ -62,7 +62,7 @@ let angelsKilled = 0; //number of angels killed
 let maxAngelsKilled = 7; //lucky angel number
 
 //variables for the counter
-let timer = 10000; //5 seconds
+let timer = 10000; //10 seconds
 let timerDone = false;
 
 let titleFont; //main font

@@ -66,6 +66,10 @@ let  cookingTimerDone = false;
 let cookingTimerDelay = 100;
 let cookingTimerDelayDone = false;
 
+let poisonImg;
+let poisonCaught = 0;
+let maxPoison = 1;
+
 let tomatoImg;
 let tomatoes = [];
 let numTomatoes = 5;
@@ -152,6 +156,8 @@ function preload() {
   //icons
   spoonImg = loadImage(`assets/images/spoon.png`);
 
+  poisonImg = loadImage(`assets/images/poison.png`);
+
   //ratatouille ingredients
   tomatoImg = loadImage(`assets/images/veggie1.png`);
   zucchiniImg = loadImage(`assets/images/veggie3.png`);
@@ -193,8 +199,15 @@ function setup() {
   setupPepper();
   setupSquash();
   setupEggplant();
+  setupPoison();
 
 
+}
+
+function setupPoison(){
+  let x = random(0, width);
+  let y = random(0, height);
+  poison = new Food(x, y, poisonImg);
 }
 
 function setupTomato(){
@@ -406,6 +419,7 @@ function cookingGame() {
     overlapPeppers();
     overlapEggplants();
     overlapSquashes();
+    overlapPoison();
 
   }
   displayspoon();
@@ -416,6 +430,7 @@ function cookingGame() {
   updatePeppers();
   updateEggplants();
   updateSquashes();
+  updatePoison();
   checkTimer();
   checkScore();
   recipeDone();
@@ -432,6 +447,14 @@ function badCook(){
 function goodCook(){
   background(255, 0, 0);
 }
+
+function overlapPoison(){
+  let d6 = dist(spoon.x, spoon.y, poison.x, poison.y);
+  if(d6 < poison.size /2){
+    state = `badCook`;
+  }
+}
+
 
 function overlapTomatoes() {
 
@@ -616,7 +639,9 @@ function updateSquashes(){
     squashes[i].update();
   }
 }
-
+function updatePoison(){
+  poison.update();
+}
 
 function displayspoon(){
   push();
