@@ -70,14 +70,14 @@ let tomatoImg;
 let tomatoes = [];
 let numTomatoes = 5;
 let tomatoesInPot = 0;
-let maxTomatoesInPot = 5;
+let maxTomatoesInPot = 1;
 let tomatoIsReady = false;
 let tomatoRatio = ` /5`;
 
 let zucchiniImg;
 let zucchinis = [];
 let numZucchinis = 5;
-let maxZucchinisInPot = 5;
+let maxZucchinisInPot = 1;
 let zucchinisInPot = 0;
 let zucchiniIsReady = false;
 let zucchiniRatio = ` /5`;
@@ -86,7 +86,7 @@ let pepperImg;
 let peppers = [];
 let numPeppers = 5;
 let peppersInPot = 0;
-let maxPeppersInPot = 5;
+let maxPeppersInPot = 1;
 let pepperIsReady = false;
 let pepperRatio = ` /5`;
 
@@ -94,7 +94,7 @@ let eggplantImg;
 let eggplants = [];
 let numEggplants = 5;
 let eggplantsInPot = 0;
-let maxEggplantsInPot = 5;
+let maxEggplantsInPot = 1;
 let eggplantIsReady = false;
 let eggplantRatio = ` /5`;
 
@@ -102,7 +102,7 @@ let squashImg;
 let squashes = [];
 let numSquashes = 5;
 let squashesInPot = 0;
-let maxSquashesInPot = 5;
+let maxSquashesInPot = 1;
 let squashIsReady = false;
 let squashRatio = ` /5`;
 
@@ -544,8 +544,14 @@ function checkTimer(){
 
 function recipeDone(){
   if(zucchiniIsReady && tomatoIsReady && pepperIsReady && eggplantIsReady && squashIsReady){
-    state = `goodCook`;
     fill(0, 255, 0);
+    cookingTimerDelay -= 5;
+    if(cookingTimerDelay <= 0){
+      cookingTimerDelayDone = true;
+    }
+    if(cookingTimerDelayDone){
+      state = `goodCook`;
+    }
   }
 }
 
@@ -635,7 +641,7 @@ function displayScore(){
 function displayCookingTimer(){
   push();
   textSize(20);
-  text(`${cookingTimer}`, width/2, height/2 - 160);
+  text(`Timer: ${cookingTimer}`, width/2 + 400, height/2 - 300);
   pop();
 }
 
