@@ -29,10 +29,10 @@ ideas:
 let disneyFont;
 let copperplateFont;
 
+//handpose variables
 let video = undefined;
 let modelName = `HANDPOSE`;
 let handpose = undefined;
-
 let predictions = [];
 
 //background images
@@ -42,8 +42,11 @@ let instructionsBg;
 let storyBg;
 let tvBg;
 let kitchenBg;
+let goodCookBg;
+let badCookBg;
 
-let gameButton = { // button to access the game state
+//button to start the game
+let gameButton = {
   x: 1280/2,
   y: 720/2 + 120,
   size: 50,
@@ -52,7 +55,8 @@ let gameButton = { // button to access the game state
 
 };
 
-let helpButton = { // button to access the instructions state
+//button to get instructions/about section
+let helpButton = {
   x: 1280/2,
   y: 720/2 + 220,
   size: 50,
@@ -61,6 +65,7 @@ let helpButton = { // button to access the instructions state
 
 };
 
+//tv knob on the tv state to call responsiveVoice
 let tvKnob = {
   x: 1280/2 + 300,
   y: 720/2 - 150,
@@ -69,29 +74,34 @@ let tvKnob = {
   minSize: 200,
 }
 
+//timer for cooking game to call the bad cook state
 let cookingTimer = 10000;
 let  cookingTimerDone = false;
 
+//timer to delay the good cook state
 let cookingTimerDelay = 100;
 let cookingTimerDelayDone = false;
 
+//poison variables for the cooking game
 let poison;
 let poisonImg;
 let poisonCaught = 0;
 let maxPoison = 1;
 
+//tomato variables for cooking game
 let tomatoImg;
 let tomatoes = [];
 let numTomatoes = 5;
 let tomatoesInPot = 0;
-let maxTomatoesInPot = 1;
+let maxTomatoesInPot = 5;
 let tomatoIsReady = false;
 let tomatoRatio = ` /5`;
 
+//zucchini variables for cooking game
 let zucchiniImg;
 let zucchinis = [];
 let numZucchinis = 5;
-let maxZucchinisInPot = 1;
+let maxZucchinisInPot = 5;
 let zucchinisInPot = 0;
 let zucchiniIsReady = false;
 let zucchiniRatio = ` /5`;
@@ -100,7 +110,7 @@ let pepperImg;
 let peppers = [];
 let numPeppers = 5;
 let peppersInPot = 0;
-let maxPeppersInPot = 1;
+let maxPeppersInPot = 5;
 let pepperIsReady = false;
 let pepperRatio = ` /5`;
 
@@ -108,7 +118,7 @@ let eggplantImg;
 let eggplants = [];
 let numEggplants = 5;
 let eggplantsInPot = 0;
-let maxEggplantsInPot = 1;
+let maxEggplantsInPot = 5;
 let eggplantIsReady = false;
 let eggplantRatio = ` /5`;
 
@@ -116,7 +126,7 @@ let squashImg;
 let squashes = [];
 let numSquashes = 5;
 let squashesInPot = 0;
-let maxSquashesInPot = 1;
+let maxSquashesInPot = 5;
 let squashIsReady = false;
 let squashRatio = ` /5`;
 
@@ -149,10 +159,10 @@ let cookingSong;
 
 let storyNarrative = `Once upon a time there was a rat named remi. \n He loved to eat yummy food from the kitchen. \n But one day something terrible happened. Click space to continue`;
 
-let storyNarrative02 = `He always snuck into the kitchen to watch Gustavo the chef on the tv. He wanted to become just like him. Sadly, he got caught and was chased
+let storyNarrative02 = `He always snuck into the kitchen to watch Gusteau the chef on the tv. He wanted to become just like him. Sadly, he got caught and was chased
 out of the house.`;
 
-let state = `start`;
+let state = `tv`;
 
 
 
@@ -194,6 +204,7 @@ function preload() {
   storyBg = loadImage(`assets/images/storyBg.png`);
   kitchenBg =loadImage(`assets/images/kitchenBg.png`);
   tvBg = loadImage(`assets/images/tvBg.png`);
+  goodCookBg = loadImage(`assets/images/goodCookBg.png`);
 
   //buttons
   gameButton.image = loadImage(`assets/images/gameButton.png`);
@@ -318,14 +329,18 @@ function changeState(){
   else if(state === `tv`){
     tv();
   }
-  else if(state === `cookingGame`){
-    cookingGame();
+  else if(state === `chaseInstructions`){
+    chaseInstructions();
   }
   // else if(state === `chase`){
   //   chase();
   // }
+
   else if(state === `loading`){
     loading();
+  }
+  else if(state === `cookingGame`){
+    cookingGame();
   }
   else if(state === `goodCook`){
     goodCook();
@@ -403,6 +418,8 @@ function tv(){
   textAlign(CENTER, CENTER);
   textSize(30)
   text(`click the TV knob`, width/2, height/2 - 320);
+  textSize(20);
+  text(`Press ENTER to skip`, width/2, height/2 + 300);
   pop();
 
   mouseOver();
@@ -444,10 +461,11 @@ function cookingGame() {
     overlapEggplants();
     overlapSquashes();
     overlapPoison();
-
   }
+  //displays the spoon image
   displayspoon();
 
+  //calls update function for all the food and poison
   updateTomatoes();
   updateZucchinis();
   updatePeppers();
@@ -469,7 +487,8 @@ function badCook(){
 
 
 function goodCook(){
-  background(255, 0, 0);
+  imageMode(CENTER, CENTER);
+  image(goodCookBg, width/2, height/2, 1280, 720);
 }
 
 
@@ -546,7 +565,6 @@ function overlapPoison(){
     }
   }
 }
-
 
 function updatespoon(prediction) {
   spoon.x = prediction.annotations.indexFinger[3][0];
