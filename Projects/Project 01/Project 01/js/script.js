@@ -14,7 +14,7 @@ ideas:
   - start state -- √
   - menu -- √
   - backstory -- √
-  - gustavo on the tv
+  - gustavo on the tv ---- √
   - hide from mousetrap and poison
   - meet linguini
   - handpose game --√

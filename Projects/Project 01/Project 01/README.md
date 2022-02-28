@@ -12,6 +12,8 @@ To meet the requirements I used responsiveVoice and ml5 handpose. I used respons
 Sources :
 ========
 -  Playlist to all the songs: https://www.youtube.com/watch?v=0xJoNV8rq84&list=PLB3CC5B614BD280E1&index=15&ab_channel=121UniversalCritic
+- ml5 handpose camera issue: https://editor.p5js.org/pippinbarr/sketches/wAqNc_PUs
+- fade animation : https://editor.p5js.org/remarkability/sketches/rtM08miUD
 - 2d elements drawn by me
 - Fonts:
     - Copperplate
