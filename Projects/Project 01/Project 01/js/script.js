@@ -46,8 +46,8 @@ let menuBg;
 let instructionsBg;
 let storyBg;
 let tvStoryBg;
-let chaseInstructionsBg;
-let chaseBg;
+let kitchenChaseInstructionsBg;
+let kitchenChaseBg;
 let kitchenBg;
 let goodCookBg;
 let badCookBg;
@@ -105,7 +105,7 @@ let timerTrapDelay = 80;
 
 //timer for cooking game to call the bad cook state
 let cookingTimer = 10000;
-let  cookingTimerDone = false;
+let cookingTimerDone = false;
 
 //timer to delay the good cook state
 let cookingTimerDelay = 100;
@@ -184,7 +184,7 @@ let spoonImg;
 let menuSong;
 let storySong;
 let tvSong;
-let chaseSong;
+let kitchenChaseSong;
 let cookingSong;
 
 
@@ -193,7 +193,7 @@ let storyNarrative = `Once upon a time there was a rat named remi. \n He loved t
 let storyNarrative02 = `He always snuck into the kitchen to watch Gusteau the chef on the tv. He wanted to become just like him. Sadly, he got caught and was chased
 out of the house.`;
 
-let state = `chase`;
+let state = `kitchenChaseInstructions`;
 
 
 
@@ -228,7 +228,7 @@ function preload() {
   menuSong = loadSound(`assets/sounds/Le-Festin.mp3`);
   storySong = loadSound(`assets/sounds/Cast-Of-Cooks.mp3`);
   tvSong = loadSound(`assets/sounds/A-Real-Gourmet-Kitchen.mp3`);
-  chaseSong = loadSound(`assets/sounds/Granny-Get-Your-Gun.mp3`);
+  kitchenChaseSong = loadSound(`assets/sounds/Granny-Get-Your-Gun.mp3`);
   cookingSong = loadSound(`assets/sounds/Special-Order.mp3`);
 
   //background images
@@ -238,7 +238,8 @@ function preload() {
   storyBg = loadImage(`assets/images/storyBg.png`);
   kitchenBg =loadImage(`assets/images/kitchenBg.png`);
   tvStoryBg = loadImage(`assets/images/tvBg.png`);
-  chaseBg = loadImage(`assets/images/chaseBg.png`);
+  kitchenChaseInstructionsBg = loadImage(`assets/images/paris.png`);
+  kitchenChaseBg = loadImage(`assets/images/chaseBg.png`);
   goodCookBg = loadImage(`assets/images/goodCookBg.png`);
 
   //buttons
@@ -371,17 +372,17 @@ function changeState(){
   else if(state === `tvStory`){
     tvStory();
   }
-  else if(state === `chaseInstructions`){
-    chaseInstructions();
+  else if(state === `kitchenChaseInstructions`){
+    kitchenChaseInstructions();
   }
-  else if(state === `chase`){
-    chase();
+  else if(state === `kitchenChase`){
+    kitchenChase();
   }
-  else if(state === `chaseWon`){
-    chaseWon();
+  else if(state === `kitchenChaseWon`){
+    kitchenChaseWon();
   }
-  else if(state === `chaseLost`){
-    chaseLost();
+  else if(state === `kitchenChaseLost`){
+    kitchenChaseLost();
   }
   else if(state === `cookingInstructions`){
     cookingInstructions();
@@ -479,22 +480,33 @@ function tvStory(){
   tvStoryButton();
 }
 
-function chaseInstructions(){
-  background(0);
+function kitchenChaseInstructions(){
+  imageMode(CENTER, CENTER);
+  image(kitchenChaseInstructionsBg, width/2, height/2, 1280, 720);
+
   push();
+  textAlign(CENTER, CENTER);
   fill(255);
+  textSize(50);
   textFont(copperplateFont);
-  text(`Instructions`, width/2, height/2);
+  text(`Kitchen Chase`, width/2, height/2 -300);
+  textSize(30);
+  text(`After getting chase out of the house,
+    you make your way to Gusteau's Restaurant in Paris.`, width/2, height/2 -200);
+    text(`Sadly, you get caught in the kitchen and
+      must dodge all the traps.`, width/2, height/2 -100);
   pop();
 }
 
-function chase(){
+function kitchenChase(){
   imageMode(CENTER, CENTER);
-  image(chaseBg, width/2, height/2, 1280, 720);
+  image(kitchenChaseBg, width/2, height/2, 1280, 720);
   push();
+  textAlign(CENTER, CENTER);
   fill(0);
-  textSize(50);
-  text(`KITCHEN NIGHTMARE`, width/2, height/2);
+  textSize(40);
+  textStyle(BOLD);
+  text(`KITCHEN NIGHTMARE`, width/2, height/2 -310);
   pop();
 
   updateRemi();
@@ -505,7 +517,7 @@ function chase(){
 
 }
 
-function chaseWon(){
+function kitchenChaseWon(){
   background(0, 255,0 );
 
   push();
@@ -514,7 +526,7 @@ function chaseWon(){
   pop();
 }
 
-function chaseLost(){
+function kitchenChaseLost(){
   background(0, 255,0 );
 
   push();
@@ -778,7 +790,7 @@ function remiOverlapKnife(){
     remi.checkOverlap(poison);
 
   if(!remi.isRemiAlive){
-    chaseLost();
+    kitchenChaseLost();
   }
 
   }
@@ -993,17 +1005,18 @@ function keyPressed(){
 
   if(state === `tvStory`){
     if(keyCode === 13){ //keycode for enter
-      state = `chaseInstructions`;
+      state = `kitchenChaseInstructions`;
       tvSong.stop();
+      kitchenChaseSong.play();
     }
   }
-  if(state === `chaseInstructions`){
+  if(state === `kitchenChaseInstructions`){
     if(keyCode === 82){ //keycode for R
-      state = `chase`;
+      state = `kitchenChase`;
     }
   }
 
-  if(state === `chaseWon`){
+  if(state === `kitchenChaseWon`){
     if(keyCode === 13){ //enter
       state = `cookingInstructions`
     }

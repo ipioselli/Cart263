@@ -29,7 +29,7 @@ class Remi {
 
   remiAlive() {
     if (this.x > width) {
-      state = `chaseWon`;
+      state = `kitchenChaseWon`;
     }
   }
 
