@@ -11,8 +11,9 @@ Also hides overflow.
 
 body {
   background-color: #d3b0f5;
-  padding: 0;
+  padding: 100px;
   margin: 0;
+  box-sizing: border-box;
   overflow: hidden;
 
 }
@@ -34,16 +35,12 @@ body {
 
 #haiku {
 text-align: center;
-justify-content: center;
-align-items: center;
 color:#7ea889;
 font-family: Helvetica, sans-serif;
 font-size: 40px;
 font-weight: bold;
 background-color:white;
 height:auto;
-margin-left: 300px;
-margin-right: 300px;
 margin-top: 50px;
 padding: 20px;
 min-height: 70vh;
