@@ -18,9 +18,9 @@ Brief:
 
 "use strict";
 
-let maxSpeed = 3;
+let maxSpeed = 3; //speed for transform animation
 
-let words = `Haiku Generator by Ines Pioselli`;
+let words = `Haiku Generator by Ines Pioselli`; //for main title
 
 //pre-made haiku lines
 let fiveSyllableLines = [
@@ -54,44 +54,46 @@ let titles = [
 //4 elements on the page for the lines and title of the poem
 let poemTitle = document.getElementById(`title`);
 let line1P = document.getElementById(`line-1`);
-let line2P =  document.getElementById(`line-2`);
+let line2P = document.getElementById(`line-2`);
 let line3P = document.getElementById(`line-3`);
 
 //set up the starting lines and title
 setupLines();
 //setup the main title
 setupMainTitle();
-
 //listen for click events
 addListeners();
 
-
-function setupMainTitle(){
-
+//splits the characters in the line and makes them move on mouse enter
+function setupMainTitle() {
+  //text element for the main title
   let text = document.getElementById(`mainTitle`);
-
+  //split characters from the line into individual characters
   let chars = words.split(``);
-
-  for(let i = 0; i< chars.length; i++){
+  //goes through every character in the array
+  for (let i = 0; i < chars.length; i++) {
     let span = document.createElement(`span`);
-    if(chars[i] === ` `){
-      span.innerHTML = `&nbsp`;
+    //if its a space add it to the span's html
+    if (chars[i] === ` `) {
+      span.innerHTML = `&nbsp`; //space character
     }
-    else {
+    else { //add characters to itself
       span.innerHTML = chars[i];
     }
     span.classList.add(`character`);
-   // Call "fly" on mouse enter (only once)
-   span.addEventListener(`mouseenter`, fly, {
-     once: true
-   });
-   // Add the span to the text
-   text.appendChild(span);
+    // Call "fly" on mouse enter (only once)
+    span.addEventListener(`mouseenter`, fly, {
+      once: true
+    });
+    // Add the span to the text
+    text.appendChild(span);
 
   }
 }
 
-function fly(event){
+//starts flying the characters
+function fly(event) {
+  //set the velocity
   let vx = maxSpeed / 2 - Math.random() * maxSpeed;
   let vy = maxSpeed / 2 - Math.random() * maxSpeed;
   // On the next frame
@@ -114,7 +116,7 @@ function move(element, x, y, vx, vy) {
 }
 
 //puts a random line and title for each element
-function setupLines(){
+function setupLines() {
   line1P.innerText = random(fiveSyllableLines);
   line2P.innerText = random(sevenSyllableLines);
   line3P.innerText = random(fiveSyllableLines);
@@ -123,69 +125,71 @@ function setupLines(){
 
 
 //adds event listeners for changing each line and title of the poem
-function addListeners(){
+function addListeners() {
   poemTitle.addEventListener(`click`, lineClicked);
   line1P.addEventListener(`click`, lineClicked);
   line2P.addEventListener(`click`, lineClicked);
   line3P.addEventListener(`click`, lineClicked);
 }
 
-function lineClicked(event){
+//triggers a fade when a line or title is clicked
+function lineClicked(event) {
   fadeOut(event.target, 1);
 }
 
-function fadeOut(element, opacity){
+//reduces the opacity until it reaches zero and fades in the next element
+function fadeOut(element, opacity) {
+  //decrease opacity
   opacity -= 0.01;
   element.style[`opacity`] = opacity;
-  if (opacity > 0){
-    requestAnimationFrame(function(){
+  if (opacity > 0) {
+    requestAnimationFrame(function() {
       fadeOut(element, opacity);
     });
-  }
-  else{
-    //something to do when its faded out
+  } else {
+    //if not switch line and fade in
     setNewLine(element);
+    //fades in the next text
     fadeIn(element, 0);
   }
 }
 
-function fadeIn(element, opacity){
+//increases the opacity to 1
+function fadeIn(element, opacity) {
+  //increase opacity
   opacity += 0.01;
   element.style[`opacity`] = opacity;
-  if(opacity < 1){
-    requestAnimationFrame(function(){
+  //check if opacity is less than 1
+  if (opacity < 1) {
+    requestAnimationFrame(function() {
       fadeIn(element, opacity);
     });
   }
 }
 
 
-
-function setNewLine(element){
-  if(element === line1P || element === line3P){
+//set a new line and call responsive voice
+function setNewLine(element) {
+  if (element === line1P || element === line3P) { //use 5 syllables
     let a = random(fiveSyllableLines);
     element.innerText = a;
     responsiveVoice.speak(a, "Japanese Female");
-
-
-  }
-  else if(element === line2P){
+  } else if (element === line2P) { //use 7 syllables
     let b = random(sevenSyllableLines);
-    element.innerText =  b;
+    element.innerText = b;
     responsiveVoice.speak(b, "Japanese Female");
 
-  }
-  else if(element === poemTitle){
+  } else if (element === poemTitle) { //use titles
     let p = random(titles);
-    element.innerText =  p;
+    element.innerText = p;
     responsiveVoice.speak(p, "Japanese Female");
 
   }
 
 }
 
-
-function random(array){
+//function to return random element from the arrays
+function random(array) {
   let index = Math.floor(Math.random() * array.length);
   return array[index];
 }
