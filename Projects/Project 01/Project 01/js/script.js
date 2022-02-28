@@ -238,6 +238,8 @@ function preload() {
 function setup() {
   createCanvas(1280, 720);
 
+  video = createCapture(VIDEO, setupHandpose);
+
   setupRemi();
   setupVeggies();
   setupTomato();
@@ -317,11 +319,11 @@ function setupVeggies(){
 }
 
 function setupHandpose(){
-  video = createCapture(VIDEO);
+
   video.hide();
   // Start the Handpose model and switch to our game state when it loads
-  ratio.x = width / video.elt.videoWidth;
-  ratio.y = height / video.elt.videoHeight;
+  webcamRatio.x = width / video.elt.videoWidth;
+  webcamRatio.y = height / video.elt.videoHeight;
   handpose = ml5.handpose(video, {
     flipHorizontal: true //flips camera
   }, function() {
@@ -538,7 +540,8 @@ function cookingGame() {
 
 
   if (predictions.length > 0) {
-    updatespoon(predictions[0]);
+    let hand = predictions[0];
+    updatespoon(hand);
 
     //calls all the overlap functions
     overlapTomatoes();
@@ -652,9 +655,11 @@ function overlapPoison(){
   }
 }
 
-function updatespoon(prediction) {
-  spoon.x = prediction.annotations.indexFinger[3][0];
-  spoon.y = prediction.annotations.indexFinger[3][1];
+function updatespoon(hand) {
+  let index = hand.annotations.indexFinger[3];
+  spoon.x = index[0] * webcamRatio.x;
+  spoon.y = index[1] * webcamRatio.y;
+
 }
 
 
