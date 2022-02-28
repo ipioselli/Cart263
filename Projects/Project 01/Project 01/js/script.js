@@ -34,6 +34,11 @@ let video = undefined;
 let modelName = `HANDPOSE`;
 let handpose = undefined;
 let predictions = [];
+let webcamRatio = {
+  x: undefined,
+  y: undefined
+};
+
 
 //background images
 let startBg;
@@ -41,6 +46,8 @@ let menuBg;
 let instructionsBg;
 let storyBg;
 let tvBg;
+let chaseInstructionsBg;
+let chaseBg;
 let kitchenBg;
 let goodCookBg;
 let badCookBg;
@@ -73,6 +80,16 @@ let tvKnob = {
   maxSize: 250,
   minSize: 200,
 }
+
+
+let remi;
+let remiImg;
+
+let ratTrapImg;
+let ratTraps = [];
+let numTraps = 10;
+
+
 
 //timer for cooking game to call the bad cook state
 let cookingTimer = 10000;
@@ -157,12 +174,13 @@ let tvSong;
 let chaseSong;
 let cookingSong;
 
+
 let storyNarrative = `Once upon a time there was a rat named remi. \n He loved to eat yummy food from the kitchen. \n But one day something terrible happened. Click space to continue`;
 
 let storyNarrative02 = `He always snuck into the kitchen to watch Gusteau the chef on the tv. He wanted to become just like him. Sadly, he got caught and was chased
 out of the house.`;
 
-let state = `tv`;
+let state = `chase`;
 
 
 
@@ -178,6 +196,7 @@ function preload() {
   spoonImg = loadImage(`assets/images/spoon.png`);
 
   poisonImg = loadImage(`assets/images/poison.png`);
+  remiImg = loadImage(`assets/images/remi.png`);
 
   //ratatouille ingredients
   tomatoImg = loadImage(`assets/images/veggie1.png`);
@@ -185,6 +204,7 @@ function preload() {
   pepperImg = loadImage(`assets/images/veggie4.png`);
   eggplantImg = loadImage(`assets/images/veggie0.png`);
   squashImg = loadImage(`assets/images/veggie2.png`);
+  remiImg = loadImage(`assets/images/remi.png`);
 
   //fonts
   disneyFont = loadFont(`assets/fonts/waltograph42.otf`);
@@ -204,6 +224,7 @@ function preload() {
   storyBg = loadImage(`assets/images/storyBg.png`);
   kitchenBg =loadImage(`assets/images/kitchenBg.png`);
   tvBg = loadImage(`assets/images/tvBg.png`);
+  chaseBg = loadImage(`assets/images/chaseBg.png`);
   goodCookBg = loadImage(`assets/images/goodCookBg.png`);
 
   //buttons
@@ -217,6 +238,7 @@ function preload() {
 function setup() {
   createCanvas(1280, 720);
 
+  setupRemi();
   setupVeggies();
   setupTomato();
   setupZucchini();
@@ -227,6 +249,11 @@ function setup() {
 
 }
 
+function setupRemi(){
+  let x = 0;
+  let y = height/2;
+  remi = new Remi(x, y, remiImg);
+}
 
 function setupTomato(){
   for(let i = 0; i<numTomatoes; i++){
@@ -273,7 +300,6 @@ function setupSquash(){
   }
 }
 
-
 function setupPoison(){
   let x = random(0, width);
   let y = random(0, height);
@@ -294,6 +320,8 @@ function setupHandpose(){
   video = createCapture(VIDEO);
   video.hide();
   // Start the Handpose model and switch to our game state when it loads
+  ratio.x = width / video.elt.videoWidth;
+  ratio.y = height / video.elt.videoHeight;
   handpose = ml5.handpose(video, {
     flipHorizontal: true //flips camera
   }, function() {
@@ -332,10 +360,18 @@ function changeState(){
   else if(state === `chaseInstructions`){
     chaseInstructions();
   }
-  // else if(state === `chase`){
-  //   chase();
-  // }
-
+  else if(state === `chase`){
+    chase();
+  }
+  else if(state === `chaseWon`){
+    chaseWon();
+  }
+  else if(state === `chaseLost`){
+    chaseLost();
+  }
+  else if(state === `cookingInstructions`){
+    cookingInstructions();
+  }
   else if(state === `loading`){
     loading();
   }
@@ -424,6 +460,56 @@ function tv(){
 
   mouseOver();
   tvButton();
+}
+
+function chaseInstructions(){
+  background(0);
+  push();
+  fill(255);
+  textFont(copperplateFont);
+  text(`Instructions`, width/2, height/2);
+  pop();
+}
+
+function chase(){
+  imageMode(CENTER, CENTER);
+  image(chaseBg, width/2, height/2, 1280, 720);
+  push();
+  fill(0);
+  textSize(50);
+  text(`KITCHEN NIGHTMARE`, width/2, height/2);
+  pop();
+
+  updateRemi();
+
+
+
+}
+
+function chaseWon(){
+  background(0, 255,0 );
+
+  push();
+  fill(0);
+  text(`win`, width/2, height/2);
+  pop();
+}
+
+function chaseLost(){
+  background(0, 255,0 );
+
+  push();
+  fill(0);
+  text(`lose`, width/2, height/2);
+  pop();
+}
+
+
+
+function cookingInstructions(){
+  background(278);
+  textFont(copperplateFont);
+  text(`ENTER`, width/2, height/2);
 }
 
 function loading(){
@@ -641,6 +727,10 @@ function setupCircles(){
   }
 }
 
+function updateRemi(){
+  remi.update();
+}
+
 function updateVeggies(){
   for(let i=0; i<veggies.length; i++){
     let veggie = veggies[i];
@@ -735,7 +825,7 @@ function tvButton(){
 function mouseOver(){
   let d = dist(mouseX, mouseY, gameButton.x, gameButton.y);
   if (state === `menu`) {
-    if (d < gameButton.size / 2 - 120) { // -60 is added so the mouse only clicks on the button and not dead space around it
+    if (d < gameButton.size / 2 - 120) { // -120 is added so the mouse only clicks on the button and not dead space around it
       gameButton.size = gameButton.size + 20;
       if(gameButton.size > gameButton.maxSize){
         gameButton.size = gameButton.maxSize;
@@ -824,11 +914,30 @@ function keyPressed(){
   }
 
   if(state === `tv`){
-    if(keyCode === 13){
-      state = `loading`;
+    if(keyCode === 13){ //keycode for enter
+      state = `chaseInstructions`;
+      tvSong.stop();
+    }
+  }
+  if(state === `chaseInstructions`){
+    if(keyCode === 82){ //keycode for R
+      state = `chase`;
+    }
+  }
+
+  if(state === `chase`){
+    if(keyCode === 13){ //enter
+      state = `cookingInstructions`
+    }
+  }
+
+  if(state === `cookingInstructions`){
+    if(keyCode === 32){
+      state = `loading`; //keycode for enter
       tvSong.stop();
       cookingSong.loop();
       setupHandpose();
     }
   }
+
 }
