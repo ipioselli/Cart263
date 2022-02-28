@@ -6,8 +6,9 @@ class Remi{
     this.size = 200;
     this.vx = 0;
     this.vy = 0;
-    this.speed = 5;
+    this.speed = 4;
     this.image = image;
+    this.isRemiAlive = true;
   }
 
   update(){
@@ -30,6 +31,14 @@ class Remi{
     if(this.x > width){
       state = `chaseWon`;
     }
+  }
+
+  checkOverlap(knife){
+    let d = dist(this.x, this.y, knife.x, knife.y);
+    if(d < this.size/2 -100 + knife.size/2){
+      this.isRemiAlive= false;
+    }
+
   }
 
 

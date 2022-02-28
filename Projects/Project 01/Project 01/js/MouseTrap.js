@@ -3,9 +3,13 @@ class MouseTrap{
   constructor(x, y, image){
     this.x = x;
     this.y = y;
-    this.size: 100;
-    this.vx: 0;
-    this.vy: -3;
+    this.size = 100;
+    this.vx= random(-5, -2);
+    this.vy=  random(-5, -2);
+    this.speed = 5;
+    this.image = image;
+
+
 
   }
 
@@ -15,20 +19,25 @@ class MouseTrap{
       this.display();
 
     }
+
   move(){
-    this.x += this.vx;
-    this.y += this.vy;
+    this.x = this.x + this.vx;
+    // this.y = this.y + this.vy;
+
+    this.y = constrain(this.y, 0 , height);
   }
 
   checkOutofBounds(){
     if(this.x < 0 ){
-      reset();
+      this.reset();
     }
   }
 
+
+
   reset(){
     this.x = width;
-    this.y = random(height);
+    this.y = random(0, height);
   }
 
 

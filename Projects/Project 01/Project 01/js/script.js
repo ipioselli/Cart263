@@ -87,7 +87,12 @@ let remiImg;
 
 let ratTrapImg;
 let ratTraps = [];
-let numTraps = 10;
+let numTraps = 0;
+let maxTraps = 10;
+let newTrapTimer = 0 ;
+let timerTrapDelay = 80;
+
+
 
 
 
@@ -197,6 +202,7 @@ function preload() {
 
   poisonImg = loadImage(`assets/images/poison.png`);
   remiImg = loadImage(`assets/images/remi.png`);
+  ratTrapImg = loadImage(`assets/images/knife.png`);
 
   //ratatouille ingredients
   tomatoImg = loadImage(`assets/images/veggie1.png`);
@@ -238,9 +244,9 @@ function preload() {
 function setup() {
   createCanvas(1280, 720);
 
-  video = createCapture(VIDEO, setupHandpose);
 
   setupRemi();
+  // setupTraps();
   setupVeggies();
   setupTomato();
   setupZucchini();
@@ -251,10 +257,22 @@ function setup() {
 
 }
 
+
+
 function setupRemi(){
   let x = 0;
   let y = height/2;
   remi = new Remi(x, y, remiImg);
+}
+
+function setupTraps(){
+  for(let i =0; i<numTraps; i++){
+    let x = width;
+    let y = random(0, height);
+    let knife = new MouseTrap(x, y, ratTrapImg);
+    ratTraps.push(knife);
+  }
+
 }
 
 function setupTomato(){
@@ -483,6 +501,9 @@ function chase(){
   pop();
 
   updateRemi();
+  updateTraps();
+  createRatTraps();
+  remiOverlapKnife();
 
 
 
@@ -736,6 +757,38 @@ function updateRemi(){
   remi.update();
 }
 
+function updateTraps(){
+  for(let i = 0; i< ratTraps.length; i++){
+    let knife = ratTraps[i];
+    knife.update();
+  }
+}
+
+function remiOverlapKnife(){
+  for(let i=0; i<ratTraps.length; i++){
+    let knife = ratTraps[i];
+    remi.checkOverlap(knife);
+  }
+
+  if(!remi.isRemiAlive){
+    chaseLost();
+  }
+
+}
+
+function createRatTraps(){
+  newTrapTimer ++;
+  if(newTrapTimer >= timerTrapDelay){
+    numTraps++;
+    if(numTraps <= maxTraps){
+      ratTraps.push(new MouseTrap(width, random(0, height), ratTrapImg ));
+      newTrapTimer = 0;
+      console.log(ratTraps);
+    }
+
+  }
+}
+
 function updateVeggies(){
   for(let i=0; i<veggies.length; i++){
     let veggie = veggies[i];
@@ -941,7 +994,7 @@ function keyPressed(){
       state = `loading`; //keycode for enter
       tvSong.stop();
       cookingSong.loop();
-      setupHandpose();
+      video = createCapture(VIDEO, setupHandpose);
     }
   }
 
