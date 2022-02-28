@@ -10,39 +10,59 @@ Also hides overflow.
 **********************************************/
 
 body {
-  background-color: #abcbab;
+  background-color: #d3b0f5;
   padding: 0;
   margin: 0;
+  overflow: hidden;
 
 }
 
-h4 {
+#mainTitle {
+  text-align: center;
   font-family: Helvetica, sans-serif;
   font-size: 60px;
   color: pink;
 
 }
 
-#haiku {
+#instructions{
+  text-align: center;
+  font-family: Helvetica, sans-serif;
+  font-size: 20px;
+  color: pink;
+}
 
-  justify-content: center;
-  align-items: center;
-color:red;
+#haiku {
+text-align: center;
+justify-content: center;
+align-items: center;
+color:#7ea889;
 font-family: Helvetica, sans-serif;
 font-size: 40px;
 font-weight: bold;
 background-color:white;
 height:auto;
-margin-left: 200px;
-margin-right: 200px;
+margin-left: 300px;
+margin-right: 300px;
 margin-top: 50px;
 padding: 20px;
 min-height: 70vh;
 border-radius: 20px;
 }
 
+#haiku p{
+
+  margin-top: 20px;
+
+}
+
 
 #title {
-  color: black;
+  color: #573d70;
   font-size: 50px;
+}
+
+.character {
+  display: inline-block;
+  position: relative;
 }
