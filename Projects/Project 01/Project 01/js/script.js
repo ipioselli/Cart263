@@ -34,6 +34,11 @@ let video = undefined;
 let modelName = `HANDPOSE`;
 let handpose = undefined;
 let predictions = [];
+let webcamRatio = {
+  x: undefined,
+  y: undefined
+};
+
 
 //background images
 let startBg;
@@ -315,6 +320,8 @@ function setupHandpose(){
   video = createCapture(VIDEO);
   video.hide();
   // Start the Handpose model and switch to our game state when it loads
+  ratio.x = width / video.elt.videoWidth;
+  ratio.y = height / video.elt.videoHeight;
   handpose = ml5.handpose(video, {
     flipHorizontal: true //flips camera
   }, function() {
