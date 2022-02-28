@@ -81,19 +81,20 @@ let tvKnob = {
   minSize: 200,
 }
 
-
+//variables for chase minigame
+//remi (main character) variables
 let remi;
 let remiImg;
 
+//variables for the traps(knife)
 let ratTrapImg;
 let ratTraps = [];
 let numTraps = 0;
 let maxTraps = 10;
+
+//timer to push a new trap from the Rattrap class
 let newTrapTimer = 0 ;
 let timerTrapDelay = 80;
-
-
-
 
 
 //timer for cooking game to call the bad cook state
@@ -170,6 +171,7 @@ let spoon = {
   image:undefined,
 };
 
+//handpose `pin`
 let spoonImg;
 
 //songs
@@ -185,7 +187,7 @@ let storyNarrative = `Once upon a time there was a rat named remi. \n He loved t
 let storyNarrative02 = `He always snuck into the kitchen to watch Gusteau the chef on the tv. He wanted to become just like him. Sadly, he got caught and was chased
 out of the house.`;
 
-let state = `chase`;
+let state = `start`;
 
 
 
@@ -197,9 +199,8 @@ function preload() {
     veggieImages.push(veggieImage);
   }
 
-  //icons
+  //single Images
   spoonImg = loadImage(`assets/images/spoon.png`);
-
   poisonImg = loadImage(`assets/images/poison.png`);
   remiImg = loadImage(`assets/images/remi.png`);
   ratTrapImg = loadImage(`assets/images/knife.png`);
@@ -246,7 +247,6 @@ function setup() {
 
 
   setupRemi();
-  // setupTraps();
   setupVeggies();
   setupTomato();
   setupZucchini();
@@ -257,22 +257,10 @@ function setup() {
 
 }
 
-
-
 function setupRemi(){
   let x = 0;
   let y = height/2;
   remi = new Remi(x, y, remiImg);
-}
-
-function setupTraps(){
-  for(let i =0; i<numTraps; i++){
-    let x = width;
-    let y = random(0, height);
-    let knife = new MouseTrap(x, y, ratTrapImg);
-    ratTraps.push(knife);
-  }
-
 }
 
 function setupTomato(){
@@ -505,8 +493,6 @@ function chase(){
   createRatTraps();
   remiOverlapKnife();
 
-
-
 }
 
 function chaseWon(){
@@ -715,10 +701,10 @@ function checkScore(){
 function checkTimer(){
   cookingTimer -= 1;
   if(cookingTimer <= 0){
-    cookingTimer = true;
+    cookingTimerDone = true;
   }
   if(cookingTimerDone){
-    state = `BadCook`;
+    state = `badCook`;
   }
 }
 
@@ -781,9 +767,8 @@ function createRatTraps(){
   if(newTrapTimer >= timerTrapDelay){
     numTraps++;
     if(numTraps <= maxTraps){
-      ratTraps.push(new MouseTrap(width, random(0, height), ratTrapImg ));
+      ratTraps.push(new RatTrap(width, random(0, height), ratTrapImg ));
       newTrapTimer = 0;
-      console.log(ratTraps);
     }
 
   }

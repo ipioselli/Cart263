@@ -1,6 +1,6 @@
-class Remi{
+class Remi {
 
-  constructor(x, y, image){
+  constructor(x, y, image) {
     this.x = x;
     this.y = y;
     this.size = 200;
@@ -11,38 +11,38 @@ class Remi{
     this.isRemiAlive = true;
   }
 
-  update(){
+  update() {
     this.move();
     this.remiAlive();
     this.handleInput();
     this.display();
   }
 
-  move(){
+  move() {
     this.x = this.x + this.vx;
     this.y = this.y + this.vy;
 
     //constrain only on the y axis
-    this.y = constrain(this.y, 0 , height);
+    this.y = constrain(this.y, 0, height);
 
   }
 
-  remiAlive(){
-    if(this.x > width){
+  remiAlive() {
+    if (this.x > width) {
       state = `chaseWon`;
     }
   }
 
-  checkOverlap(knife){
+  checkOverlap(knife) {
     let d = dist(this.x, this.y, knife.x, knife.y);
-    if(d < this.size/2 -100 + knife.size/2){
-      this.isRemiAlive= false;
+    if (d < this.size / 2 - 100 + knife.size / 2) {
+      this.isRemiAlive = false;
     }
 
   }
 
 
-  handleInput(){
+  handleInput() {
 
     if (keyIsDown(LEFT_ARROW)) {
       this.vx = -this.speed;
@@ -61,7 +61,7 @@ class Remi{
     }
   }
 
-  display(){
+  display() {
     push();
     image(this.image, this.x, this.y, this.size, this.size);
     pop();
