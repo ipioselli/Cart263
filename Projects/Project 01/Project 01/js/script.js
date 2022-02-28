@@ -925,7 +925,7 @@ function keyPressed(){
     }
   }
 
-  if(state === `chase`){
+  if(state === `chaseWon`){
     if(keyCode === 13){ //enter
       state = `cookingInstructions`
     }
