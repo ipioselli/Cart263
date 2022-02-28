@@ -15,7 +15,7 @@ ideas:
   - menu -- √
   - backstory -- √
   - gustavo on the tv ---- √
-  - hide from mousetrap and poison
+  - hide from mousetrap and poison --√
   - meet linguini
   - handpose game --√
   - good ending
@@ -45,7 +45,7 @@ let startBg;
 let menuBg;
 let instructionsBg;
 let storyBg;
-let tvBg;
+let tvStoryBg;
 let chaseInstructionsBg;
 let chaseBg;
 let kitchenBg;
@@ -91,6 +91,12 @@ let ratTrapImg;
 let ratTraps = [];
 let numTraps = 0;
 let maxTraps = 10;
+
+let ratPoisonImg;
+let ratPoison;
+let ratPoisonArray = [];
+let numRatPoison = 0;
+let maxRatPoison = 5;
 
 //timer to push a new trap from the Rattrap class
 let newTrapTimer = 0 ;
@@ -187,7 +193,7 @@ let storyNarrative = `Once upon a time there was a rat named remi. \n He loved t
 let storyNarrative02 = `He always snuck into the kitchen to watch Gusteau the chef on the tv. He wanted to become just like him. Sadly, he got caught and was chased
 out of the house.`;
 
-let state = `start`;
+let state = `chase`;
 
 
 
@@ -204,6 +210,7 @@ function preload() {
   poisonImg = loadImage(`assets/images/poison.png`);
   remiImg = loadImage(`assets/images/remi.png`);
   ratTrapImg = loadImage(`assets/images/knife.png`);
+  ratPoisonImg = loadImage(`assets/images/poison.png`);
 
   //ratatouille ingredients
   tomatoImg = loadImage(`assets/images/veggie1.png`);
@@ -230,7 +237,7 @@ function preload() {
   instructionsBg = loadImage(`assets/images/instructionsBg.png`);
   storyBg = loadImage(`assets/images/storyBg.png`);
   kitchenBg =loadImage(`assets/images/kitchenBg.png`);
-  tvBg = loadImage(`assets/images/tvBg.png`);
+  tvStoryBg = loadImage(`assets/images/tvBg.png`);
   chaseBg = loadImage(`assets/images/chaseBg.png`);
   goodCookBg = loadImage(`assets/images/goodCookBg.png`);
 
@@ -344,11 +351,10 @@ function setupHandpose(){
 
 //calls changeState function to switch from state to state
 function draw() {
-
 changeState();
 }
 
-
+//function to create all the states for the ga,e
 function changeState(){
   if (state === `start`){
     start();
@@ -362,8 +368,8 @@ function changeState(){
   else if(state === `story`){
     story();
   }
-  else if(state === `tv`){
-    tv();
+  else if(state === `tvStory`){
+    tvStory();
   }
   else if(state === `chaseInstructions`){
     chaseInstructions();
@@ -395,6 +401,7 @@ function changeState(){
 }
 
 
+//start state with title and floating veggies
 function start(){
   imageMode(CENTER, CENTER);
   image(startBg, width/2 , height/2, 1280, 720);
@@ -407,20 +414,22 @@ function start(){
   text(`ENTER to begin`, width/2, height/2-300);
   pop();
 
+  //calls function to display floating veggies
   updateVeggies();
 }
 
+//menu state to lead to game or instructions page
 function menu(){
   imageMode(CENTER, CENTER);
   image(menuBg, width/2 , height/2, 1280, 720);
 
-  buttonGame();
-  buttonInstructions();
-  mouseOver();
+  buttonGame();  //displays game button
+  buttonInstructions(); //displays instructions button
+  mouseOver(); //calls mouseOver function to check if mouse hovered over the buttons
 }
 
-function instructions(){
 
+function instructions(){
   imageMode(CENTER, CENTER);
   image(instructionsBg, width/2 , height/2, 1280, 720);
 
@@ -452,9 +461,9 @@ function story(){
   setupCircles();
 }
 
-function tv(){
+function tvStory(){
   imageMode(CENTER, CENTER);
-  image(tvBg, width/2, height/2, 1280, 720);
+  image(tvStoryBg, width/2, height/2, 1280, 720);
 
   push();
   textFont(copperplateFont);
@@ -467,7 +476,7 @@ function tv(){
   pop();
 
   mouseOver();
-  tvButton();
+  tvStoryButton();
 }
 
 function chaseInstructions(){
@@ -491,6 +500,7 @@ function chase(){
   updateRemi();
   updateTraps();
   createRatTraps();
+  createRatPoison();
   remiOverlapKnife();
 
 }
@@ -517,8 +527,10 @@ function chaseLost(){
 
 function cookingInstructions(){
   background(278);
+  push();
   textFont(copperplateFont);
   text(`ENTER`, width/2, height/2);
+  pop();
 }
 
 function loading(){
@@ -748,18 +760,28 @@ function updateTraps(){
     let knife = ratTraps[i];
     knife.update();
   }
+
+  for(let i = 0; i< ratPoisonArray.length; i++){
+    let ratPoison = ratPoisonArray[i];
+    ratPoison.update();
+  }
 }
+
 
 function remiOverlapKnife(){
   for(let i=0; i<ratTraps.length; i++){
     let knife = ratTraps[i];
     remi.checkOverlap(knife);
   }
+  for(let i = 0; i< ratPoisonArray.length; i++){
+    let poison = ratPoisonArray[i];
+    remi.checkOverlap(poison);
 
   if(!remi.isRemiAlive){
     chaseLost();
   }
 
+  }
 }
 
 function createRatTraps(){
@@ -771,6 +793,17 @@ function createRatTraps(){
       newTrapTimer = 0;
     }
 
+  }
+}
+
+function createRatPoison(){
+  newTrapTimer ++;
+  if(newTrapTimer >= timerTrapDelay){
+    numRatPoison++;
+    if(numRatPoison <= maxRatPoison){
+      ratPoisonArray.push(new RatTrap(width, random(0, height), ratPoisonImg));
+      newTrapTimer = 0;
+    }
   }
 }
 
@@ -829,6 +862,8 @@ function displayspoon(){
 
 }
 
+
+//function to display all the scores for the ingredients
 function displayScore(){
   push();
   textSize(20);
@@ -859,7 +894,7 @@ function buttonInstructions(){
 
 }
 
-function tvButton(){
+function tvStoryButton(){
   imageMode(CENTER, CENTER);
   image(tvKnob.image,tvKnob.x, tvKnob.y, tvKnob.size, tvKnob.size );
 }
@@ -889,7 +924,7 @@ function mouseOver(){
   }
 
   let d3 = dist(mouseX, mouseY, tvKnob.x, tvKnob.y);
-  if(state === `tv`){
+  if(state === `tvStory`){
     if(d3 < tvKnob.size/2 - 50){
       tvKnob.size = tvKnob.size + 20;
       if(tvKnob.size > tvKnob.maxSize){
@@ -925,7 +960,7 @@ function mousePressed() {
   }
 
   let d3 = dist(mouseX, mouseY, tvKnob.x, tvKnob.y);
-  if(state === `tv`){
+  if(state === `tvStory`){
     if(d3 < tvKnob.size/2 - 50){
       responsiveVoice.speak(storyNarrative02, "French Female");
     }
@@ -949,14 +984,14 @@ function keyPressed(){
 
   if(state === `story`){
     if(keyCode === 32){ //keycode for spacebar
-      state = `tv`;
+      state = `tvStory`;
       storySong.stop();
       tvSong.loop();
       tvSong.setVolume(0.5);
     }
   }
 
-  if(state === `tv`){
+  if(state === `tvStory`){
     if(keyCode === 13){ //keycode for enter
       state = `chaseInstructions`;
       tvSong.stop();
