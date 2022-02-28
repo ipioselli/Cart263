@@ -4,14 +4,8 @@ Ines Pioselli
 
 Generates a random haiku based on existing arrays of lines.
 You can swap lines by clicking on them which also activates responsive voice.
+The sub title is also swaped when clicked on.
 If you hover the main title, the words get moved all over the canvas.
-
-Brief:
- - tidy up the program
- - improve html and css
- - add a title for the poem
- - add css animations
- - add synthesized voice read the poem --> check
 
 
 */
