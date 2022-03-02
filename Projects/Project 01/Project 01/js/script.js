@@ -204,7 +204,7 @@ out of the house.`;
 let storyNarrative03 = `Linguini saved Remi from dying and decided to help him become a chef. Remi also helped Linguini become a better cook.`;
 
 //initial state
-let state = `cookingInstructions`;
+let state = `start`;
 
 
 
@@ -254,7 +254,9 @@ function preload() {
   kitchenChaseBg = loadImage(`assets/images/chaseBg.png`);
   goodCookBg = loadImage(`assets/images/goodCookBg.png`);
   kitchenChaseWonBg = loadImage(`assets/images/kitchenWinBg.png`);
+  kitchenChaseLostBg = loadImage(`assets/images/kitchenLostBg.png`);
   cookingInstructionsBg = loadImage(`assets/images/CookingInstructionsBg.png`);
+
 
   //buttons
   gameButton.image = loadImage(`assets/images/gameButton.png`);
@@ -570,11 +572,18 @@ function kitchenChaseWon(){
 
 //losing state for chase
 function kitchenChaseLost(){
-  background(0, 255,0 );
+  imageMode(CENTER, CENTER);
+  image(kitchenChaseLostBg, width/2, height/2, 1280, 720);
 
   push();
-  fill(0);
-  text(`lose`, width/2, height/2);
+  textAlign(CENTER, CENTER);
+  textStyle(BOLD);
+  textSize(40);
+  textFont(copperplateFont);
+  fill(255);
+  text(`RIP you did not make it`, width/2, height/2-300);
+  textSize(30);
+  text(`You also did not become a chef :(`, width/2, height/2 + 280);
   pop();
 }
 
