@@ -1,12 +1,8 @@
 /**
 Project 01 : A night at the movies
-Ines Pioselli
+By: Ines Pioselli
+Based on the movie Ratatouille
 
-Requirements:
-- must be interactive
-- must use p5 √
-- must use one other library
-- must include an artist statement of 300 words
 
 Ratatouille simulator
 ideas:
@@ -39,7 +35,6 @@ let webcamRatio = {
   y: undefined
 };
 
-
 //background images
 let startBg;
 let menuBg;
@@ -49,6 +44,8 @@ let tvStoryBg;
 let kitchenChaseInstructionsBg;
 let kitchenChaseBg;
 let kitchenBg;
+let kitchenChaseWon;
+let kitchenChaseLost;
 let goodCookBg;
 let badCookBg;
 
@@ -69,7 +66,6 @@ let helpButton = {
   size: 50,
   maxSize: 400,
   minSize: 300,
-
 };
 
 //tv knob on the tv state to call responsiveVoice
@@ -81,17 +77,19 @@ let tvKnob = {
   minSize: 200,
 }
 
-//variables for chase minigame
+// ---- variables for chase minigame ---- //
+
 //remi (main character) variables
 let remi;
 let remiImg;
 
-//variables for the traps(knife)
-let ratTrapImg;
-let ratTraps = [];
-let numTraps = 0;
-let maxTraps = 10;
+//variables for the traps(knife) in kicthen chase game
+let ratKnifeImg;
+let ratKnives = [];
+let numRatKnives = 0;
+let maxRatKnives = 5;
 
+//variables for rat poison in kitchen chase game
 let ratPoisonImg;
 let ratPoison;
 let ratPoisonArray = [];
@@ -102,6 +100,7 @@ let maxRatPoison = 5;
 let newTrapTimer = 0 ;
 let timerTrapDelay = 80;
 
+// ---- variables for cooking game ---- //
 
 //timer for cooking game to call the bad cook state
 let cookingTimer = 10000;
@@ -135,6 +134,7 @@ let zucchinisInPot = 0;
 let zucchiniIsReady = false;
 let zucchiniRatio = ` /5`;
 
+//pepper variables for the cooking game
 let pepperImg;
 let peppers = [];
 let numPeppers = 5;
@@ -143,6 +143,7 @@ let maxPeppersInPot = 5;
 let pepperIsReady = false;
 let pepperRatio = ` /5`;
 
+//eggplant variables for the cooking game
 let eggplantImg;
 let eggplants = [];
 let numEggplants = 5;
@@ -151,6 +152,7 @@ let maxEggplantsInPot = 5;
 let eggplantIsReady = false;
 let eggplantRatio = ` /5`;
 
+//squash variables for the cooking game
 let squashImg;
 let squashes = [];
 let numSquashes = 5;
@@ -159,17 +161,20 @@ let maxSquashesInPot = 5;
 let squashIsReady = false;
 let squashRatio = ` /5`;
 
+//veggie variables for floating veggies at the start state
 let numVeggiesImages = 5;
 let numVeggies = 30;
 let veggieImages = [];
 let veggies = [];
 
+//circles for fading circles at the story state
 let circles = [];
 let maxCircles = 400;
 let totalCircles = 0;
 let circleTimer = 0;
 let newCircleDelay = 10;
 
+//spoon for handpose
 let spoon = {
   x:0,
   y:0,
@@ -187,13 +192,16 @@ let tvSong;
 let kitchenChaseSong;
 let cookingSong;
 
+//narration for story state
+let storyNarrative = `Once upon a time there was a rat named Remi. He lived in someone's house with his big family. He loved to eat yummy food from the kitchen.
+Press space to continue`;
 
-let storyNarrative = `Once upon a time there was a rat named remi. \n He loved to eat yummy food from the kitchen. \n But one day something terrible happened. Click space to continue`;
-
+//narration for tvstory state
 let storyNarrative02 = `He always snuck into the kitchen to watch Gusteau the chef on the tv. He wanted to become just like him. Sadly, he got caught and was chased
 out of the house.`;
 
-let state = `kitchenChaseInstructions`;
+//initial state
+let state = `start`;
 
 
 
@@ -209,7 +217,7 @@ function preload() {
   spoonImg = loadImage(`assets/images/spoon.png`);
   poisonImg = loadImage(`assets/images/poison.png`);
   remiImg = loadImage(`assets/images/remi.png`);
-  ratTrapImg = loadImage(`assets/images/knife.png`);
+  ratKnifeImg = loadImage(`assets/images/knife.png`);
   ratPoisonImg = loadImage(`assets/images/poison.png`);
 
   //ratatouille ingredients
@@ -236,7 +244,7 @@ function preload() {
   menuBg = loadImage(`assets/images/menuBg.png`);
   instructionsBg = loadImage(`assets/images/instructionsBg.png`);
   storyBg = loadImage(`assets/images/storyBg.png`);
-  kitchenBg =loadImage(`assets/images/kitchenBg.png`);
+  kitchenBg = loadImage(`assets/images/kitchenBg.png`);
   tvStoryBg = loadImage(`assets/images/tvBg.png`);
   kitchenChaseInstructionsBg = loadImage(`assets/images/paris.png`);
   kitchenChaseBg = loadImage(`assets/images/chaseBg.png`);
@@ -251,9 +259,9 @@ function preload() {
 
 //setup of the canvas
 function setup() {
-  createCanvas(1280, 720);
+  createCanvas(1280, 720); // set canvas to 1280 x720
 
-
+  //calls the functions to setup characters, veggies, ingredients and poison
   setupRemi();
   setupVeggies();
   setupTomato();
@@ -265,63 +273,76 @@ function setup() {
 
 }
 
+//function to setup Remi in the kitchen chase game
 function setupRemi(){
-  let x = 0;
-  let y = height/2;
+  let x = 0; //starts at 0 on the left side
+  let y = height/2; //starts in the middle on y-axis
   remi = new Remi(x, y, remiImg);
 }
 
+//function to setup tomatoes in kitchen game
 function setupTomato(){
   for(let i = 0; i<numTomatoes; i++){
+    //random width and height
     let x = random(0, width);
     let y = random(0, height);
-    let ingredient01 = new Food(x, y, tomatoImg);
+    let ingredient01 = new Ratatouille(x, y, tomatoImg);
     tomatoes.push(ingredient01);
   }
 }
 
+//function to setup the zucchini in the kitchen game
 function setupZucchini(){
   for(let i = 0; i<numZucchinis; i++){
+    //random width and height
     let x = random(0, width);
     let y = random(0, height);
-    let ingredient02 = new Food(x, y, zucchiniImg);
+    let ingredient02 = new Ratatouille(x, y, zucchiniImg);
     zucchinis.push(ingredient02);
   }
 }
 
+//function to setup the peppers in the kitchen game
 function setupPepper(){
   for(let i = 0; i<numPeppers; i++){
+    //random width and height
     let x = random(0, width);
     let y = random(0, height);
-    let ingredient03 = new Food(x, y, pepperImg);
+    let ingredient03 = new Ratatouille(x, y, pepperImg);
     peppers.push(ingredient03);
   }
 }
 
+//setup eggplants in the kitchen game
 function setupEggplant(){
   for(let i =0; i<numEggplants; i++){
+    //random width and height
     let x = random(0, width);
     let y = random(0, height);
-    let ingredient04 = new Food(x, y, eggplantImg);
+    let ingredient04 = new Ratatouille(x, y, eggplantImg);
     eggplants.push(ingredient04);
   }
 }
 
+//setup squash in the kitchen game
 function setupSquash(){
   for(let i =0; i<numSquashes; i++){
+    //random width and height
     let x = random(0, width);
     let y = random(0, height);
-    let ingredient05 = new Food(x, y, squashImg);
+    let ingredient05 = new Ratatouille(x, y, squashImg);
     squashes.push(ingredient05);
   }
 }
 
 function setupPoison(){
+  //random width and height
   let x = random(0, width);
   let y = random(0, height);
-  poison = new Food(x, y, poisonImg);
+  poison = new Ratatouille(x, y, poisonImg);
 }
 
+//function to setup veggies for the start state
 function setupVeggies(){
   for(let i = 0; i < numVeggies; i++){
       let x = random(0, width);
@@ -332,16 +353,18 @@ function setupVeggies(){
     }
 }
 
+//function to setup handpose for the cooking game
 function setupHandpose(){
 
   video.hide();
-  // Start the Handpose model and switch to our game state when it loads
+  // Start the Handpose model and switch to our cookingGame state when it loads
+  //calculate ratio of the canvas to the webcam
   webcamRatio.x = width / video.elt.videoWidth;
   webcamRatio.y = height / video.elt.videoHeight;
   handpose = ml5.handpose(video, {
     flipHorizontal: true //flips camera
   }, function() {
-    state = `cookingGame` //calls the game state
+    state = `cookingGame` //calls the cookingGame state
   });
   // Listen for prediction events from Handpose and store the results in our
   // predictions array when they occur
@@ -355,7 +378,7 @@ function draw() {
 changeState();
 }
 
-//function to create all the states for the ga,e
+//function to create all the states for the game
 function changeState(){
   if (state === `start`){
     start();
@@ -429,7 +452,7 @@ function menu(){
   mouseOver(); //calls mouseOver function to check if mouse hovered over the buttons
 }
 
-
+//instructions for the entire game
 function instructions(){
   imageMode(CENTER, CENTER);
   image(instructionsBg, width/2 , height/2, 1280, 720);
@@ -448,6 +471,7 @@ function instructions(){
   pop();
 }
 
+//backstory
 function story(){
   imageMode(CENTER, CENTER);
   image(storyBg, width/2 , height/2, 1280, 720);
@@ -459,9 +483,10 @@ function story(){
   text(`click the screen for a surprise`, width/2, height/2 -250);
   pop();
 
-  setupCircles();
+  setupCircles(); //setup the fading circles in the background
 }
 
+//tv backstory for Gusteau's Restaurant
 function tvStory(){
   imageMode(CENTER, CENTER);
   image(tvStoryBg, width/2, height/2, 1280, 720);
@@ -476,47 +501,50 @@ function tvStory(){
   text(`Press ENTER to skip`, width/2, height/2 + 300);
   pop();
 
-  mouseOver();
-  tvStoryButton();
+  mouseOver(); //call mouseover to check if you hover over the tv knob
+  tvStoryButton(); // display tv knob button
 }
 
+//instructions for kitchen chase game
 function kitchenChaseInstructions(){
   imageMode(CENTER, CENTER);
   image(kitchenChaseInstructionsBg, width/2, height/2, 1280, 720);
 
   push();
-  textAlign(CENTER, CENTER);
+  textAlign( CENTER);
   fill(255);
   textSize(50);
   textFont(copperplateFont);
   text(`Kitchen Chase`, width/2, height/2 -300);
   textSize(30);
-  text(`After getting chase out of the house,
-    you make your way to Gusteau's Restaurant in Paris.`, width/2, height/2 -200);
-    text(`Sadly, you get caught in the kitchen and
-      must dodge all the traps.`, width/2, height/2 -100);
+  text(`After getting chased out of the house, \n you make your way to Gusteau's Restaurant in Paris.`, width/2, height/2 -200);
+  text(`Sadly, you get caught in the kitchen and \n must dodge all the traps.`, width/2, height/2 -100);
+  textSize(20);
+  text(`Use the arrow keys to navigate to the edge of the screen`, width/2, height/2 -0);
+  text(`Press R when ready`, width/2, height/2 +70);
   pop();
 }
 
+//kitchen chase game
 function kitchenChase(){
   imageMode(CENTER, CENTER);
   image(kitchenChaseBg, width/2, height/2, 1280, 720);
   push();
   textAlign(CENTER, CENTER);
-  fill(0);
+  fill(51, 30, 77);
   textSize(40);
   textStyle(BOLD);
   text(`KITCHEN NIGHTMARE`, width/2, height/2 -310);
   pop();
 
-  updateRemi();
-  updateTraps();
-  createRatTraps();
-  createRatPoison();
-  remiOverlapKnife();
-
+  updateRemi(); //display remi
+  updateRatObstacles(); //displays obstacles
+  createRatKnives(); //creates all the knives
+  createRatPoison(); //creates the poison
+  remiOverlapKnife(); //check overlap with remi and the obstacles
 }
 
+//win state for winning kitchen chase game
 function kitchenChaseWon(){
   background(0, 255,0 );
 
@@ -767,9 +795,9 @@ function updateRemi(){
   remi.update();
 }
 
-function updateTraps(){
-  for(let i = 0; i< ratTraps.length; i++){
-    let knife = ratTraps[i];
+function updateRatObstacles(){
+  for(let i = 0; i< ratKnives.length; i++){
+    let knife = ratKnives[i];
     knife.update();
   }
 
@@ -780,28 +808,28 @@ function updateTraps(){
 }
 
 
-function remiOverlapKnife(){
-  for(let i=0; i<ratTraps.length; i++){
-    let knife = ratTraps[i];
+function remiOverlapKnife() {
+  for (let i = 0; i < ratKnives.length; i++) {
+    let knife = ratKnives[i];
     remi.checkOverlap(knife);
   }
-  for(let i = 0; i< ratPoisonArray.length; i++){
+  for (let i = 0; i < ratPoisonArray.length; i++) {
     let poison = ratPoisonArray[i];
     remi.checkOverlap(poison);
 
-  if(!remi.isRemiAlive){
-    kitchenChaseLost();
-  }
+    if (!remi.isRemiAlive) {
+      kitchenChaseLost();
+    }
 
   }
 }
 
-function createRatTraps(){
+function createRatKnives(){
   newTrapTimer ++;
   if(newTrapTimer >= timerTrapDelay){
-    numTraps++;
-    if(numTraps <= maxTraps){
-      ratTraps.push(new RatTrap(width, random(0, height), ratTrapImg ));
+    numRatKnives++;
+    if(numRatKnives <= maxRatKnives){
+      ratKnives.push(new RatObstacle(width, random(0, height), ratKnifeImg ));
       newTrapTimer = 0;
     }
 
@@ -813,7 +841,7 @@ function createRatPoison(){
   if(newTrapTimer >= timerTrapDelay){
     numRatPoison++;
     if(numRatPoison <= maxRatPoison){
-      ratPoisonArray.push(new RatTrap(width, random(0, height), ratPoisonImg));
+      ratPoisonArray.push(new RatObstacle(width, random(0, height), ratPoisonImg));
       newTrapTimer = 0;
     }
   }
@@ -1008,6 +1036,7 @@ function keyPressed(){
       state = `kitchenChaseInstructions`;
       tvSong.stop();
       kitchenChaseSong.play();
+      kitchenChaseSong.setVolume(0.5);
     }
   }
   if(state === `kitchenChaseInstructions`){
@@ -1019,12 +1048,13 @@ function keyPressed(){
   if(state === `kitchenChaseWon`){
     if(keyCode === 13){ //enter
       state = `cookingInstructions`
+      kitchenChaseSong.stop();
     }
   }
 
   if(state === `cookingInstructions`){
     if(keyCode === 32){
-      state = `loading`; //keycode for enter
+      state = `loading`; //keycode for space
       tvSong.stop();
       cookingSong.loop();
       video = createCapture(VIDEO, setupHandpose);

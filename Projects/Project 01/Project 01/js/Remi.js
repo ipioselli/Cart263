@@ -1,16 +1,27 @@
+/*
+Remi class
+This class is for the first mini game in which Remi, the rat, has to dodge
+all the obstacles. This class allows Remi to move with keyboard input,
+check for overlaps with other objects and to be displayed.
+*/
+
 class Remi {
 
-  constructor(x, y, image) {
+  constructor(x, y, image) { //calls the constructor
+    //position
     this.x = x;
     this.y = y;
     this.size = 200;
+    //speed
     this.vx = 0;
     this.vy = 0;
     this.speed = 4;
+    //image
     this.image = image;
-    this.isRemiAlive = true;
+    this.isRemiAlive = true; //checks if remi is alive
   }
 
+  //calls all the functions in remi's class
   update() {
     this.move();
     this.remiAlive();
@@ -18,6 +29,7 @@ class Remi {
     this.display();
   }
 
+  //allows remi to move
   move() {
     this.x = this.x + this.vx;
     this.y = this.y + this.vy;
@@ -27,21 +39,23 @@ class Remi {
 
   }
 
+  //check if remi has moved off the canvas and calls the win state
   remiAlive() {
-    if (this.x > width) {
-      state = `kitchenChaseWon`;
+    if (this.x > width) { //if his position is off the canvas
+      state = `kitchenChaseWon`; //he wins the game
     }
   }
 
-  checkOverlap(knife) {
-    let d = dist(this.x, this.y, knife.x, knife.y);
-    if (d < this.size / 2 - 100 + knife.size / 2) {
-      this.isRemiAlive = false;
+  //check for overlap with any obstacle
+  checkOverlap(obstacle) {
+    let d = dist(this.x, this.y, obstacle.x, obstacle.y);
+    if (d < this.size / 2 - 100 + obstacle.size / 2) {
+      this.isRemiAlive = false; //if he overlaps with an obstacle he is no longer alive
     }
 
   }
 
-
+  //move Remi with keyboard arrows
   handleInput() {
 
     if (keyIsDown(LEFT_ARROW)) {
@@ -61,6 +75,7 @@ class Remi {
     }
   }
 
+  //display remi with an image
   display() {
     push();
     image(this.image, this.x, this.y, this.size, this.size);

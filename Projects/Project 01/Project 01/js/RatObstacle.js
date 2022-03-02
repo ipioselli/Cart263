@@ -1,4 +1,11 @@
-class RatTrap {
+/*
+Rat Obstacle class
+This class is for the cooking game at the end. It is used to create
+all the ingredients in the Ratatouille recipe.
+Allows them to move, be added to a pot and get displayed with an image.
+*/
+
+class RatObstacle {
 
   constructor(x, y, image) {
     this.x = x;
