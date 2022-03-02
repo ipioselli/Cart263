@@ -1,16 +1,22 @@
+/*
+Veggies class
+This class displays the floating veggies in the start state.
+*/
 class Veggies {
-  constructor(x, y, image) {
+  constructor(x, y, image) { //calls the constructor
+    //position
     this.x = x;
     this.y = y;
-
+    //speed
     this.vx = random(-1, 1);
     this.vy = random(-1, 1);
     this.size = 50;
+    //image
     this.image = image;
 
   }
 
-
+  //calls all the functions in the veggies class
   update() {
     this.display();
     this.move();
@@ -36,6 +42,7 @@ class Veggies {
 
   }
 
+  //display the veggies with images
   display() {
     push();
     noStroke();

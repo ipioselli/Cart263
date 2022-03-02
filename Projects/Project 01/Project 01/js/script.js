@@ -3,20 +3,15 @@ Project 01 : A night at the movies
 By: Ines Pioselli
 Based on the movie Ratatouille
 
+Story:
+You are experiencing the plot as the main character Remi. You have big dreams of
+becoming a chef but must overcome many obstacles before pursuing your dreams.
+Join Remi on his journey in Paris!
 
-Ratatouille simulator
-ideas:
-  - make ingredients green when they have been added to the pot
-  - start state -- √
-  - menu -- √
-  - backstory -- √
-  - gustavo on the tv ---- √
-  - hide from mousetrap and poison --√
-  - meet linguini
-  - handpose game --√
-  - good ending
-  - bad ending
-
+How to play:
+1. Listen to Remi's backstory
+2. Escape the dangers of Gusteau kitchen
+3. Help Linguini make ratatouille to prove you are the best chef in paris.
 */
 
 "use strict";
@@ -107,8 +102,8 @@ let numRatPoison = 0;
 let maxRatPoison = 5;
 
 //timer to push a new trap from the Rattrap class
-let newTrapTimer = 0 ;
-let timerTrapDelay = 80;
+let newObstacleTimer = 0 ;
+let timerObstacleDelay = 80;
 
 // ---- variables for cooking game ---- //
 
@@ -206,7 +201,7 @@ let storyNarrative02 = `He always snuck into the kitchen to watch Gusteau the ch
 out of the house.`;
 
 //narration for kitchen chase win state
-let storyNarrative03 = `Linguini saved Remi from dying and decided to help him become a chef. Remi also help Linguini become a better cook.`;
+let storyNarrative03 = `Linguini saved Remi from dying and decided to help him become a chef. Remi also helped Linguini become a better cook.`;
 
 //initial state
 let state = `cookingInstructions`;
@@ -573,6 +568,7 @@ function kitchenChaseWon(){
   pop();
 }
 
+//losing state for chase
 function kitchenChaseLost(){
   background(0, 255,0 );
 
@@ -583,7 +579,7 @@ function kitchenChaseLost(){
 }
 
 
-
+//cooking game instructions
 function cookingInstructions(){
   imageMode(CENTER, CENTER);
   image(cookingInstructionsBg, width/2, height/2, 1280, 720);
@@ -602,6 +598,7 @@ function cookingInstructions(){
   pop();
 }
 
+//loading function for handpose cooking game
 function loading(){
   background(0);
 
@@ -615,7 +612,7 @@ function loading(){
   pop();
 }
 
-
+//cooking game function
 function cookingGame() {
   imageMode(CENTER, CENTER);
   image(kitchenBg, width / 2, height / 2, 1280, 720);
@@ -626,12 +623,13 @@ function cookingGame() {
   text(`Make Ratatouille with remi`, width/2, height/2-300);
   pop();
 
-
+  // Check if there currently predictions to display
   if (predictions.length > 0) {
+    // If yes, then get the positions of the tip and base of the index finger
     let hand = predictions[0];
     updatespoon(hand);
 
-    //calls all the overlap functions
+    //calls all the overlap functions to check if the spoon is touching them
     overlapTomatoes();
     overlapZucchinis();
     overlapPeppers();
@@ -650,99 +648,120 @@ function cookingGame() {
   updateSquashes();
   updatePoison();
 
-  checkTimer();
-  checkScore();
-  recipeDone();
-  displayScore();
-  displayCookingTimer();
+  checkTimer(); //checks the timer for the lose state
+  checkScore(); //checks the score for the win state
+  recipeDone(); //checks if recipe is done
+  displayScore(); //displays the scores
+  displayCookingTimer(); //displays the timer
 }
+
+//calls badcook when you lose the cooking game
+//you do not get to become a chef
 
 function badCook(){
   background(0, 255, 0);
 }
 
 
-
+//calls badcook when you lose the cooking game
+//you do not get to become a chef
 function goodCook(){
   imageMode(CENTER, CENTER);
   image(goodCookBg, width/2, height/2, 1280, 720);
 }
 
 
-
+//checks if the spoon overlaps with the tomato
 function overlapTomatoes() {
-
+  //goes through the array of tomatoes
   for (let i = 0; i < numTomatoes; i++) {
+    //checks overlap
     let d = dist(spoon.x, spoon.y, tomatoes[i].x, tomatoes[i].y);
     if (d < tomatoes[i].size / 2) {
-      if (tomatoesInPot < maxTomatoesInPot) {
-        tomatoes[i].addedInPot(915, 450, 250, 250);
-        tomatoesInPot++;
+      if (tomatoesInPot < maxTomatoesInPot && !tomatoes[i].added) { //if all the tomatoes haved been booped by the spoon and not added yet to the pot
+        tomatoes[i].addedInPot(915, 450, 250, 250); //they get added to the pot
+        tomatoesInPot++; //add a tomato to the score
       }
     }
   }
 }
 
+//checks if the zucchinis overlap with the spoon
 function overlapZucchinis(){
+  //goes through the array of zucchini
   for (let i = 0; i<numZucchinis; i++){
+    //checks overlap
     let d2 = dist(spoon.x, spoon.y, zucchinis[i].x, zucchinis[i].y);
     if(d2 < zucchinis[i].size /2){
-      if(zucchinisInPot < maxZucchinisInPot && !zucchinis[i].added){
-        zucchinis[i].addedInPot(915, 450, 250, 250);
-        zucchinisInPot++;
+      if(zucchinisInPot < maxZucchinisInPot && !zucchinis[i].added){ //checks if all the zucchini haved been booped by the spoon and not added yet to the pot
+        zucchinis[i].addedInPot(915, 450, 250, 250); //they get added to the pot
+        zucchinisInPot++;//add a zucchini to the score
       }
     }
   }
 }
-
+//checks if the peppers overlap with the spoon
 function overlapPeppers() {
-
+  //goes through the array of peppers
   for (let i = 0; i < numPeppers; i++) {
+    //checks overlap
     let d3 = dist(spoon.x, spoon.y, peppers[i].x, peppers[i].y);
     if (d3 < peppers[i].size / 2) {
-      if (peppersInPot < maxPeppersInPot) {
-        peppers[i].addedInPot(915, 450, 250, 250);
-        peppersInPot++;
+      //checks if all the peppers haved been booped by the spoon and not added yet to the pot
+      if (peppersInPot < maxPeppersInPot && !peppers[i].added) {
+        peppers[i].addedInPot(915, 450, 250, 250); //they get added to the pot
+        peppersInPot++; //add a pepper to the score
       }
     }
   }
 }
 
+//checks if the eggplants overlap with the spoon
 function overlapEggplants() {
-
+  //goes through the array of eggplant
   for (let i = 0; i < numEggplants; i++) {
+    //check overlap
     let d4 = dist(spoon.x, spoon.y, eggplants[i].x, eggplants[i].y);
     if (d4 < eggplants[i].size / 2) {
-      if (eggplantsInPot < maxEggplantsInPot) {
-        eggplants[i].addedInPot(915, 450, 250, 250);
-        eggplantsInPot++;
+      //checks if all the peppers haved been booped by the spoon and not added yet to the pot
+      if (eggplantsInPot < maxEggplantsInPot && !eggplants[i].added) {
+        eggplants[i].addedInPot(915, 450, 250, 250); //they get added to the pot
+        eggplantsInPot++; //add an eggplant to the score
       }
     }
   }
 }
 
+//checks if the squash overlaps with the spoon
 function overlapSquashes() {
-
+  //goes through the array of squash
   for (let i = 0; i < numSquashes; i++) {
+    //check overlap
     let d5 = dist(spoon.x, spoon.y, squashes[i].x, squashes[i].y);
     if (d5 < squashes[i].size / 2) {
-      if (squashesInPot < maxSquashesInPot) {
-        squashes[i].addedInPot(915, 450, 250, 250);
-        squashesInPot++;
+      //checks if all the squash haved been booped by the spoon and not added yet to the pot
+      if (squashesInPot < maxSquashesInPot && !squashes[i].added) {
+        squashes[i].addedInPot(915, 450, 250, 250); //they get added to the pot
+        squashesInPot++; //add a squash to the pot
       }
     }
   }
 }
 
+//checks if the rat poison overlaps with the spoon
 function overlapPoison(){
+  //checks overlap
   let d6 = dist(spoon.x, spoon.y, poison.x, poison.y);
   if(d6 < poison.size /2){
+    //if all the poison have been touched then call the badcook state
     if(poisonCaught < maxPoison){
         state = `badCook`;
     }
   }
 }
 
+/*Updates the position of the pin according to the latest prediction and
+ matches it to the ratio of the camera*/
 function updatespoon(hand) {
   let index = hand.annotations.indexFinger[3];
   spoon.x = index[0] * webcamRatio.x;
@@ -780,24 +799,30 @@ function checkScore(){
   }
 }
 
+//checks timer for badcook state
+// If user takes too long they lose
 function checkTimer(){
   cookingTimer -= 1;
   if(cookingTimer <= 0){
     cookingTimerDone = true;
   }
-  if(cookingTimerDone){
+  if(cookingTimerDone){ //if the timer is done call badcook state
     state = `badCook`;
   }
 }
 
+//checks if the recipe for ratatouille is done
 function recipeDone(){
+  //if all the ingredients are ready
   if(zucchiniIsReady && tomatoIsReady && pepperIsReady && eggplantIsReady && squashIsReady){
+    //change all text to green
     fill(0, 255, 0);
+    //add a delay for the goodcook state
     cookingTimerDelay -= 5;
     if(cookingTimerDelay <= 0){
       cookingTimerDelayDone = true;
     }
-    if(cookingTimerDelayDone){
+    if(cookingTimerDelayDone){ //if timer is done call goodcook state
       state = `goodCook`;
     }
   }
@@ -805,16 +830,19 @@ function recipeDone(){
 
 //function setup circle in story state
 function setupCircles(){
-  circleTimer++;
-  totalCircles++;
-  if(totalCircles <= maxCircles){
-    if(circleTimer >= newCircleDelay){
+  circleTimer++; //increase timer by 1
+  totalCircles++; //increase circles by 1
+  if(totalCircles <= maxCircles){ //if circles < 400
+    if(circleTimer >= newCircleDelay){ //if timer > delay
+      //create the circles
         circles.push(new SmallCircle(random(0, width), random(0, height)));
         circles.push(new BigCircle(random(0, width), random(0, height)));
+        //reset the timer to 0
       circleTimer = 0;
     }
   }
 
+  //displays and fades the circles in and out
   for(let i =0; i<circles.length; i ++){
     let circle = circles[i];
     circle.display(); //display circles
@@ -848,40 +876,46 @@ function remiOverlapObstacle() {
     let knife = ratKnives[i];
     remi.checkOverlap(knife);
   }
+  //check remi overlap with poison
   for (let i = 0; i < ratPoisonArray.length; i++) {
     let poison = ratPoisonArray[i];
     remi.checkOverlap(poison);
 
-    if (!remi.isRemiAlive) {
-      kitchenChaseLost();
+    //check if remi is alive
+    if (!remi.isRemiAlive) { //if he is not alive
+      kitchenChaseLost(); //call the lost state
     }
-
   }
 }
 
+//function to create the knives from RatObstacle class using a timer
 function createRatKnives(){
-  newTrapTimer ++;
-  if(newTrapTimer >= timerTrapDelay){
-    numRatKnives++;
-    if(numRatKnives <= maxRatKnives){
+  newObstacleTimer ++; //increase timer by 1
+  if(newObstacleTimer >= timerObstacleDelay){ //if new timer is greater than the delay timer
+    numRatKnives++; //increase # of knives by 1
+    if(numRatKnives <= maxRatKnives){ //if knives is less than the max
+      //create a new knife
       ratKnives.push(new RatObstacle(width, random(0, height), ratKnifeImg ));
-      newTrapTimer = 0;
+      //reset new timer
+      newObstacleTimer = 0;
     }
-
   }
 }
 
+//function to create the poison from RatObstacle class using a timer
 function createRatPoison(){
-  newTrapTimer ++;
-  if(newTrapTimer >= timerTrapDelay){
-    numRatPoison++;
-    if(numRatPoison <= maxRatPoison){
+  newObstacleTimer ++; //increase timer by 1
+  if(newObstacleTimer >= timerObstacleDelay){ //if new timer is greater than the delay timer
+    numRatPoison++; //increase # of poison by 1
+    if(numRatPoison <= maxRatPoison){ //if # poison is less than the max
+      //create a new poison
       ratPoisonArray.push(new RatObstacle(width, random(0, height), ratPoisonImg));
-      newTrapTimer = 0;
+      newObstacleTimer = 0; //reset timer
     }
   }
 }
 
+//calls update function from Ratatouille class
 function updateVeggies(){
   for(let i=0; i<veggies.length; i++){
     let veggie = veggies[i];
@@ -889,7 +923,7 @@ function updateVeggies(){
   }
 }
 
-
+//calls update function from Ratatouille class
 function updateTomatoes(){
   for(let i = 0; i<numTomatoes; i++){
     let ingredient01 = tomatoes[i];
@@ -897,6 +931,7 @@ function updateTomatoes(){
   }
 }
 
+//calls update function from Ratatouille class
 function updateZucchinis(){
   for(let i = 0; i<numZucchinis; i++){
     let ingredient02 = zucchinis[i];
@@ -904,6 +939,7 @@ function updateZucchinis(){
   }
 }
 
+//calls update function from Ratatouille class
 function updatePeppers(){
   for(let i = 0; i< numPeppers; i++){
     let ingredient03 = peppers[i];
@@ -911,6 +947,7 @@ function updatePeppers(){
   }
 }
 
+//calls update function from Ratatouille class
 function updateEggplants(){
   for(let i = 0; i< numEggplants; i++){
     let ingredient04 = eggplants[i];
@@ -918,6 +955,7 @@ function updateEggplants(){
   }
 }
 
+//calls update function from Ratatouille class
 function updateSquashes(){
   for(let i = 0; i< numSquashes; i++){
     let ingredient05 = squashes[i];
@@ -925,18 +963,18 @@ function updateSquashes(){
   }
 }
 
+//calls update function from Ratatouille class
 function updatePoison(){
   poison.update();
 }
 
+//display the wooden spoon for handpose cooking game
 function displayspoon(){
   push();
   imageMode(CENTER, CENTER);
   image(spoonImg, spoon.x, spoon.y, spoon.size, spoon.size);
   pop();
-
 }
-
 
 //function to display all the scores for the ingredients
 function displayScore(){
@@ -951,6 +989,7 @@ function displayScore(){
 
 }
 
+//display cooking game timer
 function displayCookingTimer(){
   push();
   textSize(20);
@@ -958,110 +997,134 @@ function displayCookingTimer(){
   pop();
 }
 
-function buttonGame(){
+//display game button for the menu
+function buttonGame() {
   imageMode(CENTER, CENTER);
   image(gameButton.image, gameButton.x, gameButton.y, gameButton.size, gameButton.size);
 }
 
-function buttonInstructions(){
+//display instructions button for menu
+function buttonInstructions() {
   imageMode(CENTER, CENTER);
   image(helpButton.image, helpButton.x, helpButton.y, helpButton.size, helpButton.size);
 
 }
 
-function tvStoryButton(){
+//display tv knob for the tvstory
+function tvStoryButton() {
   imageMode(CENTER, CENTER);
-  image(tvKnob.image,tvKnob.x, tvKnob.y, tvKnob.size, tvKnob.size );
+  image(tvKnob.image, tvKnob.x, tvKnob.y, tvKnob.size, tvKnob.size);
 }
 
 //hovering over button effect
-function mouseOver(){
+function mouseOver() {
+  //overlap for gamebutton on menu state
   let d = dist(mouseX, mouseY, gameButton.x, gameButton.y);
   if (state === `menu`) {
     if (d < gameButton.size / 2 - 120) { // -120 is added so the mouse only clicks on the button and not dead space around it
+      //if you hover over the button the size increases to the max size
       gameButton.size = gameButton.size + 20;
-      if(gameButton.size > gameButton.maxSize){
+      if (gameButton.size > gameButton.maxSize) {
         gameButton.size = gameButton.maxSize;
       }
     }
-    else (gameButton.size = gameButton.minSize);
+    //goes back to the min size
+    else(gameButton.size = gameButton.minSize);
   }
 
+  //overlap with the help button on menu state
   let d2 = dist(mouseX, mouseY, helpButton.x, helpButton.y);
-  if(state === `menu`){
-    if( d2 < helpButton.size/2  - 120){
+  if (state === `menu`) {
+    if (d2 < helpButton.size / 2 - 120) {
+      //if you hover over the button the size increases to the max size
       helpButton.size = helpButton.size + 20;
-      if(helpButton.size > helpButton.maxSize){
+      if (helpButton.size > helpButton.maxSize) {
         helpButton.size = helpButton.maxSize;
       }
     }
-    else (helpButton.size = helpButton.minSize);
+    //goes back to the min size
+    else(helpButton.size = helpButton.minSize);
   }
 
+  //check overlap with tv knob
   let d3 = dist(mouseX, mouseY, tvKnob.x, tvKnob.y);
-  if(state === `tvStory`){
-    if(d3 < tvKnob.size/2 - 50){
+  if (state === `tvStory`) {
+    if (d3 < tvKnob.size / 2 - 50) {
+      //if you hover over the button the size increases to the max size
       tvKnob.size = tvKnob.size + 20;
-      if(tvKnob.size > tvKnob.maxSize){
-        tvKnob.size  = tvKnob.maxSize;
+      if (tvKnob.size > tvKnob.maxSize) {
+        tvKnob.size = tvKnob.maxSize;
       }
     }
+    //goes back to the min size
     else(tvKnob.size = tvKnob.minSize);
   }
 }
 
 
-
+//check for mouse pressed
 function mousePressed() {
-
-  if(state === `story`){
-    responsiveVoice.speak(storyNarrative, "French Female");
+  //mouse pressed on the story state
+  if (state === `story`) {
+    responsiveVoice.speak(storyNarrative, "French Female"); //calls responsiveVoice
   }
 
+  //mouse pressed on game button on menu state
   let d = dist(mouseX, mouseY, gameButton.x, gameButton.y);
   if (state === `menu`) {
+    //brings you the main story
     if (d < gameButton.size / 2 - 60) { // -60 is added so the mouse only clicks on the button and not dead space around it
       state = `story`;
+      //play a song
       menuSong.stop();
       storySong.loop();
       storySong.setVolume(0.1);
     }
   }
+  //mouse pressed on the help button on the menu state
   let d2 = dist(mouseX, mouseY, helpButton.x, helpButton.y);
   if (state === `menu`) {
+    //brings you to the main instructions
     if (d2 < helpButton.size / 2 - 60) {
       state = `instructions`;
     }
   }
 
+  //MOUSE pressed on the tv knob
   let d3 = dist(mouseX, mouseY, tvKnob.x, tvKnob.y);
-  if(state === `tvStory`){
-    if(d3 < tvKnob.size/2 - 50){
+  if (state === `tvStory`) {
+    if (d3 < tvKnob.size / 2 - 50) {
+      //calls responsiveVoice
       responsiveVoice.speak(storyNarrative02, "French Female");
     }
   }
-  if(state === `kitchenChaseWon`){
+  //mouse pressed for kitchenchase won
+  if (state === `kitchenChaseWon`) {
+    //calls responsiveVoice
     responsiveVoice.speak(storyNarrative03, "French Female");
   }
 }
 
+//handles user keyboard input
+function keyPressed() {
 
-function keyPressed(){
-
-  if(state === `start`){
-    if(keyCode === 13){ //keycode for ENTER
+  //brings you to the menu
+  if (state === `start`) {
+    if (keyCode === 13) { //keycode for ENTER
       state = `menu`;
-      menuSong.play();
+      menuSong.play(); //play menysong
     }
   }
-  if(state === `instructions`){
-    if(keyCode === 8) {//keycode for backspace
+  //brings you back to the menu
+  if (state === `instructions`) {
+    if (keyCode === 8) { //keycode for backspace
       state = `menu`;
     }
   }
 
-  if(state === `story`){
-    if(keyCode === 32){ //keycode for spacebar
+  //brings you to the tvstory
+  if (state === `story`) {
+    if (keyCode === 32) { //keycode for spacebar
       state = `tvStory`;
       storySong.stop();
       tvSong.loop();
@@ -1069,34 +1132,37 @@ function keyPressed(){
     }
   }
 
-  if(state === `tvStory`){
-    if(keyCode === 13){ //keycode for enter
+  //brings you to the kicthenchase instructions
+  if (state === `tvStory`) {
+    if (keyCode === 13) { //keycode for enter
       state = `kitchenChaseInstructions`;
       tvSong.stop();
       kitchenChaseSong.play();
       kitchenChaseSong.setVolume(0.5);
     }
   }
-  if(state === `kitchenChaseInstructions`){
-    if(keyCode === 82){ //keycode for R
+  //brings you to kitchenChase
+  if (state === `kitchenChaseInstructions`) {
+    if (keyCode === 82) { //keycode for R
       state = `kitchenChase`;
     }
   }
 
-  if(state === `kitchenChaseWon`){
-    if(keyCode === 13){ //enter
+  //brings you to the cookingInstructions
+  if (state === `kitchenChaseWon`) {
+    if (keyCode === 13) { //keycode for enter
       state = `cookingInstructions`
       kitchenChaseSong.stop();
     }
   }
 
-  if(state === `cookingInstructions`){
-    if(keyCode === 32){
+  //brings you to the loading screen for handpose
+  if (state === `cookingInstructions`) {
+    if (keyCode === 32) {
       state = `loading`; //keycode for space
       tvSong.stop();
       cookingSong.loop();
       video = createCapture(VIDEO, setupHandpose);
     }
   }
-
 }
