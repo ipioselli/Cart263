@@ -253,6 +253,7 @@ function preload() {
   kitchenChaseInstructionsBg = loadImage(`assets/images/paris.png`);
   kitchenChaseBg = loadImage(`assets/images/chaseBg.png`);
   goodCookBg = loadImage(`assets/images/goodCookBg.png`);
+  badCookBg = loadImage(`assets/images/badCookBg.png`);
   kitchenChaseWonBg = loadImage(`assets/images/kitchenWinBg.png`);
   kitchenChaseLostBg = loadImage(`assets/images/kitchenLostBg.png`);
   cookingInstructionsBg = loadImage(`assets/images/CookingInstructionsBg.png`);
@@ -668,7 +669,8 @@ function cookingGame() {
 //you do not get to become a chef
 
 function badCook(){
-  background(0, 255, 0);
+  imageMode(CENTER, CENTER);
+  image(badCookBg, width/2, height/2, 1280, 720);
 }
 
 
@@ -1147,7 +1149,7 @@ function keyPressed() {
       state = `kitchenChaseInstructions`;
       tvSong.stop();
       kitchenChaseSong.play();
-      kitchenChaseSong.setVolume(0.5);
+      kitchenChaseSong.setVolume(0.05);
     }
   }
   //brings you to kitchenChase
@@ -1162,6 +1164,8 @@ function keyPressed() {
     if (keyCode === 13) { //keycode for enter
       state = `cookingInstructions`
       kitchenChaseSong.stop();
+      cookingSong.loop();
+      cookingSong.setVolume(0.3);
     }
   }
 
@@ -1169,8 +1173,6 @@ function keyPressed() {
   if (state === `cookingInstructions`) {
     if (keyCode === 32) {
       state = `loading`; //keycode for space
-      tvSong.stop();
-      cookingSong.loop();
       video = createCapture(VIDEO, setupHandpose);
     }
   }
