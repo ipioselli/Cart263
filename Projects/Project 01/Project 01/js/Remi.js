@@ -51,6 +51,7 @@ class Remi {
     let d = dist(this.x, this.y, obstacle.x, obstacle.y);
     if (d < this.size / 2 - 100 + obstacle.size / 2) {
       this.isRemiAlive = false; //if he overlaps with an obstacle he is no longer alive
+      this.speed = 0; //stops him from moving after dying
     }
 
   }

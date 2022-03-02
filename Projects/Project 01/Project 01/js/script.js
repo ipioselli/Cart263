@@ -44,9 +44,10 @@ let storyBg;
 let tvStoryBg;
 let kitchenChaseInstructionsBg;
 let kitchenChaseBg;
-let kitchenBg;
 let kitchenChaseWonBg;
 let kitchenChaseLostBg;
+let cookingInstructionsBg;
+let kitchenBg;
 let goodCookBg;
 let badCookBg;
 
@@ -204,10 +205,11 @@ Press space to continue`;
 let storyNarrative02 = `He always snuck into the kitchen to watch Gusteau the chef on the tv. He wanted to become just like him. Sadly, he got caught and was chased
 out of the house.`;
 
+//narration for kitchen chase win state
 let storyNarrative03 = `Linguini saved Remi from dying and decided to help him become a chef. Remi also help Linguini become a better cook.`;
 
 //initial state
-let state = `kitchenChaseWon`;
+let state = `cookingInstructions`;
 
 
 
@@ -257,6 +259,7 @@ function preload() {
   kitchenChaseBg = loadImage(`assets/images/chaseBg.png`);
   goodCookBg = loadImage(`assets/images/goodCookBg.png`);
   kitchenChaseWonBg = loadImage(`assets/images/kitchenWinBg.png`);
+  cookingInstructionsBg = loadImage(`assets/images/CookingInstructionsBg.png`);
 
   //buttons
   gameButton.image = loadImage(`assets/images/gameButton.png`);
@@ -582,10 +585,20 @@ function kitchenChaseLost(){
 
 
 function cookingInstructions(){
-  background(278);
+  imageMode(CENTER, CENTER);
+  image(cookingInstructionsBg, width/2, height/2, 1280, 720);
   push();
-  textFont(copperplateFont);
-  text(`ENTER`, width/2, height/2);
+  textFont(dancingScript);
+  textSize(30);
+  text(`1.Use your index finger to move the spoon
+2. Hover over the top of the ingredients to place them in the pot
+3. Place 5 of each ingredient in the pot
+4. Watch out for the poison
+5. Place all ingredients in the pot to win`, width/2-400, height/2);
+
+  textSize(25);
+  textAlign(CENTER, CENTER);
+  text(`Press SPACE to continue`, width/2, height/2 + 200);
   pop();
 }
 
