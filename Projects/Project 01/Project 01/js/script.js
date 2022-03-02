@@ -24,6 +24,7 @@ ideas:
 //fonts
 let disneyFont;
 let copperplateFont;
+let dancingScript;
 
 //handpose variables
 let video = undefined;
@@ -44,10 +45,17 @@ let tvStoryBg;
 let kitchenChaseInstructionsBg;
 let kitchenChaseBg;
 let kitchenBg;
-let kitchenChaseWon;
-let kitchenChaseLost;
+let kitchenChaseWonBg;
+let kitchenChaseLostBg;
 let goodCookBg;
 let badCookBg;
+
+//songs
+let menuSong;
+let storySong;
+let tvSong;
+let kitchenChaseSong;
+let cookingSong;
 
 //button to start the game
 let gameButton = {
@@ -76,6 +84,7 @@ let tvKnob = {
   maxSize: 250,
   minSize: 200,
 }
+
 
 // ---- variables for chase minigame ---- //
 
@@ -185,12 +194,7 @@ let spoon = {
 //handpose `pin`
 let spoonImg;
 
-//songs
-let menuSong;
-let storySong;
-let tvSong;
-let kitchenChaseSong;
-let cookingSong;
+
 
 //narration for story state
 let storyNarrative = `Once upon a time there was a rat named Remi. He lived in someone's house with his big family. He loved to eat yummy food from the kitchen.
@@ -200,8 +204,10 @@ Press space to continue`;
 let storyNarrative02 = `He always snuck into the kitchen to watch Gusteau the chef on the tv. He wanted to become just like him. Sadly, he got caught and was chased
 out of the house.`;
 
+let storyNarrative03 = `Linguini saved Remi from dying and decided to help him become a chef. Remi also help Linguini become a better cook.`;
+
 //initial state
-let state = `start`;
+let state = `kitchenChaseWon`;
 
 
 
@@ -231,6 +237,7 @@ function preload() {
   //fonts
   disneyFont = loadFont(`assets/fonts/waltograph42.otf`);
   copperplateFont = loadFont(`assets/fonts/Copperplate.otf`);
+  dancingScript =loadFont(`assets/fonts/DancingScript.ttf`);
 
   //sounds
   menuSong = loadSound(`assets/sounds/Le-Festin.mp3`);
@@ -249,6 +256,7 @@ function preload() {
   kitchenChaseInstructionsBg = loadImage(`assets/images/paris.png`);
   kitchenChaseBg = loadImage(`assets/images/chaseBg.png`);
   goodCookBg = loadImage(`assets/images/goodCookBg.png`);
+  kitchenChaseWonBg = loadImage(`assets/images/kitchenWinBg.png`);
 
   //buttons
   gameButton.image = loadImage(`assets/images/gameButton.png`);
@@ -541,16 +549,24 @@ function kitchenChase(){
   updateRatObstacles(); //displays obstacles
   createRatKnives(); //creates all the knives
   createRatPoison(); //creates the poison
-  remiOverlapKnife(); //check overlap with remi and the obstacles
+  remiOverlapObstacle(); //check overlap with remi and the obstacles
 }
 
 //win state for winning kitchen chase game
 function kitchenChaseWon(){
-  background(0, 255,0 );
+  imageMode(CENTER, CENTER);
+  image(kitchenChaseWonBg, width/2, height/2, 1280, 720);
 
   push();
-  fill(0);
-  text(`win`, width/2, height/2);
+  textAlign(CENTER, CENTER);
+  textStyle(BOLD);
+  textSize(60);
+  textFont(dancingScript);
+  fill(255);
+  text(`You were saved by Linguini`, width/2, height/2-300);
+  textSize(40);
+  text(`Click the screen for more`, width/2, height/2-100);
+  text(`Press ENTER to skip`, width/2, height/2 + 300);
   pop();
 }
 
@@ -721,7 +737,8 @@ function updatespoon(hand) {
 
 }
 
-
+//display score for ingredients  : ingredient / 5
+//if each ingredient is = to their max then they are READY
 function checkScore(){
   if(zucchinisInPot === maxZucchinisInPot){
     zucchiniIsReady = true;
@@ -773,42 +790,47 @@ function recipeDone(){
   }
 }
 
+//function setup circle in story state
 function setupCircles(){
   circleTimer++;
   totalCircles++;
   if(totalCircles <= maxCircles){
     if(circleTimer >= newCircleDelay){
-        circles.push(new Circle01(random(0, width), random(0, height)));
-        circles.push(new Circle02(random(0, width), random(0, height)));
+        circles.push(new SmallCircle(random(0, width), random(0, height)));
+        circles.push(new BigCircle(random(0, width), random(0, height)));
       circleTimer = 0;
     }
   }
 
   for(let i =0; i<circles.length; i ++){
     let circle = circles[i];
-    circle.display();
-    circle.fadeAnimation();
+    circle.display(); //display circles
+    circle.fadeAnimation(); //fade circles
   }
 }
 
+//calls update from Remi class
 function updateRemi(){
   remi.update();
 }
 
+//calls update from Rat obstacle class
 function updateRatObstacles(){
+  //updates knives
   for(let i = 0; i< ratKnives.length; i++){
     let knife = ratKnives[i];
     knife.update();
   }
 
+  //updates posion
   for(let i = 0; i< ratPoisonArray.length; i++){
     let ratPoison = ratPoisonArray[i];
     ratPoison.update();
   }
 }
 
-
-function remiOverlapKnife() {
+//check for remi for overlap with the knife
+function remiOverlapObstacle() {
   for (let i = 0; i < ratKnives.length; i++) {
     let knife = ratKnives[i];
     remi.checkOverlap(knife);
@@ -1004,6 +1026,9 @@ function mousePressed() {
     if(d3 < tvKnob.size/2 - 50){
       responsiveVoice.speak(storyNarrative02, "French Female");
     }
+  }
+  if(state === `kitchenChaseWon`){
+    responsiveVoice.speak(storyNarrative03, "French Female");
   }
 }
 
