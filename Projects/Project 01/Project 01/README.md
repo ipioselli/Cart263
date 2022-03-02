@@ -18,3 +18,4 @@ Sources :
 - Fonts:
     - Copperplate
     - Disney font
+    - Dancing script
