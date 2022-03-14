@@ -2,11 +2,10 @@
 Exercise 6: Raving Redactionist
 Ines Pioselli
 
-Brief:
-- improve visuals
-- find a different text
-- animate
-- secret message
+This is a destructive reding of the script from twilight breaking down.
+You can click on the button to reveal the text and then hover over
+the words to reveal the secret message. All letters of the message
+are moving in some way.
 
 */
 

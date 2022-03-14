@@ -1,38 +1,33 @@
-
-body{
+body {
   background-color: black;
   font-family: helvetica, serif;
-    line-height: 50px;
-
+  line-height: 50px;
 }
 
-   h1 {
+h1 {
   text-align: center;
   font-size: 50px;
   background-color: #b07874;
-
 }
 
 .grower, .spinning {
   display: inline-block;
 }
 
-.leaving{
+.leaving {
   position: inherit;
-
 }
 
 #poem {
   margin: auto;
   width: 50vw;
-    padding:30px;
-  background-color:#f5cecb;
+  padding: 30px;
+  background-color: #f5cecb;
 }
 
 #about {
   text-align: center;
   margin: auto;
-
   font-size: 30px;
   width: 50vw;
 }
@@ -42,15 +37,13 @@ body{
   animation-duration: 2s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
-
 }
+
 .leave {
   animation-name: leave;
   user-select: none;
   animation-duration: 20s;
   animation: fadeOut ease 15s;
-
-
 }
 
 .spin {
@@ -60,34 +53,39 @@ body{
   animation-iteration-count: infinite;
 }
 
-
 @keyframes grow {
-  from{
+  from {
     transform: scale(1.0);
   }
-  to{
+
+  to {
     transform: scale(1.5);
   }
 }
 
 @keyframes fadeOut {
-  0% {opacity: 1;}
-  50% {opacity: 0.5;}
+  0% {
+    opacity: 1;
+  }
 
-  100% { opacity: 0; }
+  50% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 0;
+  }
 }
 
 @keyframes spin {
-  from{
+  from {
     transform: rotate(0deg);
   }
-  to{
+
+  to {
     transform: rotate(360deg);
   }
 }
-
-
-
 
 #secret-document {
   display: none;
@@ -96,13 +94,11 @@ body{
   font-size: 30px;
   width: 50vw;
   margin: auto;
-
-
 }
 
 #button {
   margin: auto;
-  cursor:pointer;
+  cursor: pointer;
   border-style: double;
   width: 150px;
 }
