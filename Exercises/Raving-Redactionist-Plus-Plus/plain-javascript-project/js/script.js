@@ -25,6 +25,9 @@ $(`.leaving`).one(`mouseenter`, function(event) {
 $(`.grower`).one(`mouseover`, function(event) {
       $(this).addClass(`grow`);
 });
+$(`.spinning`).one(`mouseover`, function(event) {
+      $(this).addClass(`spin`);
+});
 
 // function redact(event){
 //   $(this).removeClass(`revealed`);

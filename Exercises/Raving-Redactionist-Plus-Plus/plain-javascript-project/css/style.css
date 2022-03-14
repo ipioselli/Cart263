@@ -2,6 +2,7 @@
 body{
   background-color: black;
   font-family: helvetica, serif;
+    line-height: 50px;
 
 }
 
@@ -12,7 +13,7 @@ body{
 
 }
 
-.grower {
+.grower, .spinning {
   display: inline-block;
 }
 
@@ -48,6 +49,14 @@ body{
   animation-duration: 10s;
   animation: fadeOut ease 15s;
 
+
+}
+
+.spin {
+  animation-name: spin;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
 }
 
 
@@ -62,9 +71,21 @@ body{
 
 @keyframes fadeOut {
   0% {opacity: 1;}
+  50% {opacity: 0.5;}
 
   100% { opacity: 0; }
 }
+
+@keyframes spin {
+  from{
+    transform: rotate(0deg);
+  }
+  to{
+    transform: rotate(360deg);
+  }
+}
+
+
 
 
 #secret-document {
@@ -74,7 +95,8 @@ body{
   font-size: 30px;
   width: 50vw;
   margin: auto;
-  line-height: normal;
+
+
 }
 
 #button {
