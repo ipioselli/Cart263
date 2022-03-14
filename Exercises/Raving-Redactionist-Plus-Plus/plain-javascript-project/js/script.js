@@ -11,38 +11,24 @@ Brief:
 */
 
 "use strict";
+//i used mostly css animations for this exercise
+
 //fades in the secret document when the button is clicked
 $(`#button`).on(`click`, function(event){
   $(`#secret-document`).fadeIn();
 });
 
-$(`.leaving`).one(`mouseenter`, function(event) {
+//fades out text that has been hovered over
+$(`.leaving`).one(`mouseover`, function(event) {
   $(this).fadeOut(`leave`) ;
 });
-// $(`.top-secret`).on(`click`, redact);
-// setInterval(revelation, 500);
 
+//scales the magic letters from the secret message
 $(`.grower`).one(`mouseover`, function(event) {
       $(this).addClass(`grow`);
 });
+
+//spins the magic word from the secret message
 $(`.spinning`).one(`mouseover`, function(event) {
       $(this).addClass(`spin`);
 });
-
-// function redact(event){
-//   $(this).removeClass(`revealed`);
-//   $(this).addClass(`redacted`);
-// }
-//
-// function revelation(){
-//   $(`.redacted`).each(attemptReveal);
-// }
-//
-//
-// function attemptReveal(){
-//   let r = Math.random();
-//   if(r < 0.1){ //10% of the time
-//     $(this).removeClass(`redacted`);
-//     $(this).addClass(`revealed`);
-//   }
-// }

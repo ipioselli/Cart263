@@ -39,14 +39,15 @@ body{
 
 .grow {
   animation-name: grow;
-  animation-duration: 1s;
+  animation-duration: 2s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
 
 }
 .leave {
+  animation-name: leave;
   user-select: none;
-  animation-duration: 10s;
+  animation-duration: 20s;
   animation: fadeOut ease 15s;
 
 
@@ -54,7 +55,7 @@ body{
 
 .spin {
   animation-name: spin;
-  animation-duration: 1s;
+  animation-duration: 2s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
 }
@@ -109,16 +110,3 @@ body{
 #button:hover {
   background-color: #e6aca8
 }
-
-
-
-
-/* .redacted {
-  background-color: black;
-  user-select: none;
-}
-
-.revealed {
-  color: red;
-  text-decoration: underline;
-} */
