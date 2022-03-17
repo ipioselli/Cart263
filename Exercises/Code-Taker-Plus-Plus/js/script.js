@@ -10,7 +10,9 @@ Brief:
 
 "use strict";
 
-let message = `sailor moon`;
+let message = `sal`;
+
+let specialSound = new Audio(`assets/sounds/SailorMoon.mp3`);
 
 $(`#solved-dialog`).dialog({
   autoOpen: false,
@@ -45,7 +47,10 @@ $(`#answer`).droppable({
     ui.draggable.removeClass(`found`);
     //check if its right
     if($(this).text() === message){
+      //plays a sound when you get the answer right
+      specialSound.play();
       $(`#solved-dialog`).dialog(`open`);
+
 
     }
   }
