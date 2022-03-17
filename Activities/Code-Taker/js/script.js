@@ -1,6 +1,12 @@
 /**
-Activity 7: Code Taker
+Exercise 7:  Code Taker
 Ines Pioselli
+
+Brief:
+- rework html and class
+- change the text and message
+- add a model instructions dialog when the page loads
+- play a sound when the user gets the message right
 
 */
 

@@ -1,17 +1,28 @@
 /*********************************************
 
-Here is a description of any special CSS used.
-In this case it's just padding and margin to 0
-and then centring the canvas (and anything else)
-using the CSS Grid.
-
-Also hides overflow.
 
 **********************************************/
+body {
+  background-color: white;
+  font-family: helvetica, serif;
+  line-height: 30px;
+}
+
+#everything{
+  background-color: #f5cecb;
+  margin:auto;
+  width: 80vw;
+}
+
+#poem {
 
 
+  padding: 30px;
+  font-size: 1.2rem;
+}
 
 #answer {
+  margin:auto;
   width: 10rem;
   height: 2rem;
   border: 1px dashed black;
@@ -19,8 +30,4 @@ Also hides overflow.
 
 .found {
   color: red;
-}
-
-#poem {
-  font-size: 1.2rem;
 }

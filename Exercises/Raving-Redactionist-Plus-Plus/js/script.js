@@ -19,7 +19,9 @@ $(`#button`).on(`click`, function(event){
 
 //fades out text that has been hovered over
 $(`.leaving`).one(`mouseover`, function(event) {
-  $(this).fadeOut(`leave`) ;
+  $(this).animate({
+    opacity: 0,
+  }, 1000) ;
 });
 
 //scales the magic letters from the secret message

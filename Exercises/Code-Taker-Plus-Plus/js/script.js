@@ -1,6 +1,10 @@
 /**
-Activity 7: Code Taker
+Exercise 7: Code Taker
 Ines Pioselli
+
+Brief:
+- rework the html and class
+- add a model instructions dialog
 
 */
 
@@ -12,6 +16,14 @@ $(`#solved-dialog`).dialog({
   autoOpen: false,
   buttons: {
     "I know,": function(){
+      $(this).dialog(`close`);
+    }
+  }
+});
+
+$(`#instructions`).dialog({
+  buttons: {
+    "OK": function(){
       $(this).dialog(`close`);
     }
   }
