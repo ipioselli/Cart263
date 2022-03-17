@@ -5,20 +5,20 @@
 body {
   background-color: white;
   font-family: helvetica, serif;
-  line-height: 30px;
+  
 }
 
 #everything{
   background-color: #f5cecb;
   margin:auto;
   width: 80vw;
+
 }
 
 #poem {
-
-
   padding: 30px;
   font-size: 1.2rem;
+  line-height: 40px;
 }
 
 #answer {
@@ -26,6 +26,10 @@ body {
   width: 10rem;
   height: 2rem;
   border: 1px dashed black;
+}
+
+#instructions{
+  background-color: pink;
 }
 
 .found {

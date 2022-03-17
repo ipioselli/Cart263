@@ -10,7 +10,7 @@ Brief:
 
 "use strict";
 
-let message = `Theremin`;
+let message = `sailor moon`;
 
 $(`#solved-dialog`).dialog({
   autoOpen: false,
