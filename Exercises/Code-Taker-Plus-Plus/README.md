@@ -1,3 +1,5 @@
 Exercise 07: Code Taker
 
-This is the README file for the entire project. For more official projects you should write information here about the nature of the project, your name, any special explanations of how the project works, etc.
+In this exercise you must hover the letters in the text until they change colour.
+Then drag the special letters into the box at the bottom of the page until you get a special
+pop up along with a cool song.

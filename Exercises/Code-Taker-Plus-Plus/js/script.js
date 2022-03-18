@@ -18,7 +18,7 @@ let specialSound = new Audio(`assets/sounds/SailorMoon.mp3`); //song to play whe
 $(`#solved-dialog`).dialog({
   autoOpen: false,
   buttons: {
-    "I know,": function(){
+    "I know,": function() {
       $(this).dialog(`close`);
     }
   }
@@ -27,41 +27,42 @@ $(`#solved-dialog`).dialog({
 //dialog box for the instructions
 $(`#instructions`).dialog({
   buttons: {
-    "OK": function(){
+    "OK": function() {
       $(this).dialog(`close`);
     }
   }
 });
 
 //highlight the secret letters
-$(`.secret`).on(`mouseover`, function(event){
+$(`.secret`).on(`mouseover`, function(event) {
   $(this).addClass(`found`, 500);
   $(this).draggable({
     helper: `clone`
   });
 });
 
+
 $(`#answer`).droppable({
   accept: ".secret",
-  drop: function(event, ui){
+  drop: function(event, ui) {
     let letter = ui.draggable.text();
-    let span = $(`<span class = "answer-letter">${letter}</span>`);
+    let span = $(`<span class = "answer-letter">${letter}</span>`); //converts the text into a span
     //adds it to the letter
     $(this).append(span);
     ui.draggable.draggable(`disable`);
     ui.draggable.removeClass(`found`);
     ui.draggable.off(`mouseover`);
 
-    checkAnswer();
+    checkAnswer(); //checks for the answer
 
   }
 });
 
 //checks for the answer
-function checkAnswer(){
+function checkAnswer() {
   console.log("checking")
   //check if its right
-  if ($(`#answer`).text() === message){
+  if ($(`#answer`).text() === message) {
     //plays a sound when you get the answer right
     specialSound.play();
     //dialog box pops up as well
@@ -69,7 +70,6 @@ function checkAnswer(){
 
   }
 }
-
 
 //allows you to sort the letters and then it checks for the answer
 $(`#answer`).sortable({
