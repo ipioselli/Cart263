@@ -11,7 +11,7 @@ Brief:
 
 "use strict";
 
-let message = `sailormoon`;
+let message = `sal`;
 
 let specialSound = new Audio(`assets/sounds/SailorMoon.mp3`);
 
