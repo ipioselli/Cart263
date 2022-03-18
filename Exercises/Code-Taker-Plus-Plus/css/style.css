@@ -3,7 +3,7 @@ CSS style sheet
 
 **********************************************/
 body {
-  background: url(../assets/images/bg.jpeg) repeat center center;
+  background: url(../assets/images/bg.png) repeat center center;
   background-color: #253e5e;
   font-family: helvetica, serif;
   padding: 0;
@@ -23,7 +23,7 @@ h2{
 #everything{
   border-radius: 25px;
 
-  background-color: #f5cecb;
+  background-color:#e6aabd;
   margin:auto;
   padding: 20px;
   width: 70vw;
