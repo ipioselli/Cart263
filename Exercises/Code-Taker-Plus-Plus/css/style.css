@@ -28,6 +28,13 @@ body {
   border: 1px dashed black;
 }
 
+.answer-letter{
+  border-radius: 25%;
+  font-size: 2em;
+  padding: 1em;
+  background-color: pink;
+}
+
 #instructions{
   background-color: pink;
 }
