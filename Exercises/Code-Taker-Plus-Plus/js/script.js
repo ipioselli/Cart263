@@ -2,19 +2,19 @@
 Exercise 7: Code Taker
 Ines Pioselli
 
-Brief:
-- rework the html and class
-- add a model instructions dialog
-- add a sound
+-Program to hover over letters to unlock a secret message
+- you must drag the letters into the blue box and if you get the message right
+a song will play and a special message will pop up
 
 */
 
 "use strict";
 
-let message = `sailormoon`;
+let message = `sailormoon`; //secret message
 
-let specialSound = new Audio(`assets/sounds/SailorMoon.mp3`);
+let specialSound = new Audio(`assets/sounds/SailorMoon.mp3`); //song to play when you win
 
+//dialog box for when you find the secret message
 $(`#solved-dialog`).dialog({
   autoOpen: false,
   buttons: {
@@ -24,6 +24,7 @@ $(`#solved-dialog`).dialog({
   }
 });
 
+//dialog box for the instructions
 $(`#instructions`).dialog({
   buttons: {
     "OK": function(){
@@ -32,6 +33,7 @@ $(`#instructions`).dialog({
   }
 });
 
+//highlight the secret letters
 $(`.secret`).on(`mouseover`, function(event){
   $(this).addClass(`found`, 500);
   $(this).draggable({
