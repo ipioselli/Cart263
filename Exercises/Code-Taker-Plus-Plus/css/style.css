@@ -18,7 +18,7 @@ h2{
   background-color: #f5cecb;
   margin:auto;
   width: 50vw;
-  min-height: 80vh;
+  height: 80vh;
 
 }
 
@@ -29,29 +29,35 @@ h2{
 }
 
 #answer {
+  text-align: center;
+  background-color: #8697eb;
   padding: 20px;
   margin:auto;
-  padding: 1em;
-  width: 20rem;
-  height: 3rem;
+  padding: 2em;
+  width: 30vw;
+  height: 5rem;
   border: 2px dashed black;
 }
 
 .answer-letter{
   margin: auto;
   border-radius: 25%;
-  font-size: 1em;
+  font-size: 1.5em;
   padding: 1em;
+  margin: 5px;
   background-color: pink;
 }
 
 #instructions{
 
-  background-color: pink;
+  background-color: #ebd686;
+}
+
+#solved-dialog{
+  background-color: #ebd686;
 }
 
 .found {
-  /* dark pink */
   color: #ba3256;
   cursor: pointer;
 

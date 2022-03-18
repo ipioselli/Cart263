@@ -11,7 +11,7 @@ Brief:
 
 "use strict";
 
-let message = `sal`;
+let message = `sailormoon`;
 
 let specialSound = new Audio(`assets/sounds/SailorMoon.mp3`);
 
@@ -32,7 +32,7 @@ $(`#instructions`).dialog({
   }
 });
 
-$(`.secret`).one(`mouseover`, function(event){
+$(`.secret`).on(`mouseover`, function(event){
   $(this).addClass(`found`, 500);
   $(this).draggable({
     helper: `clone`
@@ -49,14 +49,27 @@ $(`#answer`).droppable({
     ui.draggable.draggable(`disable`);
     ui.draggable.removeClass(`found`);
     ui.draggable.off(`mouseover`);
-    //check if its right
-    if($(`#answer`).text() === message){
-      //plays a sound when you get the answer right
-      specialSound.play();
-      $(`#solved-dialog`).dialog(`open`);
 
-    }
+    checkAnswer();
+
   }
 });
 
-$(`#answer`).sortable();
+//checks for the answer
+function checkAnswer(){
+  console.log("checking")
+  //check if its right
+  if ($(`#answer`).text() === message){
+    //plays a sound when you get the answer right
+    specialSound.play();
+    //dialog box pops up as well
+    $(`#solved-dialog`).dialog(`open`);
+
+  }
+}
+
+
+//allows you to sort the letters and then it checks for the answer
+$(`#answer`).sortable({
+  update: checkAnswer
+});
