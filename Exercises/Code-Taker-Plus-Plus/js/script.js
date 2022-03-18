@@ -40,6 +40,7 @@ $(`.secret`).one(`mouseover`, function(event){
 });
 
 $(`#answer`).droppable({
+  accept: ".secret",
   drop: function(event, ui){
     let letter = ui.draggable.text();
     let span = $(`<span class = "answer-letter">${letter}</span>`);
@@ -49,7 +50,7 @@ $(`#answer`).droppable({
     ui.draggable.removeClass(`found`);
     ui.draggable.off(`mouseover`);
     //check if its right
-    if($(this).text() === message){
+    if($(`#answer`).text() === message){
       //plays a sound when you get the answer right
       specialSound.play();
       $(`#solved-dialog`).dialog(`open`);
@@ -58,4 +59,4 @@ $(`#answer`).droppable({
   }
 });
 
-$(`answer`).sortable();
+$(`#answer`).sortable();

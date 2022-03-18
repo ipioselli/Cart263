@@ -23,19 +23,22 @@ body {
 
 #answer {
   margin:auto;
+  padding: 1em;
   width: 10rem;
-  height: 2rem;
+  height: 3rem;
   border: 1px dashed black;
 }
 
 .answer-letter{
+  margin: auto;
   border-radius: 25%;
-  font-size: 2em;
+  font-size: 1em;
   padding: 1em;
   background-color: pink;
 }
 
 #instructions{
+
   background-color: pink;
 }
 
