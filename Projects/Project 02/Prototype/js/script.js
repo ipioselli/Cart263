@@ -1,33 +1,40 @@
 /**
-Title of Project
-Author Name
+Prototype Project 02
+Ines Pioselli
 
-This is a template. You must fill in the title,
-author, and this description to match your project!
+Tamagotchi simulator prototype
 */
 
 "use strict";
 
 
-/**
-Description of preload
-*/
+let evolutionlvl= 1;
+let evolutions = 3;
+
+let state = `livingroom`;
+
 function preload() {
 
 }
 
 
-/**
-Description of setup
-*/
+
 function setup() {
 
 }
 
 
-/**
-Description of draw()
-*/
+
 function draw() {
 
+}
+
+
+function setupStates(){
+  if(state === `start`){
+    start();
+  }
+  else if(state === `menu`){
+    menu();
+  }
 }
