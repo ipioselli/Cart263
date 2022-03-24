@@ -20,12 +20,17 @@ let state = `start`; // the prototype starts with the title state
 let tamagotchiEgg;
 let tamagotchiImg;
 
+let roomBg;
+
 let egg01;
 let egg01Img;
 let egg02;
 let egg02Img;
 let egg03;
 let egg03Img;
+
+let hour = 6;
+
 
 let energyCounter = 0;
 let energyTimerDone = false;
@@ -51,6 +56,7 @@ function preload() {
   egg02Img = loadImage(`assets/images/egg02.png`);
   egg03Img = loadImage(`assets/images/egg03.png`);
   song01 = loadSound(`assets/sounds/Cute.mp3`);
+  roomBg = loadImage(`assets/images/roomBg.png`);
 }
 
 
@@ -68,19 +74,19 @@ function setup() {
 
 function setupEgg01(){
   let x = width/2;
-  let y= height/2;
+  let y= height/2 + 150;
   egg01 = new Tamagotchi(x, y, egg01Img)
 }
 
 function setupEgg02(){
   let x = width/2;
-  let y= height/2;
+  let y= height/2 + 150;
   egg02 = new Tamagotchi(x, y, egg02Img)
 }
 
 function setupEgg03(){
   let x = width/2;
-  let y= height/2;
+  let y= height/2 + 150;
   egg03 = new Tamagotchi(x, y, egg03Img)
 }
 
@@ -151,15 +157,17 @@ function chooseEgg() {
 }
 
 function livingRoom() {
-
+  imageMode(CENTER, CENTER);
+  image(roomBg, width/2, height/2, 1280, 720);
   push();
-  background(186, 219, 205);
+
   textAlign(CENTER, CENTER);
   textFont(pixelFont);
   fill(0);
   textSize(30);
   text(`Living Room`, width / 2, height / 2 + 300)
   pop();
+  displayTime();
   displayEnergy();
   displayEvolutionLVL();
   checkEgg();
@@ -168,8 +176,9 @@ function livingRoom() {
 }
 
 function kitchen() {
+  imageMode(CENTER, CENTER);
+  image(roomBg, width/2, height/2, 1280, 720);
   push();
-  background(186, 219, 205);
   textAlign(CENTER, CENTER);
   textFont(pixelFont);
   fill(0);
@@ -178,14 +187,16 @@ function kitchen() {
 
   pop();
 
+  displayTime();
   displayEnergy();
   displayEvolutionLVL();
   checkEgg();
 }
 
 function bedRoom(){
+  imageMode(CENTER, CENTER);
+  image(roomBg, width/2, height/2, 1280, 720);
   push();
-  background(186, 219, 205);
   textAlign(CENTER, CENTER);
   textFont(pixelFont);
   fill(0);
@@ -193,7 +204,7 @@ function bedRoom(){
   text(`Bedroom`, width / 2, height / 2 + 300)
 
   pop();
-
+  displayTime();
   displayEnergy();
   displayEvolutionLVL();
   checkEgg();
@@ -202,8 +213,9 @@ function bedRoom(){
 }
 
 function bathroom(){
+  imageMode(CENTER, CENTER);
+  image(roomBg, width/2, height/2, 1280, 720);
   push();
-  background(186, 219, 205);
   textAlign(CENTER, CENTER);
   textFont(pixelFont);
   fill(0);
@@ -211,7 +223,7 @@ function bathroom(){
   text(`Bathroom`, width / 2, height / 2 + 300)
 
   pop();
-
+  displayTime();
   displayEnergy();
   displayEvolutionLVL();
   checkEgg();
@@ -233,6 +245,10 @@ function checkEgg(){
 function checkCounter() {
 
   tamagotchiEnergy--;
+}
+
+function checkHour(){
+  hour++;
 }
 
 function updateEgg01(){
@@ -278,6 +294,18 @@ function displayEvolutionLVL() {
   pop();
 }
 
+function displayTime() {
+  push();
+  textAlign(CENTER, CENTER);
+  textFont(pixelFont);
+  fill(255);
+  textSize(20);
+  text(`Time:${hour}:00`, width / 2, height / 2 - 300);
+  pop();
+}
+
+
+
 //keyboard input
 function keyPressed() {
   if (state === `start`) {
@@ -297,6 +325,7 @@ function keyPressed() {
       tamagotchiEgg = egg01
       state = `livingRoom`;
       setInterval(checkCounter, 2000);
+      setInterval(checkHour, 10000);
     }
   }
   if (state === `chooseEgg`) {
@@ -304,6 +333,7 @@ function keyPressed() {
       tamagotchiEgg = egg02;
       state = `livingRoom`;
       setInterval(checkCounter, 2000);
+      setInterval(checkHour, 10000);
     }
   }
   if (state === `chooseEgg`) {
@@ -311,6 +341,7 @@ function keyPressed() {
       tamagotchiEgg = egg03;
       state = `livingRoom`;
       setInterval(checkCounter, 2000);
+      setInterval(checkHour, 10000);
     }
   }
 

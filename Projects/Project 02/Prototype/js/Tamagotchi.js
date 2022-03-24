@@ -17,6 +17,7 @@ class Tamagotchi{
     this.handleInput();
     this.display();
     this.checkPosition();
+
   }
 
   move(){
@@ -25,49 +26,48 @@ class Tamagotchi{
 
   }
 
+  position(){
+    this.x = width/2;
+    this.y = height/2 + 150;
+  }
+
   checkPosition(){
     if(state === `livingRoom`){
       if(this.x > width){
         state = `kitchen`;
-        this.x = width/2;
-        this.y = height/2;
+        this.position();
       }
     }
 
     if(state === `livingRoom`){
       if(this.x < 0){
         state = `bedRoom`;
-        this.x = width/2;
-        this.y = height/2;
+        this.position();
       }
     }
 
     if(state === `livingRoom`){
       if(this.y > height){
         state = `bathroom`;
-        this.x = width/2;
-        this.y = height/2;
+        this.position();
       }
     }
     if(state === `kitchen`){
       if(this.x < 0){
         state = `livingRoom`;
-        this.x = width/2;
-        this.y = height/2;
+        this.position();
       }
     }
     if(state === `bedRoom`){
       if(this.x > width){
         state = `livingRoom`;
-        this.x = width/2;
-        this.y = height/2;
+        this.position();
       }
     }
     if(state === `bathroom`){
       if(this.y < 0){
         state = `livingRoom`;
-        this.x = width/2;
-        this.y = height/2;
+        this.position();
       }
     }
 
