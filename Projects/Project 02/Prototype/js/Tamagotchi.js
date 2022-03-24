@@ -33,8 +33,38 @@ class Tamagotchi{
         this.y = height/2;
       }
     }
+
+    if(state === `livingRoom`){
+      if(this.x < 0){
+        state = `bedRoom`;
+        this.x = width/2;
+        this.y = height/2;
+      }
+    }
+
+    if(state === `livingRoom`){
+      if(this.y > height){
+        state = `bathroom`;
+        this.x = width/2;
+        this.y = height/2;
+      }
+    }
     if(state === `kitchen`){
       if(this.x < 0){
+        state = `livingRoom`;
+        this.x = width/2;
+        this.y = height/2;
+      }
+    }
+    if(state === `bedRoom`){
+      if(this.x > width){
+        state = `livingRoom`;
+        this.x = width/2;
+        this.y = height/2;
+      }
+    }
+    if(state === `bathroom`){
+      if(this.y < 0){
         state = `livingRoom`;
         this.x = width/2;
         this.y = height/2;

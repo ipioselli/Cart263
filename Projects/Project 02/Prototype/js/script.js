@@ -37,6 +37,7 @@ let tamagotchi;
 let chooseEggBG;
 
 let pixelFont;
+let song01;
 
 /**
 Description of preload
@@ -49,6 +50,7 @@ function preload() {
   egg01Img = loadImage(`assets/images/egg01.png`);
   egg02Img = loadImage(`assets/images/egg02.png`);
   egg03Img = loadImage(`assets/images/egg03.png`);
+  song01 = loadSound(`assets/sounds/Cute.mp3`);
 }
 
 
@@ -96,6 +98,12 @@ function draw() {
     kitchen();
   } else if (state === `bathroom`) {
     bathroom();
+  }
+  else if(state === `bedRoom`){
+    bedRoom();
+  }
+  else if(state === `dead`){
+    dead();
   }
 
 }
@@ -154,15 +162,7 @@ function livingRoom() {
   pop();
   displayEnergy();
   displayEvolutionLVL();
-
-
-  if (tamagotchiEgg === egg01) {
-    updateEgg01();
-  } else if (tamagotchiEgg === egg02) {
-    updateEgg02();
-  } else if (tamagotchiEgg === egg03) {
-    updateEgg03();
-  }
+  checkEgg();
 
 
 }
@@ -180,7 +180,44 @@ function kitchen() {
 
   displayEnergy();
   displayEvolutionLVL();
+  checkEgg();
+}
 
+function bedRoom(){
+  push();
+  background(186, 219, 205);
+  textAlign(CENTER, CENTER);
+  textFont(pixelFont);
+  fill(0);
+  textSize(30);
+  text(`Bedroom`, width / 2, height / 2 + 300)
+
+  pop();
+
+  displayEnergy();
+  displayEvolutionLVL();
+  checkEgg();
+
+
+}
+
+function bathroom(){
+  push();
+  background(186, 219, 205);
+  textAlign(CENTER, CENTER);
+  textFont(pixelFont);
+  fill(0);
+  textSize(30);
+  text(`Bathroom`, width / 2, height / 2 + 300)
+
+  pop();
+
+  displayEnergy();
+  displayEvolutionLVL();
+  checkEgg();
+}
+
+function checkEgg(){
   if (tamagotchiEgg === egg01) {
     updateEgg01();
     tamagotchiEgg = egg01;
@@ -246,6 +283,8 @@ function keyPressed() {
   if (state === `start`) {
     if (keyCode === 13) { //keycode for ENTER
       state = `menu`;
+      song01.play();
+      // song01.setVolume(0.5);
     }
   }
   if (state === `menu`) {
