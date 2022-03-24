@@ -13,6 +13,18 @@ let tamagotchiMenu = { // button to access the tutorial state
   size: 300,
 }
 
+const pinkFood = [
+  "watermelon",
+  "raspberry",
+  "strawberry",
+  "cherry",
+  "peach",
+  "fig",
+];
+
+let foodRightAnswer = 0;
+let maxFoodRightAnswer = 5;
+let foodWrongAnswer = 0;
 
 
 let state = `start`; // the prototype starts with the title state
@@ -21,6 +33,7 @@ let tamagotchiEgg;
 let tamagotchiImg;
 
 let roomBg;
+let floorPlanBg;
 
 let egg01;
 let egg01Img;
@@ -33,7 +46,6 @@ let hour = 6;
 
 
 let energyCounter = 0;
-let energyTimerDone = false;
 let tamagotchiEnergy = 2000;
 let tamagotchiLVL = 1;
 
@@ -57,6 +69,7 @@ function preload() {
   egg03Img = loadImage(`assets/images/egg03.png`);
   song01 = loadSound(`assets/sounds/Cute.mp3`);
   roomBg = loadImage(`assets/images/roomBg.png`);
+  floorPlanBg = loadImage(`assets/images/floorplan.png`)
 }
 
 
@@ -70,6 +83,26 @@ function setup() {
   setupEgg02();
   setupEgg03();
 
+  if(annyang){
+
+    let commands = {
+      "Eat some *food" : feed
+    };
+    annyang.addCommands(commands);
+    annyang.start();
+  }
+
+}
+
+function feed(food){
+  if(pinkFood.includes(food)){
+    foodRightAnswer ++;
+    tamagotchiEnergy+=10;
+  }
+  else {
+    foodWrongAnswer--;
+    tamagotchiEnergy-=10;
+  }
 }
 
 function setupEgg01(){
@@ -94,13 +127,24 @@ function setupEgg03(){
 function draw() {
   if (state === `start`) {
     start();
-  } else if (state === `menu`) {
+  }
+  else if (state === `menu`) {
     menu();
-  } else if (state === `chooseEgg`) {
+  }
+  else if(state ===  `instructions`){
+    instructions();
+  }
+  else if(state === `floorPlan`){
+    floorPlan();
+
+  }
+  else if (state === `chooseEgg`) {
     chooseEgg();
-  } else if (state === `livingRoom`) {
+  }
+  else if (state === `livingRoom`) {
     livingRoom();
-  } else if (state === `kitchen`) {
+  }
+  else if (state === `kitchen`) {
     kitchen();
   } else if (state === `bathroom`) {
     bathroom();
@@ -115,6 +159,7 @@ function draw() {
 }
 
 
+
 //title state : homepage
 function start() {
 
@@ -125,12 +170,9 @@ function start() {
   textSize(50);
   fill(255, 255, 255);
   text(`ENTER to start!`, width / 2, height / 2);
-
   pop();
 
 }
-
-
 
 function menu() {
   push();
@@ -139,9 +181,41 @@ function menu() {
   textFont(pixelFont);
   fill(255);
   textSize(50);
+  text(`TAMAGOTCHI SIM`, width / 2, height / 2 - 300);
+  textSize(20);
   text(`Press spacebar`, width / 2, height / 2 + 200);
   pop();
   displayTamagotchiMenu();
+}
+
+function instructions(){
+  push();
+  background(186, 219, 205);
+  textAlign(CENTER, CENTER);
+  textFont(pixelFont);
+  fill(255);
+  textSize(30);
+  text(`Instructions`, width / 2, height / 2 - 200);
+  text(`You must choose an egg to raise! \n You are given a house and \nmust make sure its energy level stays up`, width / 2, height / 2 - 100)
+
+  text(`Press Enter for Floor plans`, width / 2, height / 2 + 200);
+  pop();
+}
+
+function floorPlan(){
+
+  push();
+  imageMode(CENTER, CENTER);
+  image(floorPlanBg, width / 2, height / 2, 1280, 720);
+  textAlign(CENTER, CENTER);
+  textFont(pixelFont);
+  fill(255);
+  textSize(50);
+  text(`FLOOR PLAN`, width / 2, height / 2 - 300);
+  textSize(30);
+  text(`SPACE when ready`, width / 2, height / 2 - 200);
+  pop();
+
 }
 
 function chooseEgg() {
@@ -249,6 +323,9 @@ function checkCounter() {
 
 function checkHour(){
   hour++;
+  if(hour >= 12){ //time for school
+
+  }
 }
 
 function updateEgg01(){
@@ -316,6 +393,16 @@ function keyPressed() {
     }
   }
   if (state === `menu`) {
+    if (keyCode === 32) { //spacebar
+      state = `instructions`;
+    }
+  }
+  if (state === `instructions`) {
+    if (keyCode === 13) { //
+      state = `floorPlan`;
+    }
+  }
+  if (state === `floorPlan`) {
     if (keyCode === 32) {
       state = `chooseEgg`;
     }
