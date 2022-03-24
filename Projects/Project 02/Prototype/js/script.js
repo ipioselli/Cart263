@@ -15,7 +15,7 @@ let tamagotchiMenu = { // button to access the tutorial state
 
 
 
-let state = `start`; // the prototype starts with the title state
+let state = `livingRoom`; // the prototype starts with the title state
 
 let tamagotchiEgg;
 let newTamagotchiEgg;
@@ -72,11 +72,15 @@ function setup() {
 function draw() {
   if (state === `start`) {
     start();
-  } else if (state === `menu`) {
+  }
+  else if (state === `menu`) {
     menu();
   }
-  else if(state === `chooseEgg`){
+  else if (state === `chooseEgg`) {
     chooseEgg();
+  }
+  else if (state === `livingRoom`) {
+    livingRoom();
   }
 
 }
@@ -111,20 +115,48 @@ function menu() {
   displayTamagotchiMenu();
 }
 
-function chooseEgg(){
+function chooseEgg() {
   imageMode(CENTER, CENTER);
-  image(chooseEggBG, width/2, height/2, 1280, 720);
+  image(chooseEggBG, width / 2, height / 2, 1280, 720);
   push();
+  textAlign(CENTER, CENTER);
+  textFont(pixelFont);
+  fill(255);
+  textSize(50);
+  text(`Choose an Egg`, width / 2, height / 2 + 200);
   pop();
 }
 
-function livingRoom(){
-  
+function livingRoom() {
+
+  push();
+  background(186, 219, 205);
+  pop();
+  displayEnergy();
+  displayEvolutionLVL();
+  if(tamagotchiEgg === egg01){
+    displayTamagotchiEgg01();
+  }
+  else if(tamagotchiEgg === egg02){
+  displayTamagotchiEgg02();
+  }
+
+  else if(tamagotchiEgg === egg03){
+    displayTamagotchiEgg03();
+  }
+
+
 }
 
-function displayTamagotchiEgg(){
-
+function displayTamagotchiEgg01() {
+  imageMode(CENTER, CENTER);
+  image(egg01.image, egg01.x, egg01.y, egg01.size, egg01.size);
 }
+function displayTamagotchiEgg02() {
+  imageMode(CENTER, CENTER);
+  image(egg02.image, egg02.x, egg02.y, egg02.size, egg02.size);
+}
+
 
 
 function displayTamagotchiMenu() {
@@ -134,6 +166,27 @@ function displayTamagotchiMenu() {
   tamagotchiMenu.x = tamagotchiMenu.x + random(-1, 1);
 }
 
+function displayEnergy(){
+  push();
+  textAlign(CENTER, CENTER);
+  textFont(pixelFont);
+  fill(255);
+  textSize(20);
+  text(`Energy: ${tamagotchiEnergy}`, width / 2 + 400, height / 2 - 300);
+  pop();
+
+}
+
+function displayEvolutionLVL(){
+  push();
+  textAlign(CENTER, CENTER);
+  textFont(pixelFont);
+  fill(255);
+  textSize(20);
+  text(`Evolution: ${tamagotchiLVL}`, width / 2 - 400, height / 2 - 300);
+  pop();
+}
+
 //keyboard input
 function keyPressed() {
   if (state === `start`) {
@@ -141,31 +194,28 @@ function keyPressed() {
       state = `menu`;
     }
   }
-  if(state === `menu`){
-    if(keyCode === 32){
+  if (state === `menu`) {
+    if (keyCode === 32) {
       state = `chooseEgg`;
     }
   }
-  if(state === `chooseEgg`){
-      if(keyCode === 49){
-        tamagotchiEgg === egg01;
-        state = `livingRoom`;
-      }
+  if (state === `chooseEgg`) {
+    if (keyCode === 49) {
+      tamagotchiEgg = egg01
+      state = `livingRoom`;
+    }
   }
-  if(state === `chooseEgg`){
-      if(keyCode === 50){
-        tamagotchiEgg === egg02;
-        state = `livingRoom`;
-      }
+  if (state === `chooseEgg`) {
+    if (keyCode === 50) {
+      tamagotchiEgg = egg02;
+      state = `livingRoom`;
+    }
   }
-  if(state === `chooseEgg`){
-      if(keyCode === 51){
-        tamagotchiEgg === egg03;
-        state = `livingRoom`;
-      }
+  if (state === `chooseEgg`) {
+    if (keyCode === 51) {
+      tamagotchiEgg = egg03;
+      state = `livingRoom`;
+    }
   }
-
-
-
 
 }
