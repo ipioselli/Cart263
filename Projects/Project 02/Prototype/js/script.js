@@ -15,7 +15,7 @@ let tamagotchiMenu = { // button to access the tutorial state
 
 
 
-let state = `livingRoom`; // the prototype starts with the title state
+let state = `start`; // the prototype starts with the title state
 
 let tamagotchiEgg;
 let newTamagotchiEgg;
@@ -35,6 +35,8 @@ let egg03 = {
   size: 300,
 }
 
+let energyCounter = 0;
+let energyTimerDone = false;
 let tamagotchiEnergy = 2000;
 let tamagotchiLVL = 1;
 
@@ -65,6 +67,8 @@ function setup() {
   createCanvas(1280, 720);
 
 
+
+
 }
 
 
@@ -81,6 +85,12 @@ function draw() {
   }
   else if (state === `livingRoom`) {
     livingRoom();
+  }
+  else if(state === `kitchen`){
+    kitchen();
+  }
+  else if(state === `bathroom`){
+    bathroom();
   }
 
 }
@@ -134,6 +144,8 @@ function livingRoom() {
   pop();
   displayEnergy();
   displayEvolutionLVL();
+
+
   if(tamagotchiEgg === egg01){
     displayTamagotchiEgg01();
   }
@@ -146,6 +158,11 @@ function livingRoom() {
   }
 
 
+}
+
+function checkCounter(){
+
+tamagotchiEnergy--;
 }
 
 function displayTamagotchiEgg01() {
@@ -203,18 +220,21 @@ function keyPressed() {
     if (keyCode === 49) {
       tamagotchiEgg = egg01
       state = `livingRoom`;
+      setInterval(checkCounter, 2000);
     }
   }
   if (state === `chooseEgg`) {
     if (keyCode === 50) {
       tamagotchiEgg = egg02;
       state = `livingRoom`;
+      setInterval(checkCounter, 2000);
     }
   }
   if (state === `chooseEgg`) {
     if (keyCode === 51) {
       tamagotchiEgg = egg03;
       state = `livingRoom`;
+      setInterval(checkCounter, 2000);
     }
   }
 
