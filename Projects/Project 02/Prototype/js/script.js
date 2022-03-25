@@ -7,7 +7,7 @@ Tamagotchi Sim
 Instructions are in the readme file
 important:
 - go to the kitchen for the prototype mini game
-- say "Eat some .." for annyang 
+- say "Eat some .." for annyang
 
 */
 
@@ -73,7 +73,7 @@ let state = `start`; // the prototype starts with the start state
 function preload() {
   tamagotchiMenu.image = loadImage("assets/images/tamagotchi.png");
   pixelFont = loadFont(`assets/fonts/dogica.otf`);
-  chooseEggBG = loadImage(`assets/images/chooseEggBG.png`);
+  chooseEggBG = loadImage(`assets/images/chooseEggBg.png`);
   egg01Img = loadImage(`assets/images/egg01.png`);
   egg02Img = loadImage(`assets/images/egg02.png`);
   egg03Img = loadImage(`assets/images/egg03.png`);
