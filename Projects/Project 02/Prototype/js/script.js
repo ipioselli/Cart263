@@ -1,6 +1,7 @@
 /**
 Project 2 prototype
 Ines Pioselli
+
 Tamagotchi Sim
 
 */
@@ -23,11 +24,12 @@ const pinkFood = [
 ];
 
 let foodRightAnswer = 0;
-let maxFoodRightAnswer = 5;
+// let maxFoodRightAnswer = 5;
 let foodWrongAnswer = 0;
 
+let feedInstructions = `Feed the tamagotchi by saying Eat some and then the name of the food. Hint The tamagotchi loves the colour pink`;
 
-let state = `start`; // the prototype starts with the title state
+let state = `chooseEgg`; // the prototype starts with the title state
 
 let tamagotchiEgg;
 let tamagotchiImg;
@@ -47,15 +49,9 @@ let hour = 6; //day starts at 6am
 let feedButton = {
   x:1280/2,
   y:720/2,
-  size:50,
+  size:300,
 
 }
-//
-// let feedButtonPressed = {
-//   x:1280/2,
-//   y:720/2,
-//   size:50,
-// }
 
 
 
@@ -106,20 +102,12 @@ function setup() {
     };
     annyang.addCommands(commands);
     annyang.start();
+    feed();
   }
 
 }
 
-function feed(food){
-  if(pinkFood.includes(food)){
-    foodRightAnswer ++;
-    tamagotchiEnergy+=10;
-  }
-  else {
-    foodWrongAnswer--;
-    tamagotchiEnergy-=10;
-  }
-}
+
 
 function setupEgg01(){
   let x = width/2;
@@ -141,6 +129,10 @@ function setupEgg03(){
 
 //Draws all the states for the game
 function draw() {
+  setupStates();
+}
+
+function setupStates(){
   if (state === `start`) {
     start();
   }
@@ -174,6 +166,16 @@ function draw() {
 
 }
 
+function feed(food){
+  if(pinkFood.includes(food)){
+    foodRightAnswer ++;
+    tamagotchiEnergy+=10;
+  }
+  else{
+    //foodWrongAnswer--;
+    //tamagotchiEnergy-=10;
+  }
+}
 
 
 //title state : homepage
@@ -277,11 +279,13 @@ function kitchen() {
 
   pop();
 
+
   displayTime();
   displayEnergy();
   displayEvolutionLVL();
   displayFeedButton();
   checkEgg();
+  //feed();
 }
 
 function bedRoom(){
@@ -323,7 +327,7 @@ function bathroom(){
 function checkEgg(){
   if (tamagotchiEgg === egg01) {
     updateEgg01();
-    tamagotchiEgg = egg01;
+
   }
   else if (tamagotchiEgg === egg02) {
     updateEgg02();
@@ -401,6 +405,28 @@ function displayTime() {
   pop();
 }
 
+
+function mousePressed(){
+
+  let d = dist(mouseX, mouseY, feedButton.x, feedButton.y);
+  if(state === `kitchen`){
+    if(d< feedButton.size /2){
+      displayGoodScore();
+      responsiveVoice.speak(feedInstructions, "UK English Female")
+    }
+  }
+}
+
+function displayGoodScore(){
+  push();
+  textAlign(CENTER, CENTER);
+  textFont(pixelFont);
+  fill(0);
+  textSize(40);
+  text(`Right Answers = ${foodRightAnswer}`, width / 2 -400, height / 2 + 200);
+  pop();
+
+}
 
 
 //keyboard input
