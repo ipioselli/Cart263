@@ -5,6 +5,9 @@ Ines Pioselli
 Tamagotchi Sim
 
 Instructions are in the readme file
+important:
+- go to the kitchen for the prototype mini game
+- say "Eat some .." for annyang 
 
 */
 
@@ -474,6 +477,7 @@ function keyPressed() {
     if (keyCode === 13) { //keycode for ENTER
       state = `menu`;
       song01.play();
+      song01.setVolume(0.2);
     }
   }
   if (state === `menu`) {
@@ -495,15 +499,15 @@ function keyPressed() {
     if (keyCode === 49) {
       tamagotchiEgg = egg01
       state = `livingRoom`;
-      setInterval(checkCounter, 2000);
-      setInterval(checkHour, 10000);
+      setInterval(checkCounter, 3000); //every 3 seconds
+      setInterval(checkHour, 10000); //every 10 seconds
     }
   }
   if (state === `chooseEgg`) {
     if (keyCode === 50) {
       tamagotchiEgg = egg02;
       state = `livingRoom`;
-      setInterval(checkCounter, 2000);
+      setInterval(checkCounter, 3000);
       setInterval(checkHour, 10000);
     }
   }
@@ -511,7 +515,7 @@ function keyPressed() {
     if (keyCode === 51) {
       tamagotchiEgg = egg03;
       state = `livingRoom`;
-      setInterval(checkCounter, 2000);
+      setInterval(checkCounter, 3000);
       setInterval(checkHour, 10000);
     }
   }
