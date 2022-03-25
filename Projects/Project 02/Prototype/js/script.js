@@ -10,7 +10,7 @@ Tamagotchi Sim
 
 let tamagotchiMenu = { // button to access the tutorial state
   x: 1280 / 2,
-  y: 720 / 2,
+  y: 720 / 2 ,
   size: 300,
 }
 
@@ -48,7 +48,7 @@ let hour = 6; //day starts at 6am
 
 let feedButton = {
   x:1280/2,
-  y:720/2,
+  y:720/2 - 1500,
   size:300,
 
 }
@@ -95,6 +95,10 @@ function setup() {
   setupEgg02();
   setupEgg03();
 
+  setupAnnyang();
+}
+
+function setupAnnyang(){
   if(annyang){
 
     let commands = {
@@ -167,13 +171,16 @@ function setupStates(){
 }
 
 function feed(food){
+if(state === `kitchen`){
   if(pinkFood.includes(food)){
     foodRightAnswer ++;
     tamagotchiEnergy+=10;
   }
   else{
-    //foodWrongAnswer--;
-    //tamagotchiEnergy-=10;
+    foodWrongAnswer++;
+    tamagotchiEnergy-=10;
+    }
+
   }
 }
 
@@ -284,8 +291,10 @@ function kitchen() {
   displayEnergy();
   displayEvolutionLVL();
   displayFeedButton();
+  displayGoodScore();
+  displayBadScore();
   checkEgg();
-  //feed();
+
 }
 
 function bedRoom(){
@@ -321,6 +330,7 @@ function bathroom(){
   displayTime();
   displayEnergy();
   displayEvolutionLVL();
+
   checkEgg();
 }
 
@@ -422,10 +432,20 @@ function displayGoodScore(){
   textAlign(CENTER, CENTER);
   textFont(pixelFont);
   fill(0);
-  textSize(40);
-  text(`Right Answers = ${foodRightAnswer}`, width / 2 -400, height / 2 + 200);
+  textSize(20);
+  text(`Food Eaten = ${foodRightAnswer}`, width / 2 -400, height / 2 - 250);
   pop();
 
+}
+
+function displayBadScore(){
+  push();
+  textAlign(CENTER, CENTER);
+  textFont(pixelFont);
+  fill(0);
+  textSize(20);
+  text(`Food Thrown Up = ${foodWrongAnswer}`, width / 2 +400, height / 2 - 250);
+  pop();
 }
 
 
