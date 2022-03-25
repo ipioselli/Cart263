@@ -42,7 +42,22 @@ let egg02Img;
 let egg03;
 let egg03Img;
 
-let hour = 6;
+let hour = 6; //day starts at 6am
+
+let feedButton = {
+  x:1280/2,
+  y:720/2,
+  size:50,
+
+}
+//
+// let feedButtonPressed = {
+//   x:1280/2,
+//   y:720/2,
+//   size:50,
+// }
+
+
 
 
 let energyCounter = 0;
@@ -70,6 +85,7 @@ function preload() {
   song01 = loadSound(`assets/sounds/Cute.mp3`);
   roomBg = loadImage(`assets/images/roomBg.png`);
   floorPlanBg = loadImage(`assets/images/floorplan.png`)
+  feedButton.image = loadImage(`assets/images/feedButton.png`);
 }
 
 
@@ -264,6 +280,7 @@ function kitchen() {
   displayTime();
   displayEnergy();
   displayEvolutionLVL();
+  displayFeedButton();
   checkEgg();
 }
 
@@ -341,7 +358,10 @@ function updateEgg03(){
 }
 
 
-
+function displayFeedButton(){
+  imageMode(CENTER,CENTER);
+  image(feedButton.image, feedButton.x, feedButton.y, feedButton.size, feedButton.size );
+}
 
 function displayTamagotchiMenu() {
   imageMode(CENTER, CENTER);
