@@ -3,6 +3,8 @@ class Tamagotchi {
   constructor(x, y, image) {
     this.x = x;
     this.y = y;
+    this.width = 300;
+    this.height = 300;
     this.size = 200;
 
     this.vx = 0;
@@ -98,7 +100,7 @@ class Tamagotchi {
   //display the tamagotchi
   display() {
     push();
-    image(this.image, this.x, this.y, this.size, this.size);
+    image(this.image, this.x, this.y, this.width, this.height);
     pop();
   }
 }

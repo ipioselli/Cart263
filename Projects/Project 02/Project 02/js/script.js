@@ -34,6 +34,12 @@ let tamagotchiLVL = 1;
 let tamagotchi;
 let hour = 6; //day starts at 6am
 
+//bathroom variables
+let dirt = [];
+let newDirtTimer = 0;
+let newDirtDelay = 1000;
+let dirtImg;
+
 
 //kitchen variables
 const pinkFood = [ //array of the tamagotchi's favourite food
@@ -67,7 +73,7 @@ let pixelFont;
 //sounds
 let song01;
 
-let state = `start`; // the prototype starts with the start state
+let state = `chooseEgg`; // the prototype starts with the start state
 
 //loads all the variables
 function preload() {
