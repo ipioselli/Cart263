@@ -473,6 +473,10 @@ function mousePressed() {
   }
 }
 
+function keyPressed(){
+
+}
+
 //display good score for the food
 function displayGoodScore() {
   push();

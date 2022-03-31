@@ -3,8 +3,6 @@ class Tamagotchi {
   constructor(x, y, image) {
     this.x = x;
     this.y = y;
-    this.width = 300;
-    this.height = 300;
     this.size = 200;
 
     this.vx = 0;
@@ -12,6 +10,13 @@ class Tamagotchi {
     this.speed = 4;
 
     this.image = image;
+    this.dirt = [];
+    this.dirty = {
+      this.x = random();
+      this.y = random();
+      this.size = random(5, 10);
+
+    }
   }
 
   //calls all the functions for the tamagotchi
@@ -20,7 +25,7 @@ class Tamagotchi {
     this.handleInput();
     this.display();
     this.checkPosition();
-
+    this.mousePressed();
   }
 
   //move the tamagotchi
@@ -97,10 +102,32 @@ class Tamagotchi {
     }
   }
 
+
+
+
+
   //display the tamagotchi
-  display() {
+  display(dirt) {
     push();
-    image(this.image, this.x, this.y, this.width, this.height);
+    image(this.image, this.x, this.y, this.size, this.size);
     pop();
+
+    for (let i = 0; i < this.dirt.length; i++) {
+    let dirt = this.dirt[i];
+    let x = this.x + this.dirt.x*this.size;
+    let y = this.y + this.dirt.y*this.size;
+    noStroke();
+    fill(100,80,80);
+    ellipse(x, y, this.dirt.size);
   }
+  }
+
+
+mousePressed(){
+    dirt.x = random();
+    dirt.y =  random();
+    dirt.size = random(5,10)
+  this.dirt.push(dirt);
+  }
+
 }
