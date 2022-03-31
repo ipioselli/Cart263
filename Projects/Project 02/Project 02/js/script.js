@@ -1,13 +1,11 @@
 /**
-Project 2 prototype
+Project 2
 Ines Pioselli
 
 Tamagotchi Sim
 
-Instructions are in the readme file
-important:
-- go to the kitchen for the prototype mini game
-- say "Eat some .." for annyang
+This week:
+- get bathroom working
 
 */
 
@@ -39,6 +37,9 @@ let dirt = [];
 let newDirtTimer = 0;
 let newDirtDelay = 1000;
 let dirtImg;
+let bubbleImg;
+let numBubbles = 10;
+let bubbles = [];
 
 
 //kitchen variables
@@ -63,6 +64,7 @@ let feedButton = {
 let feedInstructions = `Feed the tamagotchi by saying Eat some and then the name of the food. Hint The tamagotchi loves the colour pink`;
 
 //background image variables
+let bathroomBg;
 let roomBg;
 let floorPlanBg;
 let chooseEggBG;
@@ -85,8 +87,10 @@ function preload() {
   egg03Img = loadImage(`assets/images/egg03.png`);
   song01 = loadSound(`assets/sounds/Cute.mp3`);
   roomBg = loadImage(`assets/images/roomBg.png`);
+  bathroomBg = loadImage(`assets/images/bathroom.png`);
   floorPlanBg = loadImage(`assets/images/floorplan.png`)
   feedButton.image = loadImage(`assets/images/feedButton.png`);
+  bubbleImg = loadImage(`assets/images/bubble.png`);
 }
 
 
@@ -98,6 +102,7 @@ function setup() {
   setupEgg01();
   setupEgg02();
   setupEgg03();
+  setupBubbles();
 
   setupAnnyang(); //setup for annyang
 }
@@ -114,7 +119,14 @@ function setupAnnyang() {
   }
 
 }
-
+function setupBubbles(){
+  for(let i=0; i<numBubbles; i++){
+    let x = random(200, 200);
+    let y = random(200, 200);
+    let bubble = new Bubble(x, y, bubbleImg);
+    bubbles.push(bubble);
+  }
+}
 //setup egg 1
 function setupEgg01() {
   let x = width / 2;
@@ -320,7 +332,7 @@ function bedRoom() {
 //for the tamagotchi to wash himself
 function bathroom() {
   imageMode(CENTER, CENTER);
-  image(roomBg, width / 2, height / 2, 1280, 720);
+  image(bathroomBg, width / 2, height / 2, 1280, 720);
   push();
   textAlign(CENTER, CENTER);
   textFont(pixelFont);
@@ -333,6 +345,7 @@ function bathroom() {
   displayEnergy();
   displayEvolutionLVL();
   checkEgg();
+  updateBubbles();
 }
 
 //function when the tamagotchi dies because the energy is less than 0
@@ -345,6 +358,13 @@ function dead() {
   textSize(30);
   text(`RIP You killed them!`, width / 2, height / 2);
   pop();
+}
+
+function updateBubbles(){
+  for(let i =0; i<numBubbles; i++){
+    let bubble = bubbles[i];
+    bubbles[i].update();
+  }
 }
 
 //function to check which egg the user chose
