@@ -11,12 +11,7 @@ class Tamagotchi {
 
     this.image = image;
     this.dirt = [];
-    this.dirty = {
-      this.x = random();
-      this.y = random();
-      this.size = random(5, 10);
 
-    }
   }
 
   //calls all the functions for the tamagotchi
@@ -25,7 +20,7 @@ class Tamagotchi {
     this.handleInput();
     this.display();
     this.checkPosition();
-    this.mousePressed();
+
   }
 
   //move the tamagotchi
@@ -97,37 +92,42 @@ class Tamagotchi {
       this.vy = -this.speed;
     } else if (keyIsDown(DOWN_ARROW)) {
       this.vy = this.speed;
+      this.addDirt();
     } else {
       this.vy = 0;
     }
   }
 
+  addDirt() {
+    let dirt = {
+      x: random(-0.2, 0.2),
+      y: random(-0.2, 0.2),
+      size: random(5, 10)
+    };
+    this.dirt.push(dirt);
+  }
 
 
 
 
   //display the tamagotchi
-  display(dirt) {
+  display() {
+
     push();
     image(this.image, this.x, this.y, this.size, this.size);
     pop();
 
     for (let i = 0; i < this.dirt.length; i++) {
-    let dirt = this.dirt[i];
-    let x = this.x + this.dirt.x*this.size;
-    let y = this.y + this.dirt.y*this.size;
-    noStroke();
-    fill(100,80,80);
-    ellipse(x, y, this.dirt.size);
-  }
+      let dirt = this.dirt[i];
+      let x = this.x + dirt.x * this.size;
+      let y = this.y + dirt.y * this.size;
+      noStroke();
+      fill(100, 80, 80);
+      ellipse(x, y, dirt.size);
+
+    }
   }
 
 
-mousePressed(){
-    dirt.x = random();
-    dirt.y =  random();
-    dirt.size = random(5,10)
-  this.dirt.push(dirt);
-  }
 
 }

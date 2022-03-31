@@ -40,6 +40,8 @@ let dirtImg;
 let bubbleImg;
 let numBubbles = 10;
 let bubbles = [];
+let numShowerWater = 200
+let showerWater = [];
 
 
 //kitchen variables
@@ -59,7 +61,14 @@ let feedButton = {
   x: 1280 / 2,
   y: 720 / 2 - 150,
   size: 300,
+};
+let showerButton = {
+  x: 1280 / 2,
+  y: 720 / 2 - 150,
+  size: 300,
 }
+
+
 
 let feedInstructions = `Feed the tamagotchi by saying Eat some and then the name of the food. Hint The tamagotchi loves the colour pink`;
 
@@ -90,6 +99,7 @@ function preload() {
   bathroomBg = loadImage(`assets/images/bathroom.png`);
   floorPlanBg = loadImage(`assets/images/floorplan.png`)
   feedButton.image = loadImage(`assets/images/feedButton.png`);
+  showerButton.image = loadImage(`assets/images/washButton.png`);
   bubbleImg = loadImage(`assets/images/bubble.png`);
 }
 
@@ -103,6 +113,7 @@ function setup() {
   setupEgg02();
   setupEgg03();
   setupBubbles();
+  setupShower();
 
   setupAnnyang(); //setup for annyang
 }
@@ -127,6 +138,15 @@ function setupBubbles(){
     bubbles.push(bubble);
   }
 }
+
+function setupShower(){
+  for(let i=0; i<numShowerWater; i++){
+    let x = random(320, 640);
+    let y = random(0, -height);
+    let shower =  new Shower(x, y);
+    showerWater.push(shower);
+  }
+}
 //setup egg 1
 function setupEgg01() {
   let x = width / 2;
@@ -147,6 +167,8 @@ function setupEgg03() {
   let y = height / 2 + 150;
   egg03 = new Tamagotchi(x, y, egg03Img)
 }
+
+
 
 //Draws all the states for the game
 function draw() {
@@ -346,6 +368,9 @@ function bathroom() {
   displayEvolutionLVL();
   checkEgg();
   updateBubbles();
+  updateShower();
+  displayShowerButton();
+
 }
 
 //function when the tamagotchi dies because the energy is less than 0
@@ -366,6 +391,14 @@ function updateBubbles(){
     bubbles[i].update();
   }
 }
+
+function updateShower(){
+  for(let i =0; i<numShowerWater; i++){
+    let shower = showerWater[i];
+   showerWater[i].update();
+  }
+}
+
 
 //function to check which egg the user chose
 function checkEgg() {
@@ -419,6 +452,11 @@ function displayFeedButton() {
   image(feedButton.image, feedButton.x, feedButton.y, feedButton.size, feedButton.size);
 }
 
+function displayShowerButton() {
+  imageMode(CENTER, CENTER);
+  image(showerButton.image, showerButton.x, showerButton.y, showerButton.size, showerButton.size);
+}
+
 //display the tamagotchi on the menu state
 function displayTamagotchiMenu() {
   imageMode(CENTER, CENTER);
@@ -464,6 +502,8 @@ function displayTime() {
 //mousepressed to trigger responsiveVoice
 function mousePressed() {
 
+
+
   let d = dist(mouseX, mouseY, feedButton.x, feedButton.y);
   if (state === `kitchen`) {
     if (d < feedButton.size / 2) {
@@ -471,11 +511,17 @@ function mousePressed() {
       responsiveVoice.speak(feedInstructions, "UK English Female")
     }
   }
+
+  let d2 = dist(mouseX, mouseY, showerButton.x, showerButton.y );
+  if(state === `bathroom`){
+    if(d<showerButton.size/2){
+
+
+    }
+  }
 }
 
-function keyPressed(){
 
-}
 
 //display good score for the food
 function displayGoodScore() {
@@ -547,6 +593,17 @@ function keyPressed() {
       state = `livingRoom`;
       setInterval(checkCounter, 3000);
       setInterval(checkHour, 10000);
+    }
+  }
+
+  if(state === `bathroom`){
+    if(keyCode === 83){
+
+        for(let i =0; i<numShowerWater; i++){
+          let shower = showerWater[i];
+          showerWater[i].move();
+        }
+
     }
   }
 }
