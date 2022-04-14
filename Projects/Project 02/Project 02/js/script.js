@@ -195,7 +195,7 @@ function setupShower(){
 
 function setupHandpose() {
 
-  video.hide();
+  // video.hide();
   // Start the Handpose model and switch to our livingroom state when it loads
   //calculate ratio of the canvas to the webcam
   webcamRatio.x = width / video.elt.videoWidth;
