@@ -18,18 +18,10 @@ class Shower {
   move() {
     if(keyIsDown(83)){
         this.y = this.y + this.speed*this.gravity;
-        //   if(keyIsDown(83)){
-        //
-        //   }
-        // else{
-        //   this.y = random(0, 5);
-        //   this.gravity = 0;
-        // }
     }
-
-
-
-
+      else{
+        this.reset();
+      }
 
   }
 
@@ -38,6 +30,13 @@ class Shower {
       this.y = random(0, 5);
       this.gravity = 1;
     }
+  }
+
+  reset(){
+
+      this.y = random(-10, -height);
+      this.gravity = 1;
+
   }
 
   display() {

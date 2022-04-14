@@ -1,6 +1,6 @@
 class Tamagotchi {
 
-  constructor(x, y, image) {
+  constructor(x, y, image, image02, image03) {
     this.x = x;
     this.y = y;
     this.size = 200;
@@ -10,9 +10,11 @@ class Tamagotchi {
     this.speed = 4;
 
     this.image = image;
+    this.image02= image02;
+    this.image03 = image03;
     this.dirt = [];
     this.newDirtTimer = 0;
-    this.newDirtDelay = 500;
+    this.newDirtDelay = 100;
 
 
   }
@@ -24,6 +26,7 @@ class Tamagotchi {
     this.display();
     this.checkPosition();
     this.dirtTimer();
+    this.checkForDirt();
 
   }
 
@@ -34,6 +37,10 @@ class Tamagotchi {
 
   }
 
+  pet(){
+      this.y = this.y + 10;
+  }
+
   //reset position to the middle of the room
   position() {
     this.x = width / 2;
@@ -42,21 +49,21 @@ class Tamagotchi {
 
   //check position of the tamagotchi relative to the living room
   checkPosition() {
-    if (state === `livingRoom`) {
+    if (state === `bedRoom`) {
       if (this.x > width) {
         state = `kitchen`;
         this.position();
       }
     }
 
-    if (state === `livingRoom`) {
+    if (state === `bedRoom`) {
       if (this.x < 0) {
-        state = `bedRoom`;
-        this.position();
+        state = `loading`;
+        video = createCapture(VIDEO, setupHandpose);
       }
     }
 
-    if (state === `livingRoom`) {
+    if (state === `bedRoom`) {
       if (this.y > height) {
         state = `bathroom`;
         this.position();
@@ -64,19 +71,19 @@ class Tamagotchi {
     }
     if (state === `kitchen`) {
       if (this.x < 0) {
-        state = `livingRoom`;
+        state = `bedRoom`;
         this.position();
       }
     }
-    if (state === `bedRoom`) {
+    if (state === `livingRoom`) {
       if (this.x > width) {
-        state = `livingRoom`;
+        state = `bedRoom`;
         this.position();
       }
     }
     if (state === `bathroom`) {
       if (this.y < 0) {
-        state = `livingRoom`;
+        state = `bedRoom`;
         this.position();
       }
     }
@@ -121,15 +128,38 @@ class Tamagotchi {
     }
   }
 
+//remove the dirt from the tamagotchi
+  checkForDirt(){
+    if(state === `bathroom`){
+      if(keyIsDown(83)){
+        this.dirt.pop();
+      }
+    }
+  }
+
 
 
 
   //display the tamagotchi
   display() {
+    if(tamagotchiEnergy <= 1990){
+      push();
+      image(this.image03, this.x, this.y, this.size, this.size);
+      pop();
+    }
+    else if(tamagotchiEnergy <=1995){
+      push();
+      image(this.image02, this.x, this.y, this.size, this.size);
+      pop();
+    }
+    else if(tamagotchiEnergy <=2000){
+      push();
+      image(this.image, this.x, this.y, this.size, this.size);
+      pop();
+    }
 
-    push();
-    image(this.image, this.x, this.y, this.size, this.size);
-    pop();
+
+
 
     for (let i = 0; i < this.dirt.length; i++) {
       let dirt = this.dirt[i];

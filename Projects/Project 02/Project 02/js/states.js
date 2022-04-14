@@ -57,17 +57,17 @@ function floorPlan() {
 
 }
 
-//function to ask the user to choose which egg they want to raise
-function chooseEgg() {
-  imageMode(CENTER, CENTER);
-  image(chooseEggBG, width / 2, height / 2, 1280, 720);
+function loading(){
+  background(0);
   push();
-  textAlign(CENTER, CENTER);
   textFont(pixelFont);
   fill(255);
-  textSize(50);
-  text(`Choose an Egg`, width / 2, height / 2 + 200);
+  textSize(40);
+  textAlign(CENTER, CENTER);
+  text(`LOADING ${modelName} ...,`, width/2, height/2);
   pop();
+
+  // checkHand();
 }
 
 //main room = living room
@@ -82,11 +82,18 @@ function livingRoom() {
   text(`<- Living Room ->`, width / 2, height / 2 + 300)
   text(`v`, width / 2, height / 2 + 340)
   pop();
+
+  if(predictions.length >0 ){
+    let hand = predictions[0];
+    updatehand(hand);
+
+    overlapTamagotchi();
+  }
+  displayFinger();
   displayTime();
   displayEnergy();
   displayEvolutionLVL();
-  checkEgg();
-
+  updateEgg02();
 
 }
 
@@ -110,7 +117,7 @@ function kitchen() {
   displayFeedButton();
   displayGoodScore();
   displayBadScore();
-  checkEgg();
+  updateEgg02();
 
 }
 
@@ -130,7 +137,7 @@ function bedRoom() {
   displayTime();
   displayEnergy();
   displayEvolutionLVL();
-  checkEgg();
+  updateEgg02();
 
 
 }
@@ -150,7 +157,7 @@ function bathroom() {
   displayTime();
   displayEnergy();
   displayEvolutionLVL();
-  checkEgg();
+  updateEgg02();
   updateBubbles();
   updateShower();
   displayShowerButton();
