@@ -19,13 +19,13 @@ class Bubble {
     this.x= this.x + this.vx;
     this.y = this.y + this.vy;
 
-    this.x = constrain(this.x, 0,200);
-    this.y = constrain(this.y, 0, 200);
+    this.x = constrain(this.x, 480,760);
+    this.y = constrain(this.y, 200, 400);
 
-    if(this.x >= 200 || this.x <= 200){
+    if(this.x >= 760 || this.x <= 480){
       this.vx = -this.vx;
     }
-    if(this.y >= 200 || this.y <= 0){
+    if(this.y >= 400 || this.y <= 200){
       this.vy = -this.vy;
     }
   }

@@ -102,6 +102,7 @@ class Tamagotchi {
     }
   }
 
+//add dirt
   addDirt() {
     let dirt = {
       x: random(-0.2, 0.2),
@@ -111,6 +112,7 @@ class Tamagotchi {
     this.dirt.push(dirt);
   }
 
+//add dirt to the tamagotchi with a timer
   dirtTimer(){
     this.newDirtTimer++;
     if(this.newDirtTimer >= this.newDirtDelay){
