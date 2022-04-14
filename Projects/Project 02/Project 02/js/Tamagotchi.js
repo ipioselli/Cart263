@@ -11,6 +11,9 @@ class Tamagotchi {
 
     this.image = image;
     this.dirt = [];
+    this.newDirtTimer = 0;
+    this.newDirtDelay = 500;
+
 
   }
 
@@ -20,6 +23,7 @@ class Tamagotchi {
     this.handleInput();
     this.display();
     this.checkPosition();
+    this.dirtTimer();
 
   }
 
@@ -92,7 +96,7 @@ class Tamagotchi {
       this.vy = -this.speed;
     } else if (keyIsDown(DOWN_ARROW)) {
       this.vy = this.speed;
-      this.addDirt();
+
     } else {
       this.vy = 0;
     }
@@ -105,6 +109,14 @@ class Tamagotchi {
       size: random(5, 10)
     };
     this.dirt.push(dirt);
+  }
+
+  dirtTimer(){
+    this.newDirtTimer++;
+    if(this.newDirtTimer >= this.newDirtDelay){
+      this.addDirt();
+      this.newDirtTimer =0;
+    }
   }
 
 

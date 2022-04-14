@@ -34,11 +34,11 @@ let tamagotchiLVL = 1;
 let tamagotchi;
 let hour = 6; //day starts at 6am
 
-//bathroom variables
-let dirt = [];
-let newDirtTimer = 0;
-let newDirtDelay = 1000;
-let dirtImg;
+// //bathroom variables
+// let dirt = [];
+// let newDirtTimer = 0;
+// let newDirtDelay = 1000;
+// let dirtImg;
 
 
 //kitchen variables
@@ -66,6 +66,7 @@ let feedInstructions = `Feed the tamagotchi by saying Eat some and then the name
 let roomBg;
 let floorPlanBg;
 let chooseEggBG;
+let bathroomBg;
 
 //fonts
 let pixelFont;
@@ -86,6 +87,7 @@ function preload() {
   song01 = loadSound(`assets/sounds/Cute.mp3`);
   roomBg = loadImage(`assets/images/roomBg.png`);
   floorPlanBg = loadImage(`assets/images/floorplan.png`)
+  bathroomBg = loadImage(`assets/images/bathroom.png`)
   feedButton.image = loadImage(`assets/images/feedButton.png`);
 }
 
@@ -322,7 +324,7 @@ function bedRoom() {
 //for the tamagotchi to wash himself
 function bathroom() {
   imageMode(CENTER, CENTER);
-  image(roomBg, width / 2, height / 2, 1280, 720);
+  image(bathroomBg, width / 2, height / 2, 1280, 720);
   push();
   textAlign(CENTER, CENTER);
   textFont(pixelFont);
