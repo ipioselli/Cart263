@@ -57,7 +57,7 @@ let webcamRatio = {
 let finger = {
   x:undefined,
   y:undefined,
-  size: 200,
+  size: 50,
 };
 
 

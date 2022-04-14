@@ -63,6 +63,10 @@ class Tamagotchi {
       }
     }
 
+    if(state === `livingRoom`){
+      this.position();
+    }
+
     if (state === `bedRoom`) {
       if (this.y > height) {
         state = `bathroom`;

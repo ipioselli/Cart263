@@ -29,6 +29,7 @@ class Bubble {
       this.vy = -this.vy;
     }
   }
+  
   jitter(){
     this.x = this.x + random(-2, 2);
   }
