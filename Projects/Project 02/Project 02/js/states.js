@@ -85,6 +85,7 @@ function livingRoom() {
 
   if(predictions.length >0 ){
     let hand = predictions[0];
+    console.log(hand);
     updatehand(hand);
 
     overlapTamagotchi();
