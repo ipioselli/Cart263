@@ -434,10 +434,5 @@ function keyPressed() {
       setInterval(checkHour, 10000);
     }
   }
-  // if(state === `bathroom`){
-  //   if(keyCode === 83){
-  //     moveShower();
-  //
-  //   }
-  // }
+
 }
