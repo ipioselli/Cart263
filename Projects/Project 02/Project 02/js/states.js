@@ -152,6 +152,8 @@ function bathroom() {
   displayEvolutionLVL();
   checkEgg();
   updateBubbles();
+  updateShower();
+  displayShowerButton();
 }
 
 //function when the tamagotchi dies because the energy is less than 0

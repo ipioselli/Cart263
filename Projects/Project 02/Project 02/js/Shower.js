@@ -2,8 +2,9 @@ class Shower {
   constructor(x, y) {
     this.x = x;
     this.y = y;
-    this.vy = random(10, 20);
+    this.speed =  random(5, 10);
     this.gravity = 1.05;
+    this.falling = false;
 
   }
 
@@ -16,9 +17,13 @@ class Shower {
 
   move() {
     if(keyIsDown(83)){
-        this.y = this.y + this.vy*this.gravity;
+        this.y = this.y + this.speed*this.gravity;
+
     }
 
+    else{
+      this.restart();
+    }
 
 
 
@@ -26,8 +31,8 @@ class Shower {
 
   restart(){
     if (this.y > height) {
-      this.y = random(0, -height);
-      this.gravity = 0;
+      this.y = random(0, 5);
+      this.gravity = 1.05;
     }
   }
 

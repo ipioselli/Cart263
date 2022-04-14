@@ -39,6 +39,9 @@ let bubbleImg;
 let numBubbles = 10;
 let bubbles = [];
 
+let numShowerWater = 200
+let showerWater = [];
+
 
 
 //kitchen variables
@@ -55,6 +58,12 @@ let foodRightAnswer = 0;
 let foodWrongAnswer = 0;
 
 let feedButton = {
+  x: 1280 / 2,
+  y: 720 / 2 - 150,
+  size: 300,
+}
+
+let showerButton = {
   x: 1280 / 2,
   y: 720 / 2 - 150,
   size: 300,
@@ -90,6 +99,7 @@ function preload() {
   bathroomBg = loadImage(`assets/images/bathroom.png`)
   feedButton.image = loadImage(`assets/images/feedButton.png`);
   bubbleImg = loadImage(`assets/images/bubble.png`);
+   showerButton.image = loadImage(`assets/images/washButton.png`);
 }
 
 
@@ -102,6 +112,7 @@ function setup() {
   setupEgg02();
   setupEgg03();
   setupBubbles();
+  setupShower();
   setupAnnyang(); //setup for annyang
 }
 
@@ -148,6 +159,15 @@ function setupBubbles(){
     bubbles.push(bubble);
   }
 
+}
+
+function setupShower(){
+  for(let i=0; i<numShowerWater; i++){
+    let x = random(320, 640);
+    let y = random(0, -height);
+    let shower =  new Shower(x, y);
+    showerWater.push(shower);
+  }
 }
 
 //Draws all the states for the game
@@ -251,6 +271,22 @@ function updateBubbles(){
   }
 }
 
+function updateShower(){
+  for(let i =0; i<numShowerWater; i++){
+    let shower = showerWater[i];
+   showerWater[i].update();
+  }
+}
+
+function moveShower(){
+  for(let i =0; i<numShowerWater; i++){
+    let shower = showerWater[i];
+   showerWater[i].move();
+  }
+}
+
+
+
 //display feeding instructions in the kitchen
 function displayFeedButton() {
   imageMode(CENTER, CENTER);
@@ -263,6 +299,11 @@ function displayTamagotchiMenu() {
   image(tamagotchiMenu.image, tamagotchiMenu.x, tamagotchiMenu.y, tamagotchiMenu.size, tamagotchiMenu.size);
   //jitter the tamagotchi
   tamagotchiMenu.x = tamagotchiMenu.x + random(-1, 1);
+}
+
+function displayShowerButton() {
+  imageMode(CENTER, CENTER);
+  image(showerButton.image, showerButton.x, showerButton.y, showerButton.size, showerButton.size);
 }
 
 //display the energy amount
@@ -298,16 +339,26 @@ function displayTime() {
   text(`Time:${hour}:00`, width / 2, height / 2 - 300);
   pop();
 }
-
+function displayShowerButton() {
+  imageMode(CENTER, CENTER);
+  image(showerButton.image, showerButton.x, showerButton.y, showerButton.size, showerButton.size);
+}
 //mousepressed to trigger responsiveVoice
+
+
 function mousePressed() {
 
   let d = dist(mouseX, mouseY, feedButton.x, feedButton.y);
   if (state === `kitchen`) {
     if (d < feedButton.size / 2) {
 
-      responsiveVoice.speak(feedInstructions, "UK English Female")
+      responsiveVoice.speak(feedInstructions, "UK English Female");
     }
+  }
+
+  let d2 = dist(mouseX, mouseY, showerButton.x, showerButton.y);
+  if(state === `bathroom`){
+      // updateShower();
   }
 }
 
@@ -383,12 +434,10 @@ function keyPressed() {
       setInterval(checkHour, 10000);
     }
   }
-
-  if(state === `bathroom`){
-    if(keyCode === 83){
-
-
-
-    }
-  }
+  // if(state === `bathroom`){
+  //   if(keyCode === 83){
+  //     moveShower();
+  //
+  //   }
+  // }
 }
