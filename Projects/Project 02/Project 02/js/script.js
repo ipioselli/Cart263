@@ -599,10 +599,7 @@ function keyPressed() {
   if(state === `bathroom`){
     if(keyCode === 83){
 
-        for(let i =0; i<numShowerWater; i++){
-          let shower = showerWater[i];
-          showerWater[i].move();
-        }
+        
 
     }
   }

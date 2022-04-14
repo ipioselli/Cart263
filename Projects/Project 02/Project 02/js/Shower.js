@@ -8,14 +8,18 @@ class Shower {
   }
 
   update() {
+    this.move();
     this.restart();
     this.display();
 
   }
 
   move() {
+    if(keyIsDown(83)){
+        this.y = this.y + this.vy*this.gravity;
+    }
 
-    this.y = this.y + this.vy*this.gravity;
+
 
 
   }
