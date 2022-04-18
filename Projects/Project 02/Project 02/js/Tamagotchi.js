@@ -4,11 +4,7 @@ class Tamagotchi {
     this.x = x;
     this.y = y;
     this.size = 200;
-
-    this.vx = 0;
-    this.vy = 0;
-    this.speed = 4;
-
+    this.vx = 2;
     this.image = image;
     this.image02= image02;
     this.image03 = image03;
@@ -17,6 +13,8 @@ class Tamagotchi {
     this.newDirtDelay = 100;
     this.showerX= 650;
     this.showerY=360;
+    this.minX = 350;
+    this.maxX = 950;
 
 
   }
@@ -24,9 +22,9 @@ class Tamagotchi {
   //calls all the functions for the tamagotchi
   update() {
     this.move();
-    this.handleInput();
+    // this.handleInput();
     this.display();
-    this.checkPosition();
+    // this.checkPosition();
     this.dirtTimer();
     this.removeDirt();
     this.checkDirt();
@@ -35,10 +33,23 @@ class Tamagotchi {
 
   }
 
-  //move the tamagotchi
+  //move the tamagotchi with the mouseX movements
+  //tamagotchi is like a pet that follows you
+
+
   move() {
     this.x = this.x + this.vx;
-    this.y = this.y + this.vy;
+    // this.y = this.y + this.vy;
+    // this.vx = this.vx + this.speed;
+
+    if(this.x >= this.maxX || this.x <= this.minX ){
+      this.vx = -this.vx;
+      console.log(this.vx);
+    }
+
+
+    this.y = constrain(this.y, 0, height);
+    this.x = constrain(this.x, 0, width);
 
   }
 
@@ -49,6 +60,7 @@ class Tamagotchi {
   getInShower(){
     this.x = this.showerX;
     this.y = this.showerY;
+    this.vx =0;
   }
 
   //reset position to the middle of the room
@@ -56,6 +68,8 @@ class Tamagotchi {
     this.x = width / 2;
     this.y = height / 2 + 150;
   }
+
+
 
   //check position of the tamagotchi relative to the living room
   checkPosition() {
@@ -68,8 +82,8 @@ class Tamagotchi {
 
     if (state === `bedRoom`) {
       if (this.x < 0) {
-        state = `loading`;
-        video = createCapture(VIDEO, setupHandpose);
+        // state = `loading`;
+        // video = createCapture(VIDEO, setupHandpose);
       }
     }
 
@@ -98,30 +112,30 @@ class Tamagotchi {
     if (state === `bathroom`) {
       if (this.y < 0) {
         state = `bedRoom`;
-        this.position();
+        // this.position();
       }
     }
 
   }
   //handle user input
-  handleInput() {
-    if (keyIsDown(LEFT_ARROW)) {
-      this.vx = -this.speed;
-    } else if (keyIsDown(RIGHT_ARROW)) {
-      this.vx = this.speed;
-    } else {
-      this.vx = 0;
-    }
-
-    if (keyIsDown(UP_ARROW)) {
-      this.vy = -this.speed;
-    } else if (keyIsDown(DOWN_ARROW)) {
-      this.vy = this.speed;
-
-    } else {
-      this.vy = 0;
-    }
-  }
+  // handleInput() {
+  //   if (keyIsDown(LEFT_ARROW)) {
+  //     this.vx = -this.speed;
+  //   } else if (keyIsDown(RIGHT_ARROW)) {
+  //     this.vx = this.speed;
+  //   } else {
+  //     this.vx = 0;
+  //   }
+  //
+  //   if (keyIsDown(UP_ARROW)) {
+  //     this.vy = -this.speed;
+  //   } else if (keyIsDown(DOWN_ARROW)) {
+  //     this.vy = this.speed;
+  //
+  //   } else {
+  //     this.vy = 0;
+  //   }
+  // }
 
 //add dirt
   addDirt() {
@@ -153,13 +167,15 @@ class Tamagotchi {
   }
 
   checkDirt(){
+    // console.log(tamagotchiEnergy, this.dirt.length);
     if(tamagotchiEnergy< 2000){
       if(this.dirt.length <=0){
         tamagotchiEnergy+=10;
+        tamagotchiEnergy = 2000;
 
       }
       else if(this.dirt.length >=2){
-        tamagotchiEnergy = tamagotchiEnergy-2;
+        tamagotchiEnergy -=0.005;
       }
 
     }

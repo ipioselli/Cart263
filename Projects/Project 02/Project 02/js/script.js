@@ -66,12 +66,12 @@ let finger = {
 
 //kitchen variables
 const pinkFood = [ //array of the tamagotchi's favourite food
-  "watermelon",
-  "raspberry",
-  "strawberry",
-  "cherry",
-  "peach",
-  "fig",
+  "onigiri",
+  "omurice",
+  "sushi",
+  "ramen",
+  "takoyaki",
+  "yakisoba",
 ];
 
 let foodRightAnswer = 0;
@@ -80,13 +80,37 @@ let foodWrongAnswer = 0;
 let feedButton = {
   x: 1280 / 2,
   y: 720 / 2 - 150,
-  size: 300,
+  size: 200,
 }
 
 let showerButton = {
   x: 1280 / 2,
   y: 720 / 2 - 150,
-  size: 200,
+  size: 150,
+}
+
+let livingRoomButton = {
+  x: 1280/5,
+  y: 720 / 2 + 300,
+  size: 100,
+}
+
+let kitchenButton = {
+  x: 1280/5 *2,
+  y: 720 / 2 + 300,
+  size: 100,
+}
+
+let bedroomButton = {
+  x: 1280/5 *3,
+  y: 720 / 2 + 300,
+  size: 100,
+}
+
+let bathroomButton = {
+  x: 1280/5 *4,
+  y: 720 / 2 + 300,
+  size: 100,
 }
 
 let feedInstructions = `Feed the tamagotchi by saying Eat some and then the name of the food. Hint The tamagotchi loves the colour pink`;
@@ -108,7 +132,7 @@ let state = `floorPlan`; // the prototype starts with the start state
 
 //loads all the variables
 function preload() {
-  tamagotchiMenu.image = loadImage("assets/images/tamagotchi.png");
+
   pixelFont = loadFont(`assets/fonts/dogica.otf`);
   chooseEggBG = loadImage(`assets/images/chooseEggBg.png`);
   egg01Img = loadImage(`assets/images/egg01.png`);
@@ -121,9 +145,16 @@ function preload() {
   roomBg = loadImage(`assets/images/roomBg.png`);
   floorPlanBg = loadImage(`assets/images/floorplan.png`)
   bathroomBg = loadImage(`assets/images/bathroom.png`)
-  feedButton.image = loadImage(`assets/images/feedButton.png`);
   bubbleImg = loadImage(`assets/images/bubble.png`);
+
+  //buttons
+  tamagotchiMenu.image = loadImage("assets/images/tamagotchi.png");
+  feedButton.image = loadImage(`assets/images/feedButton.png`);
   showerButton.image = loadImage(`assets/images/washButton.png`);
+  livingRoomButton.image = loadImage(`assets/images/livingRoomButton.png`);
+  bathroomButton.image = loadImage(`assets/images/bathroomButton.png`);
+  bedroomButton.image = loadImage(`assets/images/bedroomButton.png`);
+  kitchenButton.image = loadImage(`assets/images/kitchenButton.png`);
 }
 
 
@@ -131,10 +162,8 @@ function preload() {
 function setup() {
   createCanvas(1280, 720);
 
-  //setup all the eggs
-  // setupEgg01();
+
   setupEgg02();
-  // setupEgg03();
   setupBubbles();
   setupShower();
   setupAnnyang(); //setup for annyang
@@ -153,12 +182,6 @@ function setupAnnyang() {
 
 }
 
-//setup egg 1
-function setupEgg01() {
-  let x = width / 2;
-  let y = height / 2 + 150;
-  egg01 = new Tamagotchi(x, y, egg01Img, )
-}
 
 //setup egg 2
 function setupEgg02() {
@@ -167,12 +190,6 @@ function setupEgg02() {
   tamagotchiEgg = new Tamagotchi(x, y, egg02Img, egg02Img02, egg02Img03)
 }
 
-//setup egg 3
-function setupEgg03() {
-  let x = width / 2;
-  let y = height / 2 + 150;
-  egg03 = new Tamagotchi(x, y, egg03Img)
-}
 
 function setupBubbles(){
 
@@ -251,7 +268,10 @@ function setupStates() {
   else if (state === `bathroom`) {
     bathroom();
   }
-else if (state === `dead`) {
+  else if(state === `schoolYard`){
+    schoolYard();
+  }
+  else if (state === `dead`) {
     dead();
   }
 
@@ -276,6 +296,8 @@ function overlapTamagotchi(){
   if(d < tamagotchiEgg.size/2){
     tamagotchiEgg.pet();
   }
+
+
 
 }
 
@@ -308,14 +330,14 @@ function checkCounter() {
 //function to increase the hour of the day
 function checkHour() {
   hour++;
-  // if (hour >= 12) { //time for school (not implemented yet)
-  //
-  // }
+  if (hour >= 12) {
+    state = `schoolYard`;
+
+  }
 }
 
-//update all 3 egg function below
 
-
+//update tamagotchi
 function updateEgg02() {
   tamagotchiEgg.update();
 }
@@ -364,6 +386,10 @@ function displayShowerButton() {
   image(showerButton.image, showerButton.x, showerButton.y, showerButton.size, showerButton.size);
 }
 
+function displayBathroomButton() {
+  imageMode(CENTER, CENTER);
+  image(bathroomButton.image, bathroomButton.x, bathroomButton.y, bathroomButton.size, bathroomButton.size);
+}
 //display the energy amount
 function displayEnergy() {
   push();
@@ -371,7 +397,7 @@ function displayEnergy() {
   textFont(pixelFont);
   fill(255);
   textSize(20);
-  text(`Energy: ${tamagotchiEnergy}`, width / 2 + 400, height / 2 - 300);
+  text(`Energy: ${ceil(tamagotchiEnergy)}`, width / 2 + 400, height / 2 - 300);
   pop();
 
 }
@@ -409,9 +435,23 @@ function displayShowerButton() {
   imageMode(CENTER, CENTER);
   image(showerButton.image, showerButton.x, showerButton.y, showerButton.size, showerButton.size);
 }
+
+function displayLivingRoomButton() {
+  imageMode(CENTER, CENTER);
+  image(livingRoomButton.image, livingRoomButton.x, livingRoomButton.y, livingRoomButton.size, livingRoomButton.size);
+}
+
+function displayKitchenButton(){
+  imageMode(CENTER, CENTER);
+  image(kitchenButton.image, kitchenButton.x, kitchenButton.y, kitchenButton.size, kitchenButton.size);
+}
+
+function displayBedroomButton(){
+  imageMode(CENTER, CENTER);
+  image(bedroomButton.image, bedroomButton.x, bedroomButton.y, bedroomButton.size, bedroomButton.size);
+}
+
 //mousepressed to trigger responsiveVoice
-
-
 function mousePressed() {
 
   let d = dist(mouseX, mouseY, feedButton.x, feedButton.y);
@@ -424,8 +464,32 @@ function mousePressed() {
 
   let d2 = dist(mouseX, mouseY, showerButton.x, showerButton.y);
   if(state === `bathroom`){
+    if(d2 < showerButton.size/2){
+      responsiveVoice.speak(showerInstructions, "UK English Female");
+    }
+
+  }
+
+  let d3 = dist(mouseX, mouseY, livingRoomButton.x,  livingRoomButton.y);
+  if(d3 < livingRoomButton.size/2){
+    state = `loading`;
+    video = createCapture(VIDEO, setupHandpose);
+  }
+
+  let d4 = dist(mouseX, mouseY, tamagotchiEgg.x, tamagotchiEgg.y);
+  if(d4 < tamagotchiEgg.size/2){
+
+  }
+
+  let d5 = dist(mouseX, mouseY, bathroomButton.x, bathroomButton.y);
+  if(d5 < bathroomButton.size/2){
+    state = `bathroom`;
     tamagotchiEgg.getInShower();
-    responsiveVoice.speak(showerInstructions, "UK English Female");
+  }
+
+  let d6 = dist(mouseX, mouseY, kitchenButton.x, kitchenButton.y);
+  if(d6 < kitchenButton.size/2){
+    state = `kitchen`;
   }
 }
 

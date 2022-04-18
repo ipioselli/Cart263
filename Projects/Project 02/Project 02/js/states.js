@@ -95,6 +95,10 @@ function livingRoom() {
   displayEnergy();
   displayEvolutionLVL();
   updateEgg02();
+  displayLivingRoomButton();
+  displayBathroomButton();
+  displayKitchenButton();
+  displayBedroomButton();
 
 }
 
@@ -119,6 +123,10 @@ function kitchen() {
   displayGoodScore();
   displayBadScore();
   updateEgg02();
+  displayLivingRoomButton();
+  displayBathroomButton();
+  displayKitchenButton();
+  displayBedroomButton();
 
 }
 
@@ -139,6 +147,11 @@ function bedRoom() {
   displayEnergy();
   displayEvolutionLVL();
   updateEgg02();
+  displayLivingRoomButton();
+  displayBathroomButton();
+  displayKitchenButton();
+  displayBedroomButton();
+
 
 
 }
@@ -162,6 +175,21 @@ function bathroom() {
   updateBubbles();
   updateShower();
   displayShowerButton();
+  displayLivingRoomButton();
+  displayBathroomButton();
+  displayKitchenButton();
+  displayBedroomButton();
+}
+
+function schoolYard(){
+  push();
+  background(186, 219, 205);
+  textAlign(CENTER, CENTER);
+  textFont(pixelFont);
+  fill(0);
+  textSize(30);
+  text(`Time for school`, width / 2, height / 2);
+  pop();
 }
 
 //function when the tamagotchi dies because the energy is less than 0
