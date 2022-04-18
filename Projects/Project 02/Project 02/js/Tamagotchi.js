@@ -15,6 +15,8 @@ class Tamagotchi {
     this.dirt = [];
     this.newDirtTimer = 0;
     this.newDirtDelay = 100;
+    this.showerX= 650;
+    this.showerY=360;
 
 
   }
@@ -42,6 +44,11 @@ class Tamagotchi {
 
   pet(){
       this.y = this.y + 10;
+  }
+
+  getInShower(){
+    this.x = this.showerX;
+    this.y = this.showerY;
   }
 
   //reset position to the middle of the room

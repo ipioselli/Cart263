@@ -86,7 +86,7 @@ let feedButton = {
 let showerButton = {
   x: 1280 / 2,
   y: 720 / 2 - 150,
-  size: 300,
+  size: 200,
 }
 
 let feedInstructions = `Feed the tamagotchi by saying Eat some and then the name of the food. Hint The tamagotchi loves the colour pink`;
@@ -263,7 +263,8 @@ function feed(food) {
     if (pinkFood.includes(food)) { //if right increase the score and energy
       foodRightAnswer++;
       tamagotchiEnergy += 10;
-    } else {
+    }
+    else {
       foodWrongAnswer++; //if wrong increase wrong score and decrease energy
       tamagotchiEnergy -= 10;
     }
@@ -423,6 +424,7 @@ function mousePressed() {
 
   let d2 = dist(mouseX, mouseY, showerButton.x, showerButton.y);
   if(state === `bathroom`){
+    tamagotchiEgg.getInShower();
     responsiveVoice.speak(showerInstructions, "UK English Female");
   }
 }
