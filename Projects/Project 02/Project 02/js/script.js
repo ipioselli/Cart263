@@ -90,6 +90,7 @@ let showerButton = {
 }
 
 let feedInstructions = `Feed the tamagotchi by saying Eat some and then the name of the food. Hint The tamagotchi loves the colour pink`;
+let showerInstructions = `Press the letter S on the keypad to wash away all the dirt`;
 
 //background image variables
 let roomBg;
@@ -422,7 +423,7 @@ function mousePressed() {
 
   let d2 = dist(mouseX, mouseY, showerButton.x, showerButton.y);
   if(state === `bathroom`){
-      // updateShower();
+    responsiveVoice.speak(showerInstructions, "UK English Female");
   }
 }
 

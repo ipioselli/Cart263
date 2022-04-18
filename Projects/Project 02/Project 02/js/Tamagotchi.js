@@ -26,7 +26,10 @@ class Tamagotchi {
     this.display();
     this.checkPosition();
     this.dirtTimer();
-    this.checkForDirt();
+    this.removeDirt();
+    this.checkDirt();
+    // this.talk();
+
 
   }
 
@@ -128,18 +131,41 @@ class Tamagotchi {
     this.newDirtTimer++;
     if(this.newDirtTimer >= this.newDirtDelay){
       this.addDirt();
+
       this.newDirtTimer =0;
     }
   }
 
 //remove the dirt from the tamagotchi
-  checkForDirt(){
+  removeDirt(){
     if(state === `bathroom`){
       if(keyIsDown(83)){
         this.dirt.pop();
       }
     }
   }
+
+  checkDirt(){
+    if(tamagotchiEnergy< 2000){
+      if(this.dirt.length <=0){
+        tamagotchiEnergy+=10;
+
+      }
+      else if(this.dirt.length >=2){
+        tamagotchiEnergy = tamagotchiEnergy-2;
+      }
+
+    }
+
+  }
+
+  talk(){
+    if(this.dirt =2){
+        responsiveVoice.speak(feedInstructions, "UK English Female");
+    }
+  }
+
+
 
 
 
@@ -156,7 +182,7 @@ class Tamagotchi {
       image(this.image02, this.x, this.y, this.size, this.size);
       pop();
     }
-    else if(tamagotchiEnergy <=2000){
+    else if(tamagotchiEnergy <=2000 || tamagotchiEnergy >= 2000){
       push();
       image(this.image, this.x, this.y, this.size, this.size);
       pop();
