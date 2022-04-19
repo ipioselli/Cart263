@@ -95,10 +95,12 @@ function livingRoom() {
   displayEnergy();
   displayEvolutionLVL();
   updateEgg02();
+
   displayLivingRoomButton();
   displayBathroomButton();
   displayKitchenButton();
   displayBedroomButton();
+
 
 }
 
@@ -134,7 +136,7 @@ function kitchen() {
 //for the tamagotchi to sleep
 function bedRoom() {
   imageMode(CENTER, CENTER);
-  image(roomBg, width / 2, height / 2, 1280, 720);
+  image(bedroomBg, width / 2, height / 2, 1280, 720);
   push();
   textAlign(CENTER, CENTER);
   textFont(pixelFont);

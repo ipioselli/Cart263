@@ -5,9 +5,6 @@ Ines Pioselli
 Tamagotchi Sim
 
 Today:
-- fix shower
-- fix images
-- add handpose
 
 */
 
@@ -43,6 +40,9 @@ let bubbles = [];
 let numShowerWater = 200
 let showerWater = [];
 
+let heart;
+let heartImg;
+
 
 //living room variables
 let video = undefined;
@@ -58,10 +58,10 @@ let finger = {
   x:undefined,
   y:undefined,
   size: 50,
+  image:undefined,
 };
 
-
-
+let fingerImg;
 
 
 //kitchen variables
@@ -121,6 +121,7 @@ let roomBg;
 let floorPlanBg;
 let chooseEggBG;
 let bathroomBg;
+let bedroomBg;
 
 //fonts
 let pixelFont;
@@ -139,13 +140,16 @@ function preload() {
   egg02Img = loadImage(`assets/images/tamagotchi_01.png`);
   egg02Img02 = loadImage(`assets/images/tamagotchi_02.png`);
   egg02Img03 = loadImage(`assets/images/tamagotchi_03.png`);
+  fingerImg = loadImage(`assets/images/heart.png`);
 
   egg03Img = loadImage(`assets/images/egg03.png`);
   song01 = loadSound(`assets/sounds/Cute.mp3`);
   roomBg = loadImage(`assets/images/roomBg.png`);
   floorPlanBg = loadImage(`assets/images/floorplan.png`)
   bathroomBg = loadImage(`assets/images/bathroom.png`)
+  bedroomBg = loadImage(`assets/images/bedroom.png`);
   bubbleImg = loadImage(`assets/images/bubble.png`);
+  heartImg = loadImage(`assets/images/heart.png`);
 
   //buttons
   tamagotchiMenu.image = loadImage("assets/images/tamagotchi.png");
@@ -166,6 +170,7 @@ function setup() {
   setupEgg02();
   setupBubbles();
   setupShower();
+  setupHeart();
   setupAnnyang(); //setup for annyang
 }
 
@@ -183,14 +188,20 @@ function setupAnnyang() {
 }
 
 
-//setup egg 2
+//setup tamagotchi
 function setupEgg02() {
   let x = width / 2;
   let y = height / 2 + 150;
   tamagotchiEgg = new Tamagotchi(x, y, egg02Img, egg02Img02, egg02Img03)
 }
 
+function setupHeart(){
+  let x = width/2;
+  let y =height / 2 + 150;
+  heart = new Heart(x,y, heartImg);
+}
 
+//setup the bubbles for the bathroom
 function setupBubbles(){
 
   for(let i = 0; i<numBubbles; i++){
@@ -216,8 +227,8 @@ function setupHandpose() {
   video.hide();
   // Start the Handpose model and switch to our livingroom state when it loads
   //calculate ratio of the canvas to the webcam
-  webcamRatio.x = width / video.elt.videoWidth;
-  webcamRatio.y = height / video.elt.videoHeight;
+  webcamRatio.x = width / video.elt.videoWidth; //change the webcam x ratio to the x of the canvas
+  webcamRatio.y = height / video.elt.videoHeight; //change the webcam y ratio to the y of the canvas
   handpose = ml5.handpose(video, {
     flipHorizontal: true //flips camera
   }, function() {
@@ -250,9 +261,6 @@ function setupStates() {
   else if (state === `floorPlan`) {
     floorPlan();
   }
-  else if (state === `chooseEgg`) {
-    chooseEgg();
-  }
   else if (state === `bedRoom`) {
     bedRoom();
   }
@@ -277,7 +285,7 @@ function setupStates() {
 
 }
 
-//function to check through array of pink food in the kitchen state
+//function to check through array of food in the kitchen state
 function feed(food) {
   if (state === `kitchen`) {
     if (pinkFood.includes(food)) { //if right increase the score and energy
@@ -296,9 +304,6 @@ function overlapTamagotchi(){
   if(d < tamagotchiEgg.size/2){
     tamagotchiEgg.pet();
   }
-
-
-
 }
 
 
@@ -331,7 +336,7 @@ function checkCounter() {
 function checkHour() {
   hour++;
   if (hour >= 12) {
-    state = `schoolYard`;
+    state = `schoolYard`; //if the time is 12 pm then its time for school
 
   }
 }
@@ -342,6 +347,10 @@ function updateEgg02() {
   tamagotchiEgg.update();
 }
 
+
+function updateHeart(){
+  heart.update();
+}
 
 
 function updateBubbles(){
@@ -402,14 +411,6 @@ function displayEnergy() {
 
 }
 
-function displayFinger(){
-  push();
-  fill(255, 0, 0);
-  noStroke();
-  ellipse(finger.x, finger.y, finger.size);
-  pop();
-}
-
 //display the evolution level
 function displayEvolutionLVL() {
   push();
@@ -451,6 +452,38 @@ function displayBedroomButton(){
   image(bedroomButton.image, bedroomButton.x, bedroomButton.y, bedroomButton.size, bedroomButton.size);
 }
 
+//display bad score for the food
+function displayBadScore() {
+  push();
+  textAlign(CENTER, CENTER);
+  textFont(pixelFont);
+  fill(0);
+  textSize(20);
+  text(`Food Thrown Up = ${foodWrongAnswer}`, width / 2 + 400, height / 2 - 250);
+  pop();
+}
+
+function displayFinger(){
+  push();
+  imageMode(CENTER, CENTER);
+  image(fingerImg, finger.x,finger.y, finger.size, finger.size);
+  pop();
+}
+
+
+//display good score for the food
+function displayGoodScore() {
+  push();
+  textAlign(CENTER, CENTER);
+  textFont(pixelFont);
+  fill(0);
+  textSize(20);
+  text(`Food Eaten = ${foodRightAnswer}`, width / 2 - 400, height / 2 - 250);
+  pop();
+
+}
+
+
 //mousepressed to trigger responsiveVoice
 function mousePressed() {
 
@@ -491,31 +524,12 @@ function mousePressed() {
   if(d6 < kitchenButton.size/2){
     state = `kitchen`;
   }
+
+  let d7 = dist(mouseX, mouseY, bedroomButton.x, bedroomButton.y);
+  if(d7 < bedroomButton.size/2){
+    state= `bedRoom`;
+  }
 }
-
-//display good score for the food
-function displayGoodScore() {
-  push();
-  textAlign(CENTER, CENTER);
-  textFont(pixelFont);
-  fill(0);
-  textSize(20);
-  text(`Food Eaten = ${foodRightAnswer}`, width / 2 - 400, height / 2 - 250);
-  pop();
-
-}
-
-//display bad score for the food
-function displayBadScore() {
-  push();
-  textAlign(CENTER, CENTER);
-  textFont(pixelFont);
-  fill(0);
-  textSize(20);
-  text(`Food Thrown Up = ${foodWrongAnswer}`, width / 2 + 400, height / 2 - 250);
-  pop();
-}
-
 
 //keyboard input from the user
 function keyPressed() {
@@ -543,6 +557,4 @@ function keyPressed() {
       setInterval(checkHour, 10000); //every 10 seconds
     }
   }
-
-
 }

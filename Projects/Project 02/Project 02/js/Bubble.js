@@ -1,5 +1,5 @@
 class Bubble {
-  constructor(x, y, image){
+  constructor(x, y, image) {
 
     this.x = x;
     this.y = y;
@@ -9,32 +9,32 @@ class Bubble {
     this.image = image
   }
 
-  update(){
+  update() {
     this.jitter();
     this.move();
     this.display();
   }
 
-  move(){
-    this.x= this.x + this.vx;
+  move() {
+    this.x = this.x + this.vx;
     this.y = this.y + this.vy;
 
-    this.x = constrain(this.x, 480,760);
+    this.x = constrain(this.x, 480, 760);
     this.y = constrain(this.y, 200, 400);
 
-    if(this.x >= 760 || this.x <= 480){
+    if (this.x >= 760 || this.x <= 480) {
       this.vx = -this.vx;
     }
-    if(this.y >= 400 || this.y <= 200){
+    if (this.y >= 400 || this.y <= 200) {
       this.vy = -this.vy;
     }
   }
-  
-  jitter(){
+
+  jitter() {
     this.x = this.x + random(-2, 2);
   }
 
-  display(){
+  display() {
     push();
     image(this.image, this.x, this.y, this.size, this.size);
     pop();

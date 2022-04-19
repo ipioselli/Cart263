@@ -6,13 +6,13 @@ class Tamagotchi {
     this.size = 200;
     this.vx = 2;
     this.image = image;
-    this.image02= image02;
+    this.image02 = image02;
     this.image03 = image03;
     this.dirt = [];
     this.newDirtTimer = 0;
     this.newDirtDelay = 100;
-    this.showerX= 650;
-    this.showerY=360;
+    this.showerX = 650;
+    this.showerY = 360;
     this.minX = 350;
     this.maxX = 950;
 
@@ -22,29 +22,21 @@ class Tamagotchi {
   //calls all the functions for the tamagotchi
   update() {
     this.move();
-    // this.handleInput();
     this.display();
-    // this.checkPosition();
     this.dirtTimer();
     this.removeDirt();
     this.checkDirt();
-    // this.talk();
-
-
   }
 
-  //move the tamagotchi with the mouseX movements
-  //tamagotchi is like a pet that follows you
 
-
+  //move the tamagotchi back and forth in the rooms
   move() {
     this.x = this.x + this.vx;
-    // this.y = this.y + this.vy;
-    // this.vx = this.vx + this.speed;
 
-    if(this.x >= this.maxX || this.x <= this.minX ){
+
+    if (this.x >= this.maxX || this.x <= this.minX) {
       this.vx = -this.vx;
-      console.log(this.vx);
+
     }
 
 
@@ -53,14 +45,16 @@ class Tamagotchi {
 
   }
 
-  pet(){
-      this.y = this.y + 10;
+  //function called when you touch the tamagotchi with handpose
+  pet() {
+    this.y = this.y + 10;
+    this.position();
   }
 
-  getInShower(){
+  getInShower() {
     this.x = this.showerX;
     this.y = this.showerY;
-    this.vx =0;
+    this.vx = 0;
   }
 
   //reset position to the middle of the room
@@ -87,7 +81,7 @@ class Tamagotchi {
       }
     }
 
-    if(state === `livingRoom`){
+    if (state === `livingRoom`) {
       this.position();
     }
 
@@ -137,7 +131,7 @@ class Tamagotchi {
   //   }
   // }
 
-//add dirt
+  //add dirt
   addDirt() {
     let dirt = {
       x: random(-0.2, 0.2),
@@ -147,44 +141,43 @@ class Tamagotchi {
     this.dirt.push(dirt);
   }
 
-//add dirt to the tamagotchi with a timer
-  dirtTimer(){
+  //add dirt to the tamagotchi with a timer
+  dirtTimer() {
     this.newDirtTimer++;
-    if(this.newDirtTimer >= this.newDirtDelay){
+    if (this.newDirtTimer >= this.newDirtDelay) {
       this.addDirt();
 
-      this.newDirtTimer =0;
+      this.newDirtTimer = 0;
     }
   }
 
-//remove the dirt from the tamagotchi
-  removeDirt(){
-    if(state === `bathroom`){
-      if(keyIsDown(83)){
+  //remove the dirt from the tamagotchi
+  removeDirt() {
+    if (state === `bathroom`) {
+      if (keyIsDown(83)) {
         this.dirt.pop();
       }
     }
   }
 
-  checkDirt(){
+  checkDirt() {
     // console.log(tamagotchiEnergy, this.dirt.length);
-    if(tamagotchiEnergy< 2000){
-      if(this.dirt.length <=0){
-        tamagotchiEnergy+=10;
+    if (tamagotchiEnergy < 2000) {
+      if (this.dirt.length <= 0) {
+        tamagotchiEnergy += 10;
         tamagotchiEnergy = 2000;
 
-      }
-      else if(this.dirt.length >=2){
-        tamagotchiEnergy -=0.005;
+      } else if (this.dirt.length >= 2) {
+        tamagotchiEnergy -= 0.005;
       }
 
     }
 
   }
 
-  talk(){
-    if(this.dirt =2){
-        responsiveVoice.speak(feedInstructions, "UK English Female");
+  talk() {
+    if (this.dirt = 2) {
+      responsiveVoice.speak(feedInstructions, "UK English Female");
     }
   }
 
@@ -195,17 +188,15 @@ class Tamagotchi {
 
   //display the tamagotchi
   display() {
-    if(tamagotchiEnergy <= 1990){
+    if (tamagotchiEnergy <= 1990) {
       push();
       image(this.image03, this.x, this.y, this.size, this.size);
       pop();
-    }
-    else if(tamagotchiEnergy <=1995){
+    } else if (tamagotchiEnergy <= 1995) {
       push();
       image(this.image02, this.x, this.y, this.size, this.size);
       pop();
-    }
-    else if(tamagotchiEnergy <=2000 || tamagotchiEnergy >= 2000){
+    } else if (tamagotchiEnergy <= 2000 || tamagotchiEnergy >= 2000) {
       push();
       image(this.image, this.x, this.y, this.size, this.size);
       pop();
