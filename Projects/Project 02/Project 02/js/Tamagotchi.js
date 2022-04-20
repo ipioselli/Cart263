@@ -14,6 +14,8 @@ class Tamagotchi {
     this.newDirtDelay = 100;
     this.showerX = 650;
     this.showerY = 360;
+    this.bedX = 860;
+    this.bedY = 460;
     this.minX = 350;
     this.maxX = 950;
 
@@ -61,6 +63,13 @@ class Tamagotchi {
       this.y = this.showerY;
     }
 
+  }
+  getInBed(){
+    if(state === `bedRoom`){
+      this.x = this.bedX;
+      this.y = this.bedY;
+
+    }
   }
 
   //reset position to the middle of the room

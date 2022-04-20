@@ -68,25 +68,40 @@ let fingerImg;
 
 
 //kitchen variables
-const pinkFood = [ //array of the tamagotchi's favourite food
-  "onigiri",
-  "omurice",
-  "sushi",
-  "ramen",
-  "takoyaki",
+const desserts = [ //array of the tamagotchi's favourite food
+  "tiramisu",
+  "cannoli",
+  "gelato",
+  "affogato",
+  "zeppole",
   "yakisoba",
 ];
 
 let foodRightAnswer = 0;
 let foodWrongAnswer = 0;
 
+//school variables
+//DAY 1
+let currentItalianWord = ``;
+let currentItalianAnswer = ``;
+
+let schoolRightAnswers = 0;
+let schoolMaxRightAnswers = 0;
+let schoolWrongAnswers = 0;
+
 let feedButton = {
   x: 1280 / 2,
   y: 720 / 2 - 150,
-  size: 200,
+  size: 150,
 }
 
 let showerButton = {
+  x: 1280 / 2,
+  y: 720 / 2 - 150,
+  size: 150,
+}
+
+let sleepButton = {
   x: 1280 / 2,
   y: 720 / 2 - 150,
   size: 150,
@@ -116,8 +131,11 @@ let bathroomButton = {
   size: 100,
 }
 
+
 let feedInstructions = `Feed the tamagotchi by saying Eat some and then the name of the food. Hint The tamagotchi loves the colour pink`;
 let showerInstructions = `Press the letter S on the keypad to wash away all the dirt`;
+let sleepInstructions01 = `It's not time for bed yet`;
+let sleepInstructions02 = `Time for bed`;
 
 //background image variables
 let roomBg;
@@ -162,6 +180,7 @@ function preload() {
   bathroomButton.image = loadImage(`assets/images/bathroomButton.png`);
   bedroomButton.image = loadImage(`assets/images/bedroomButton.png`);
   kitchenButton.image = loadImage(`assets/images/kitchenButton.png`);
+  sleepButton.image = loadImage(`assets/images/sleepButton.png`);
 }
 
 
@@ -282,6 +301,9 @@ function setupStates() {
   else if(state === `schoolYard`){
     schoolYard();
   }
+  else if(state === `day02`){
+    day02();
+  }
   else if (state === `dead`) {
     dead();
   }
@@ -291,7 +313,7 @@ function setupStates() {
 //function to check through array of food in the kitchen state
 function feed(food) {
   if (state === `kitchen`) {
-    if (pinkFood.includes(food)) { //if right increase the score and energy
+    if (desserts.includes(food)) { //if right increase the score and energy
       foodRightAnswer++;
       tamagotchiEnergy += 10;
     }
@@ -341,6 +363,35 @@ function checkHour() {
   if (hour >= 12) {
     state = `schoolYard`; //if the time is 12 pm then its time for school
 
+  }
+}
+
+function readyForBed(){
+
+  let d = dist(mouseX, mouseY, sleepButton.x, sleepButton.y);
+  if (state === `bedRoom`) {
+    if (d < sleepButton.size / 2) {
+      if(hour < 6 ){
+        tamagotchiEgg.move();
+        tamagotchiEgg.position();
+        responsiveVoice.speak(sleepInstructions01, "UK English Female");
+      }
+      else{
+        responsiveVoice.speak(sleepInstructions02, "UK English Female");
+
+      }
+    }
+  }
+}
+
+function checkBedTime(){
+  if(hour < 7){
+    tamagotchiEgg.move();
+    tamagotchiEgg.position();
+  }
+  else{
+      tamagotchiEgg.getInBed();
+      setTimeout(day02, 5000);
   }
 }
 
@@ -402,12 +453,17 @@ function displayBathroomButton() {
   imageMode(CENTER, CENTER);
   image(bathroomButton.image, bathroomButton.x, bathroomButton.y, bathroomButton.size, bathroomButton.size);
 }
+
+function displaySleepButton(){
+  imageMode(CENTER, CENTER);
+  image(sleepButton.image, sleepButton.x, sleepButton.y, sleepButton.size, sleepButton.size);
+}
 //display the energy amount
 function displayEnergy() {
   push();
   textAlign(CENTER, CENTER);
   textFont(pixelFont);
-  fill(255);
+  fill(68, 55, 115);
   textSize(20);
   text(`Energy: ${ceil(tamagotchiEnergy)}`, width / 2 + 400, height / 2 - 300);
   pop();
@@ -419,7 +475,7 @@ function displayEvolutionLVL() {
   push();
   textAlign(CENTER, CENTER);
   textFont(pixelFont);
-  fill(255);
+  fill(68, 55, 115);
   textSize(20);
   text(`Evolution: ${tamagotchiLVL}`, width / 2 - 400, height / 2 - 300);
   pop();
@@ -430,7 +486,7 @@ function displayTime() {
   push();
   textAlign(CENTER, CENTER);
   textFont(pixelFont);
-  fill(255);
+  fill(68, 55, 115);
   textSize(20);
   text(`Time:${hour}:00`, width / 2, height / 2 - 300);
   pop();
@@ -489,6 +545,8 @@ function displayGoodScore() {
 
 //mousepressed to trigger responsiveVoice
 function mousePressed() {
+
+  readyForBed();
 
   let d = dist(mouseX, mouseY, feedButton.x, feedButton.y);
   if (state === `kitchen`) {

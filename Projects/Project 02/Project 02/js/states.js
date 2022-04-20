@@ -79,7 +79,7 @@ function livingRoom() {
   textFont(pixelFont);
   fill(0);
   textSize(30);
-  text(`<- Living Room ->`, width / 2, height / 2 + 300)
+  text(`<- Living Room ->`, width / 2, height / 2 - 250);
   text(`v`, width / 2, height / 2 + 340)
   pop();
 
@@ -115,7 +115,7 @@ function kitchen() {
   textFont(pixelFont);
   fill(0);
   textSize(30);
-  text(`<- Kitchen`, width / 2, height / 2 + 300)
+  text(`Kitchen`, width / 2, height / 2 - 250)
   pop();
 
   displayTime();
@@ -129,6 +129,8 @@ function kitchen() {
   displayBathroomButton();
   displayKitchenButton();
   displayBedroomButton();
+  tamagotchiEgg.move();
+  tamagotchiEgg.position();
 
 }
 
@@ -140,11 +142,12 @@ function bedRoom() {
   push();
   textAlign(CENTER, CENTER);
   textFont(pixelFont);
-  fill(0);
+  fill(68, 55, 115);
   textSize(30);
-  text(`Bedroom ->`, width / 2, height / 2 + 300)
+  text(`Bedroom`, width / 2, height / 2 - 250)
 
   pop();
+  checkBedTime();
   displayTime();
   displayEnergy();
   displayEvolutionLVL();
@@ -153,10 +156,7 @@ function bedRoom() {
   displayBathroomButton();
   displayKitchenButton();
   displayBedroomButton();
-  tamagotchiEgg.move();
-tamagotchiEgg.position();
-
-
+  displaySleepButton();
 
 
 
@@ -171,8 +171,7 @@ function bathroom() {
   textFont(pixelFont);
   fill(0);
   textSize(30);
-  text(`^`, width / 2, height / 2 + 280);
-  text(`Bathroom`, width / 2, height / 2 + 300);
+  text(`Bathroom`, width / 2, height / 2 - 250);
   pop();
   displayTime();
   displayEnergy();
@@ -196,6 +195,17 @@ function schoolYard(){
   fill(0);
   textSize(30);
   text(`Time for school`, width / 2, height / 2);
+  pop();
+}
+
+function day02(){
+  push();
+  background(186, 219, 205);
+  textAlign(CENTER, CENTER);
+  textFont(pixelFont);
+  fill(0);
+  textSize(30);
+  text(`DAY 2`, width / 2, height / 2);
   pop();
 }
 
