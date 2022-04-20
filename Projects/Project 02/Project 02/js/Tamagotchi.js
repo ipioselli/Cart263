@@ -3,8 +3,9 @@ class Tamagotchi {
   constructor(x, y, image, image02, image03) {
     this.x = x;
     this.y = y;
-    this.size = 200;
+    this.size =150;
     this.vx = 2;
+    this.vy = 0;
     this.image = image;
     this.image02 = image02;
     this.image03 = image03;
@@ -21,7 +22,7 @@ class Tamagotchi {
 
   //calls all the functions for the tamagotchi
   update() {
-    this.move();
+
     this.display();
     this.dirtTimer();
     this.removeDirt();
@@ -31,7 +32,9 @@ class Tamagotchi {
 
   //move the tamagotchi back and forth in the rooms
   move() {
+
     this.x = this.x + this.vx;
+    this.y = this.y + this.vy;
 
 
     if (this.x >= this.maxX || this.x <= this.minX) {
@@ -49,19 +52,24 @@ class Tamagotchi {
   pet() {
     this.y = this.y + 10;
     this.position();
+
   }
 
   getInShower() {
-    this.x = this.showerX;
-    this.y = this.showerY;
-    this.vx = 0;
+    if (state === `bathroom`){
+      this.x = this.showerX;
+      this.y = this.showerY;
+    }
+
   }
 
   //reset position to the middle of the room
   position() {
-    this.x = width / 2;
+
     this.y = height / 2 + 150;
   }
+
+
 
 
 

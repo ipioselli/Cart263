@@ -5,6 +5,9 @@ Ines Pioselli
 Tamagotchi Sim
 
 Today:
+- make all 9 drawings
+- finish bed room
+- finish living room
 
 */
 
@@ -517,7 +520,10 @@ function mousePressed() {
   let d5 = dist(mouseX, mouseY, bathroomButton.x, bathroomButton.y);
   if(d5 < bathroomButton.size/2){
     state = `bathroom`;
-    tamagotchiEgg.getInShower();
+    // if(state === `bathroom`){
+    //   tamagotchiEgg.getInShower();
+    // }
+
   }
 
   let d6 = dist(mouseX, mouseY, kitchenButton.x, kitchenButton.y);

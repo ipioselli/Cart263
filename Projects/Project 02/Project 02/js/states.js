@@ -153,6 +153,10 @@ function bedRoom() {
   displayBathroomButton();
   displayKitchenButton();
   displayBedroomButton();
+  tamagotchiEgg.move();
+tamagotchiEgg.position();
+
+
 
 
 
@@ -181,6 +185,7 @@ function bathroom() {
   displayBathroomButton();
   displayKitchenButton();
   displayBedroomButton();
+  tamagotchiEgg.getInShower();
 }
 
 function schoolYard(){
