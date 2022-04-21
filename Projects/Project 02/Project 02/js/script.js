@@ -35,7 +35,7 @@ let tamagotchiImg06;
 
 let energyCounter = 0;
 let tamagotchiEnergy = 2000;
-let tamagotchiLVL = 2;
+let tamagotchiLVL = 1;
 let tamagotchi;
 let hour = 6; //day starts at 6am
 
@@ -46,6 +46,7 @@ let bubbles = [];
 let numShowerWater = 200
 let showerWater = [];
 
+//floating pencils 
 let pencilImg;
 let numPencils = 20;
 let pencils = [];

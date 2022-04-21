@@ -148,7 +148,7 @@ function displayFinger(){
 function displaySchoolLesson01() {
 
   let lesson01 = `** Lesson 01: Food**
-  English Translation: ${schoolLesson01.currentEnglishWord}
+  
   Italian Translation: ${schoolLesson01.currentItalianWord}`;
   push();
   textAlign(CENTER, CENTER);
