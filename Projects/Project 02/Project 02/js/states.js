@@ -58,13 +58,15 @@ function floorPlan() {
 }
 
 function loading(){
-  background(0);
+  background(129, 115, 189);
   push();
   textFont(pixelFont);
   fill(255);
   textSize(40);
   textAlign(CENTER, CENTER);
-  text(`LOADING ${modelName} ...,`, width/2, height/2);
+  text(`One moment pls,`, width/2, height/2 -200);
+  textSize(20);
+  text(`Pet the tamagotchi with your index finger \n to increase the energy level `, width/2, height/2);
   pop();
 
   // checkHand();
@@ -73,14 +75,14 @@ function loading(){
 //main room = living room
 function livingRoom() {
   imageMode(CENTER, CENTER);
-  image(roomBg, width / 2, height / 2, 1280, 720);
+  image(livingRoomBg, width / 2, height / 2, 1280, 720);
   push();
   textAlign(CENTER, CENTER);
   textFont(pixelFont);
-  fill(0);
+  fill(88, 71, 173);
   textSize(30);
-  text(`<- Living Room ->`, width / 2, height / 2 - 250);
-  text(`v`, width / 2, height / 2 + 340)
+  text(`Living Room`, width / 2, height / 2 - 250);
+
   pop();
 
   if(predictions.length >0 ){

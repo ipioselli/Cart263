@@ -167,6 +167,8 @@ let chooseEggBG;
 let bathroomBg;
 let bedroomBg;
 let kitchenBg;
+let livingRoomBg;
+
 
 //fonts
 let pixelFont;
@@ -200,6 +202,7 @@ function preload() {
   bathroomBg = loadImage(`assets/images/bathroom.png`)
   bedroomBg = loadImage(`assets/images/bedroom.png`);
   kitchenBg = loadImage(`assets/images/kitchen.png`);
+  livingRoomBg = loadImage(`assets/images/livingRoomBg.png`);
   bubbleImg = loadImage(`assets/images/bubble.png`);
   heartImg = loadImage(`assets/images/heart.png`);
 
