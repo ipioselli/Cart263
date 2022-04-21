@@ -119,7 +119,8 @@ function kitchen() {
   textFont(cuteFont);
   fill(88, 71, 173);
   textSize(50);
-  text(`Kitchen`, width / 2, height / 2 - 250)
+  text(`Kitchen`, width / 2, height / 2 - 250);
+
   pop();
 
   displayTime();

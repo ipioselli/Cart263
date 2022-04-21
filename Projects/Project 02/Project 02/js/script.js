@@ -72,21 +72,21 @@ let fingerImg;
 
 
 //kitchen variables
-let gelatoFlavours = [ //array of the tamagotchi's favourite gelato flavours
-  "hazelnut gelato",
-  "strawberry gelato",
-  "chocolate gelato",
-  "nutella gelato",
-  "pistachio gelato",
-  "straciatella gelato",
-  "vanilla gelato",
-  "coffee gelato",
-  "lemon gelato",
-  " cookies and cream gelato",
-  "tiramisu gelato",
-  "mint gelato",
-  "peach gelato",
-  "coconut gelato"
+let italianFood = [ //array of the tamagotchi's favourite gelato flavours
+  "pasta",
+  "pizza",
+  "gelato",
+  "nutella",
+  "cannoli",
+  "ravioli",
+  "lasagna",
+  "spaghetti",
+  "polenta",
+  "arancini",
+  "tiramisu",
+  "carbonara",
+  "risotti"
+
 ];
 
 let foodRightAnswer = 0;
@@ -95,8 +95,9 @@ let foodWrongAnswer = 0;
 //school variables
 //DAY 1
 let schoolLesson01 = {
-  currentItalianWord: ``,
   currentEnglishWord: ``,
+  currentItalianWord: ``,
+
 
 };
 
@@ -105,7 +106,7 @@ let italianData;
 let englishData;
 
 let schoolRightAnswers = 0;
-let schoolMaxRightAnswers = 10;
+let schoolMaxRightAnswers = 5;
 let schoolWrongAnswers = 0;
 let schoolMaxWrongAnswers = 10;
 
@@ -174,7 +175,7 @@ let italianButton = {
 }
 
 
-let feedInstructions = `Feed the tamagotchi by saying Eat some and then the name of the food. Hint The tamagotchi loves the colour pink`;
+let feedInstructions = `Feed the tamagotchi by saying the name of the food. Hint The tamagotchi loves italian food`;
 let showerInstructions = `Press the letter S on the keypad to wash away all the dirt`;
 let sleepInstructions01 = `It's not time for bed yet`;
 let sleepInstructions02 = `Time for bed`;
@@ -275,16 +276,20 @@ function setup() {
 
 function setupAnnyang() {
   if (annyang) {
+    // annyang.setLanguage('en-US');
+    // annyang.setLanguage('it-IT');
 
     let commands = {
-      "Eat some *food": feed, //detects for food
-      "The answer is *phrase": guessAnswer, //detects for an answer in school
+
+        "eat some *food": feed,
+        "the answer is *phrase": guessAnswer
     };
     annyang.addCommands(commands);
     annyang.start();
     feed(); //calls function to check the score
-    annyang.setLanguage('en');
-    annyang.setLanguage('it-IT');
+
+
+    // annyang.setLanguage('en-US');
   }
 
 
@@ -356,11 +361,13 @@ function setupHandpose() {
 
 function generateLesson01(){
 
-  let englishTranslation = random(englishData.lesson01);
-  schoolLesson01.currentEnglishWord = englishTranslation.english.toLowerCase();
 
-  let italianTranslation = englishTranslation;
+
+  let italianTranslation = random(italianData.lesson01);
   schoolLesson01.currentItalianWord = italianTranslation.italian.toLowerCase();
+
+  let englishTranslation = italianTranslation;
+  schoolLesson01.currentEnglishWord = englishTranslation.english.toLowerCase();
 
 }
 
@@ -425,10 +432,13 @@ function setupStates() {
 //function to check through array of food in the kitchen state
 function feed(food) {
   if (state === `kitchen`) {
-    if (gelatoFlavours.includes(food)) { //if right increase the score and energy
+    if (italianFood.includes(food)) { //if right increase the score and energy
       foodRightAnswer++;
       tamagotchiEnergy += 10;
       blingSfx.play(); //play good sound if you guess the right flavour
+      if(tamagotchiEnergy >2000) {
+        tamagotchiEnergy = 2000;
+      }
     }
     else {
       foodWrongAnswer++; //if wrong increase wrong score and decrease energy
@@ -439,6 +449,7 @@ function feed(food) {
 }
 
 function guessAnswer(phrase){
+
   currentItalianAnswer = phrase.toLowerCase();
   checkLesson01Score();
 }
@@ -492,7 +503,7 @@ function checkHour() {
 
 function checkLesson01Score(){
 
-  if(currentItalianAnswer === schoolLesson01.currentItalianWord){
+  if(currentItalianAnswer === schoolLesson01.currentEnglishWord){
     schoolRightAnswers++;
     nextQuestion();
 
@@ -513,7 +524,7 @@ function checkLesson01Score(){
 
 
 function nextQuestion(){
-  if(state === `schoolYard`){
+  if(state === `schoolDay01`){
     generateLesson01();
   }
 }
