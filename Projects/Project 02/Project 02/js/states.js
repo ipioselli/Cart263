@@ -219,6 +219,8 @@ function lesson01Instructions(){
   text(`FIRST DAY OF SCHOOL `, width / 2, height / 2 -300);
   textSize(30);
   text(schoolInstructions01, width / 2, height / 2);
+  textSize(40);
+  text(`Press SPACEBAR to continue`, width / 2, height / 2 + 200);
   pop();
 
   updatePencils();
