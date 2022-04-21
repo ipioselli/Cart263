@@ -25,17 +25,17 @@ let tamagotchiMenu = { // tamagotchi on the menu page
 //main game variables
 let tamagotchiEgg;
 let tamagotchiImg;
-let egg01;
-let egg01Img;
-let egg02;
-let egg02Img;
-let egg02Img02;
-let egg02Img03;
-let egg03;
-let egg03Img;
+
+let tamagotchiImg01;
+let tamagotchiImg02;
+let tamagotchiImg03;
+let tamagotchiImg04;
+let tamagotchiImg05;
+let tamagotchiImg06;
+
 let energyCounter = 0;
 let tamagotchiEnergy = 2000;
-let tamagotchiLVL = 1;
+let tamagotchiLVL = 2;
 let tamagotchi;
 let hour = 6; //day starts at 6am
 
@@ -203,7 +203,7 @@ let blingSfx;
 let badSfx;
 let petSfx;
 
-let state = `floorPlan`; // the prototype starts with the start state
+let state = `schoolDay01`; // the prototype starts with the start state
 
 //loads all the variables
 function preload() {
@@ -213,13 +213,16 @@ function preload() {
 
 
   chooseEggBG = loadImage(`assets/images/chooseEggBg.png`);
-  egg01Img = loadImage(`assets/images/egg01.png`);
-  egg02Img = loadImage(`assets/images/tamagotchi_01.png`);
-  egg02Img02 = loadImage(`assets/images/tamagotchi_02.png`);
-  egg02Img03 = loadImage(`assets/images/tamagotchi_03.png`);
+
+  tamagotchiImg01 = loadImage(`assets/images/tamagotchi_01.png`);
+  tamagotchiImg02 = loadImage(`assets/images/tamagotchi_02.png`);
+  tamagotchiImg03 = loadImage(`assets/images/tamagotchi_03.png`);
+  tamagotchiImg04 = loadImage(`assets/images/tamagotchi_04.png`);
+  tamagotchiImg05 = loadImage(`assets/images/tamagotchi_05.png`);
+  tamagotchiImg06 = loadImage(`assets/images/tamagotchi_06.png`);
   fingerImg = loadImage(`assets/images/heart.png`);
 
-  egg03Img = loadImage(`assets/images/egg03.png`);
+
 
   roomBg = loadImage(`assets/images/roomBg.png`);
   floorPlanBg = loadImage(`assets/images/floorplan.png`)
@@ -265,7 +268,7 @@ function setup() {
   createCanvas(1280, 720);
 
 
-  setupEgg02();
+  setupTamagotchi();
   setupBubbles();
   setupPencils();
   setupShower();
@@ -296,10 +299,10 @@ function setupAnnyang() {
 }
 
 //setup tamagotchi
-function setupEgg02() {
+function setupTamagotchi() {
   let x = width / 2;
   let y = height / 2 + 150;
-  tamagotchiEgg = new Tamagotchi(x, y, egg02Img, egg02Img02, egg02Img03)
+  tamagotchiEgg = new Tamagotchi(x, y, tamagotchiImg01, tamagotchiImg02, tamagotchiImg03, tamagotchiImg04, tamagotchiImg05, tamagotchiImg06);
 }
 
 function setupHeart(){

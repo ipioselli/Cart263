@@ -1,14 +1,17 @@
 class Tamagotchi {
 
-  constructor(x, y, image, image02, image03) {
+  constructor(x, y, image01, image02, image03, image04, image05, image06) {
     this.x = x;
     this.y = y;
     this.size =150;
     this.vx = 1.5;
     this.vy = 0;
-    this.image = image;
+    this.image = image01;
     this.image02 = image02;
     this.image03 = image03;
+    this.image04 = image04;
+    this.image05 = image05;
+    this.image06 = image06;
     this.dirt = [];
     this.newDirtTimer = 0;
     this.newDirtDelay = 100;
@@ -18,7 +21,7 @@ class Tamagotchi {
     this.bedY = 460;
     this.chairX = 845;
     this.chairY = 460;
-    this.classX = 1280/2;
+    this.classX = 1280/2 + 10;
     this.classY = 460;
     this.minX = 350;
     this.maxX = 950;
@@ -40,9 +43,17 @@ class Tamagotchi {
       this.x = this.classX;
       this.y = this.classY;
     }
-    push();
-    image(this.image, this.x, this.y, this.size, this.size);
-    pop();
+    if(tamagotchiLVL === 1){
+      push();
+      image(this.image, this.x, this.y, this.size, this.size);
+      pop();
+    }
+    if(tamagotchiLVL === 2){
+      push();
+      image(this.image04, this.x, this.y, this.size, this.size);
+      pop();
+    }
+
   }
 
 
@@ -167,7 +178,23 @@ class Tamagotchi {
         pop();
       } else if (tamagotchiEnergy <= 2000 || tamagotchiEnergy >= 2000) {
         push();
-        image(this.image, this.x, this.y, this.size, this.size);
+        image(this.image01, this.x, this.y, this.size, this.size);
+        pop();
+      }
+    }
+
+    if(tamagotchiLVL === 2){
+      if (tamagotchiEnergy <= 1990) {
+        push();
+        image(this.image06, this.x, this.y, this.size, this.size);
+        pop();
+      } else if (tamagotchiEnergy <= 1995) {
+        push();
+        image(this.image05, this.x, this.y, this.size, this.size);
+        pop();
+      } else if (tamagotchiEnergy <= 2000 || tamagotchiEnergy >= 2000) {
+        push();
+        image(this.image04, this.x, this.y, this.size, this.size);
         pop();
       }
     }
