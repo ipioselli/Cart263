@@ -4,7 +4,7 @@ class Tamagotchi {
     this.x = x;
     this.y = y;
     this.size =150;
-    this.vx = 2;
+    this.vx = 1.5;
     this.vy = 0;
     this.image = image;
     this.image02 = image02;
@@ -18,7 +18,6 @@ class Tamagotchi {
     this.bedY = 460;
     this.minX = 350;
     this.maxX = 950;
-
 
   }
 
@@ -44,7 +43,7 @@ class Tamagotchi {
 
     }
 
-
+    //constrain to width and height of the canvas
     this.y = constrain(this.y, 0, height);
     this.x = constrain(this.x, 0, width);
 
@@ -72,81 +71,11 @@ class Tamagotchi {
     }
   }
 
-  //reset position to the middle of the room
+  //reset height position to the middle of the room
   position() {
-
     this.y = height / 2 + 150;
   }
 
-
-
-
-
-  //check position of the tamagotchi relative to the living room
-  checkPosition() {
-    if (state === `bedRoom`) {
-      if (this.x > width) {
-        state = `kitchen`;
-        this.position();
-      }
-    }
-
-    if (state === `bedRoom`) {
-      if (this.x < 0) {
-        // state = `loading`;
-        // video = createCapture(VIDEO, setupHandpose);
-      }
-    }
-
-    if (state === `livingRoom`) {
-      this.position();
-    }
-
-    if (state === `bedRoom`) {
-      if (this.y > height) {
-        state = `bathroom`;
-        this.position();
-      }
-    }
-    if (state === `kitchen`) {
-      if (this.x < 0) {
-        state = `bedRoom`;
-        this.position();
-      }
-    }
-    if (state === `livingRoom`) {
-      if (this.x > width) {
-        state = `bedRoom`;
-        this.position();
-      }
-    }
-    if (state === `bathroom`) {
-      if (this.y < 0) {
-        state = `bedRoom`;
-        // this.position();
-      }
-    }
-
-  }
-  //handle user input
-  // handleInput() {
-  //   if (keyIsDown(LEFT_ARROW)) {
-  //     this.vx = -this.speed;
-  //   } else if (keyIsDown(RIGHT_ARROW)) {
-  //     this.vx = this.speed;
-  //   } else {
-  //     this.vx = 0;
-  //   }
-  //
-  //   if (keyIsDown(UP_ARROW)) {
-  //     this.vy = -this.speed;
-  //   } else if (keyIsDown(DOWN_ARROW)) {
-  //     this.vy = this.speed;
-  //
-  //   } else {
-  //     this.vy = 0;
-  //   }
-  // }
 
   //add dirt
   addDirt() {
@@ -177,6 +106,10 @@ class Tamagotchi {
     }
   }
 
+  resetDirt(){
+    this.dirt = [];
+  }
+
   checkDirt() {
     // console.log(tamagotchiEnergy, this.dirt.length);
     if (tamagotchiEnergy < 2000) {
@@ -199,25 +132,24 @@ class Tamagotchi {
   }
 
 
-
-
-
-
   //display the tamagotchi
   display() {
-    if (tamagotchiEnergy <= 1990) {
-      push();
-      image(this.image03, this.x, this.y, this.size, this.size);
-      pop();
-    } else if (tamagotchiEnergy <= 1995) {
-      push();
-      image(this.image02, this.x, this.y, this.size, this.size);
-      pop();
-    } else if (tamagotchiEnergy <= 2000 || tamagotchiEnergy >= 2000) {
-      push();
-      image(this.image, this.x, this.y, this.size, this.size);
-      pop();
+    if(tamagotchiLVL === 1){
+      if (tamagotchiEnergy <= 1990) {
+        push();
+        image(this.image03, this.x, this.y, this.size, this.size);
+        pop();
+      } else if (tamagotchiEnergy <= 1995) {
+        push();
+        image(this.image02, this.x, this.y, this.size, this.size);
+        pop();
+      } else if (tamagotchiEnergy <= 2000 || tamagotchiEnergy >= 2000) {
+        push();
+        image(this.image, this.x, this.y, this.size, this.size);
+        pop();
+      }
     }
+
 
 
 

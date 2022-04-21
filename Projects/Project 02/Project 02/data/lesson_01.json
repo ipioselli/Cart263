@@ -1,0 +1,11 @@
+{
+  "description": "Lesson 01: English and italian translations",
+  "lesson01": [
+    {"english":"Coffee", "italian":"caffè"},
+    {"english":"The cup", "italian":"La tazza"},
+    {"english":"The cookie", "italian":"Un biscotto"},
+    {"english":"The cookie", "italian":"Un biscotto"},
+    {"english":"The milk", "italian":"Il Latte"},
+
+  ]
+}

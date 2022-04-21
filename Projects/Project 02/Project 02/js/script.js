@@ -4,6 +4,9 @@ Ines Pioselli
 
 Tamagotchi Sim
 
+CAPPUGOTCHI
+- you are given a cute lil coffee bean as a pet.
+
 Today:
 - make all 9 drawings
 - finish bed room
@@ -96,6 +99,10 @@ let schoolRightAnswers = 0;
 let schoolMaxRightAnswers = 10;
 let schoolWrongAnswers = 0;
 let schoolMaxWrongAnswers = 10;
+
+//bedtime
+let bedTimeTimerDelay = 500;
+let bedTimeTimerDone = false;
 
 let feedButton = {
   x: 1280 / 2,
@@ -191,8 +198,8 @@ function preload() {
   sleepButton.image = loadImage(`assets/images/sleepButton.png`);
 
   //school
-  englishData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/geography/countries_with_capitals.json`);
-  italianData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/geography/countries_with_capitals.json`);
+  englishData = loadJSON(`data/lesson_01.json`);
+  italianData = loadJSON(`data/lesson_01.json`);
 
 }
 
@@ -215,16 +222,13 @@ function setupAnnyang() {
 
     let commands = {
       "Eat some *food": feed, //detects for food
-      "The answer is *phrase": guessAnswer,
+      "The answer is *phrase": guessAnswer, //detects for an answer in school
     };
     annyang.addCommands(commands);
     annyang.start();
     feed(); //calls function to check the score
-
-
   }
 }
-
 
 //setup tamagotchi
 function setupEgg02() {
@@ -279,20 +283,15 @@ function setupHandpose() {
   });
 }
 
-// function loadLesson01(){
-//   schoolLesson01.currentItalianWord = data.currentItalianWord;
-//   schoolLesson01.currentEnglishWord = data.currentEnglishWord;
-// }
+
 
 function generateLesson01(){
 
-  let englishTranslation = random(englishData.countries);
-  schoolLesson01.currentEnglishWord = englishTranslation.name.toLowerCase();
+  let englishTranslation = random(englishData.lesson01);
+  schoolLesson01.currentEnglishWord = englishTranslation.english.toLowerCase();
 
   let italianTranslation = englishTranslation;
-  schoolLesson01.currentItalianWord = italianTranslation.capital.toLowerCase();
-
-  // localStorage.setItem(`school-lesson-01-data`, JSON.stringify(schoolLesson01));
+  schoolLesson01.currentItalianWord = italianTranslation.italian.toLowerCase();
 
 }
 
@@ -360,7 +359,6 @@ function feed(food) {
 }
 
 function guessAnswer(phrase){
-  console.log(schoolLesson01.currentItalianWord);
   currentItalianAnswer = phrase.toLowerCase();
   checkLesson01Score();
 }
@@ -401,12 +399,12 @@ function checkCounter() {
 //function to increase the hour of the day
 function checkHour() {
   hour++;
-  if (hour === 7) {
+  if (hour === 12) {
     state = `schoolYard`; //if the time is 12 pm then its time for school
     generateLesson01();
-
   }
 }
+
 
 function checkLesson01Score(){
 
@@ -440,7 +438,7 @@ function readyForBed(){
   let d = dist(mouseX, mouseY, sleepButton.x, sleepButton.y);
   if (state === `bedRoom`) {
     if (d < sleepButton.size / 2) {
-      if(hour < 6 ){
+      if(hour < 20 ){
         tamagotchiEgg.move();
         tamagotchiEgg.position();
         responsiveVoice.speak(sleepInstructions01, "UK English Female");
@@ -454,13 +452,28 @@ function readyForBed(){
 }
 
 function checkBedTime(){
+if(tamagotchiLVL === 1){
   if(hour < 7){
     tamagotchiEgg.move();
     tamagotchiEgg.position();
   }
   else{
       tamagotchiEgg.getInBed();
-      setTimeout(day02, 5000);
+
+        bedTimeTimerDelay -=5;
+        if(bedTimeTimerDelay <=0){
+          bedTimeTimerDone = true;
+        }
+        if(bedTimeTimerDone){
+          state = `day02`;
+        }
+      }
+  }
+  else if(tamagotchiLVL === 2){
+    if(hour < 8){
+      tamagotchiEgg.move();
+      tamagotchiEgg.position();
+    }
   }
 }
 
@@ -733,6 +746,15 @@ function keyPressed() {
       state = `bedRoom`;
       setInterval(checkCounter, 3000); //every 3 seconds
       setInterval(checkHour, 10000); //every 10 seconds
+    }
+  }
+  if(state === `day02`){
+    if(keyCode === 13){ //keycode for enter
+      state = `bedRoom`;
+      hour = 6;
+      tamagotchiLVL = 2;
+      tamagotchiEnergy = 2000;
+      tamagotchiEgg.resetDirt();
     }
   }
 }
