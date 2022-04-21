@@ -191,8 +191,8 @@ function preload() {
   sleepButton.image = loadImage(`assets/images/sleepButton.png`);
 
   //school
-  englishData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/archetypes/character.json`);
-  italianData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/archetypes/character.json`);
+  englishData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/geography/countries_with_capitals.json`);
+  italianData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/geography/countries_with_capitals.json`);
 
 }
 
@@ -207,6 +207,7 @@ function setup() {
   setupShower();
   setupHeart();
   setupAnnyang(); //setup for annyang
+  generateLesson01();
 }
 
 function setupAnnyang() {
@@ -283,11 +284,11 @@ function setupHandpose() {
 
 function generateLesson01(){
 
-  let englishTranslation = random(englishData.characters);
-  schoolLesson01.currentEnglishWord = random(englishTranslation.character);
+  let englishTranslation = random(englishData.countries);
+  schoolLesson01.currentEnglishWord = englishTranslation.name;
 
-  let italianTranslation = random(italianData.characters);
-  schoolLesson01.currentItalianWord = random(italianTranslation.moves);
+  let italianTranslation = englishTranslation;
+  schoolLesson01.currentItalianWord = italianTranslation.capital;
 
   // localStorage.setItem(`school-lesson-01-data`, JSON.stringify(schoolLesson01));
 
@@ -401,6 +402,7 @@ function checkHour() {
 function checkLesson01Score(){
   if(currentItalianAnswer === schoolLesson01.currentItalianWord){
     schoolRightAnswers++;
+    nextQuestion();
 
     if(schoolRightAnswers === schoolMaxRightAnswers){
       state = `win`;
@@ -555,10 +557,20 @@ function displaySchoolLesson01() {
   textFont(pixelFont);
   fill(0);
   textSize(20);
-  text(schoolLesson01.currentEnglishWord, width / 2 , height / 2);
+  text(cool, width / 2 , height / 2);
   pop();
 }
 
+
+function displayLesson01GoodScore(){
+  push();
+  textAlign(CENTER, CENTER);
+  textFont(pixelFont);
+  fill(0);
+  textSize(20);
+  text(`Good Answers = ${schoolRightAnswers}`, width / 2 - 400, height / 2 - 250);
+  pop();
+}
 //display the time of day
 function displayTime() {
   push();
@@ -626,7 +638,6 @@ function mousePressed() {
 
   readyForBed();
   nextQuestion();
-
 
   let d = dist(mouseX, mouseY, feedButton.x, feedButton.y);
   if (state === `kitchen`) {

@@ -189,16 +189,19 @@ function bathroom() {
 
 function schoolYard(){
 
-  generateLesson01();
-  displaySchoolLesson01();
+
+
   push();
   background(186, 219, 205);
   textAlign(CENTER, CENTER);
   textFont(pixelFont);
   fill(0);
   textSize(30);
-  text(`Time for school`, width / 2, height / 2);
+  text(` `, width / 2, height / 2);
   pop();
+
+  displaySchoolLesson01();
+  displayLesson01GoodScore();
 }
 
 function day02(){
