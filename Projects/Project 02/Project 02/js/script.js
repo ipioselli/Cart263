@@ -493,7 +493,8 @@ function checkLesson01Score(){
     nextQuestion();
 
     if(schoolRightAnswers === schoolMaxRightAnswers){
-      state = `win`;
+      state = `bedRoom`;
+      hour = 20;
     }
 
   }
@@ -518,7 +519,7 @@ function readyForBed(){
   let d = dist(mouseX, mouseY, sleepButton.x, sleepButton.y);
   if (state === `bedRoom`) {
     if (d < sleepButton.size / 2) {
-      if(hour < 20 ){
+      if(hour < 21 ){
         tamagotchiEgg.move();
         tamagotchiEgg.position();
         responsiveVoice.speak(sleepInstructions01, "UK English Female");
