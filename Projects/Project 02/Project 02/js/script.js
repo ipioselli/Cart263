@@ -284,6 +284,9 @@ function setupAnnyang() {
     annyang.start();
     feed(); //calls function to check the score
   }
+
+  annyang.setLanguage('en');
+  annyang.setLanguage('it-IT');
 }
 
 //setup tamagotchi
