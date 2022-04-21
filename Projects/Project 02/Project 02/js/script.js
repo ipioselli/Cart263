@@ -161,6 +161,18 @@ let bathroomButton = {
   size: 100,
 }
 
+let englishButton = {
+  x: 1280 / 2 + 200,
+  y: 720 / 2 + 40,
+  size: 100,
+}
+
+let italianButton = {
+  x: 1280 / 2 - 200,
+  y: 720 / 2 + 40,
+  size: 100,
+}
+
 
 let feedInstructions = `Feed the tamagotchi by saying Eat some and then the name of the food. Hint The tamagotchi loves the colour pink`;
 let showerInstructions = `Press the letter S on the keypad to wash away all the dirt`;
@@ -178,7 +190,7 @@ let bedroomBg;
 let kitchenBg;
 let livingRoomBg;
 let schoolYardBg;
-
+let classroomBg;
 
 //fonts
 let pixelFont;
@@ -190,7 +202,7 @@ let blingSfx;
 let badSfx;
 let petSfx;
 
-let state = `schoolYard`; // the prototype starts with the start state
+let state = `schoolDay01`; // the prototype starts with the start state
 
 //loads all the variables
 function preload() {
@@ -215,6 +227,7 @@ function preload() {
   kitchenBg = loadImage(`assets/images/kitchen.png`);
   livingRoomBg = loadImage(`assets/images/livingRoomBg.png`);
   schoolYardBg = loadImage(`assets/images/schoolyardBg.png`);
+  classroomBg = loadImage(`assets/images/classroomBg.png`);
 
 
   bubbleImg = loadImage(`assets/images/bubble.png`);
@@ -230,6 +243,8 @@ function preload() {
   kitchenButton.image = loadImage(`assets/images/kitchenButton.png`);
   sleepButton.image = loadImage(`assets/images/sleepButton.png`);
   petButton.image = loadImage(`assets/images/petButton.png`);
+  englishButton.image = loadImage(`assets/images/englishButton.png`);
+  italianButton.image = loadImage(`assets/images/italianButton.png`);
 
   //school
   englishData = loadJSON(`data/lesson_01.json`);
@@ -387,6 +402,9 @@ function setupStates() {
   }
   else if(state === `schoolDay01`){
     schoolDay01();
+  }
+  else if(state === `schoolDay02`){
+    schoolDay02();
   }
   else if(state === `day02`){
     day02();
@@ -588,13 +606,32 @@ function petMe(){
   }
 }
 
+function englishInstructions(){
+  if(state === `schoolDay01` || state === `schoolDay02`){
+    let d = dist(mouseX, mouseY, englishButton.x, englishButton.y);
+    if(d < englishButton.size/2){
+        responsiveVoice.speak(schoolLesson01.currentEnglishWord, "UK English Female");
+    }
+  }
+}
+
+function italianInstructions(){
+  if(state === `schoolDay01` || state === `schoolDay02`){
+    let d = dist(mouseX, mouseY, italianButton.x, italianButton.y);
+    if(d < italianButton.size/2){
+        responsiveVoice.speak(schoolLesson01.currentItalianWord, "Italian Male");
+    }
+  }
+}
+
 
 //mousepressed to trigger responsiveVoice
 function mousePressed() {
 
   readyForBed();
-
   petMe();
+  englishInstructions();
+  italianInstructions();
 
   let d = dist(mouseX, mouseY, feedButton.x, feedButton.y);
   if (state === `kitchen`) {
@@ -609,7 +646,6 @@ function mousePressed() {
     if(d2 < showerButton.size/2){
       responsiveVoice.speak(showerInstructions, "UK English Female");
     }
-
   }
 
   let d3 = dist(mouseX, mouseY, livingRoomButton.x,  livingRoomButton.y);
@@ -620,16 +656,11 @@ function mousePressed() {
 
   let d4 = dist(mouseX, mouseY, tamagotchiEgg.x, tamagotchiEgg.y);
   if(d4 < tamagotchiEgg.size/2){
-
   }
 
   let d5 = dist(mouseX, mouseY, bathroomButton.x, bathroomButton.y);
   if(d5 < bathroomButton.size/2){
     state = `bathroom`;
-    // if(state === `bathroom`){
-    //   tamagotchiEgg.getInShower();
-    // }
-
   }
 
   let d6 = dist(mouseX, mouseY, kitchenButton.x, kitchenButton.y);

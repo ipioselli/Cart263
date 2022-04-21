@@ -224,23 +224,26 @@ function lesson01Instructions(){
   pop();
 
   updatePencils();
+
 }
 
 function schoolDay01(){
   push();
-  push();
-  background(186, 219, 205);
+  imageMode(CENTER, CENTER);
+  image(classroomBg, width / 2, height / 2, 1280, 720);
   textAlign(CENTER, CENTER);
   textFont(cuteFont);
   fill(0);
   textSize(30);
   text(` `, width / 2, height / 2);
   pop();
-  pop();
+  tamagotchiEgg.classroom();
   displaySchoolLesson01();
   displayLesson01GoodScore();
   displayLesson01BadScore();
   displayCurrentAnswer()
+  displayEnglishButton();
+  displayItalianButton();
 }
 
 function day02(){

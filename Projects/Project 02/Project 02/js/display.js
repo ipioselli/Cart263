@@ -147,15 +147,15 @@ function displayFinger(){
 
 function displaySchoolLesson01() {
 
-  let lesson01 = `** Lesson 01 **
+  let lesson01 = `** Lesson 01: Food**
   English Translation: ${schoolLesson01.currentEnglishWord}
   Italian Translation: ${schoolLesson01.currentItalianWord}`;
   push();
   textAlign(CENTER, CENTER);
   textFont(cuteFont);
   fill(0);
-  textSize(20);
-  text(lesson01, width / 2 , height / 2);
+  textSize(30);
+  text(lesson01, width / 2 , height / 2 -150);
   pop();
 }
 
@@ -165,8 +165,8 @@ function displayLesson01GoodScore(){
   textAlign(CENTER, CENTER);
   textFont(cuteFont);
   fill(0);
-  textSize(50);
-  text(`Good Answers = ${schoolRightAnswers}`, width / 2 - 400, height / 2 - 250);
+  textSize(40);
+  text(`Good Answers = ${schoolRightAnswers}`, width / 2 - 400, height / 2 - 300);
   pop();
 }
 
@@ -175,17 +175,25 @@ function displayLesson01BadScore(){
   textAlign(CENTER, CENTER);
   textFont(cuteFont);
   fill(0);
-  textSize(50);
-  text(`Bad Answers = ${schoolWrongAnswers}`, width / 2 + 400, height / 2 - 250);
+  textSize(40);
+  text(`Bad Answers = ${schoolWrongAnswers}`, width / 2 + 400, height / 2 - 300);
   pop();
 }
 
 function displayCurrentAnswer(){
   push();
   textAlign(CENTER, CENTER);
-  textFont(pixelFont);
+  textFont(cuteFont);
   fill(0);
   textSize(20);
-  text(`Current Answer = ${currentItalianAnswer}`, width / 2, height / 2 + 250);
+  text(`Current Answer = ${currentItalianAnswer}`, width / 2, height / 2 -50);
   pop();
+}
+function displayEnglishButton(){
+  imageMode(CENTER, CENTER);
+  image(englishButton.image, englishButton.x, englishButton.y, englishButton.size, englishButton.size);
+}
+function displayItalianButton(){
+  imageMode(CENTER, CENTER);
+  image(italianButton.image, italianButton.x, italianButton.y, italianButton.size, italianButton.size);
 }

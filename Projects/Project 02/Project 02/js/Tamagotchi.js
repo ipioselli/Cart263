@@ -18,6 +18,8 @@ class Tamagotchi {
     this.bedY = 460;
     this.chairX = 845;
     this.chairY = 460;
+    this.classX = 1280/2;
+    this.classY = 460;
     this.minX = 350;
     this.maxX = 950;
 
@@ -29,6 +31,14 @@ class Tamagotchi {
     this.dirtTimer();
     this.removeDirt();
     this.checkDirt();
+  }
+
+  classroom(){
+    this.display();
+    if(state === `schoolDay01`){
+      this.x = this.classX;
+      this.y = this.classY;
+    }
   }
 
 
@@ -53,7 +63,7 @@ class Tamagotchi {
   //function called when you touch the tamagotchi with handpose
   pet() {
     this.y = this.y + 10;
-  
+
 
   }
 
