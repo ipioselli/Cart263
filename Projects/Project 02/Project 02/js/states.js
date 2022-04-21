@@ -95,6 +95,9 @@ function livingRoom() {
   displayEnergy();
   displayEvolutionLVL();
   updateEgg02();
+  tamagotchiEgg.move();
+  tamagotchiEgg.position();
+
 
   displayLivingRoomButton();
   displayBathroomButton();
@@ -109,12 +112,12 @@ function livingRoom() {
 //on the right of the living room
 function kitchen() {
   imageMode(CENTER, CENTER);
-  image(roomBg, width / 2, height / 2, 1280, 720);
+  image(kitchenBg, width / 2, height / 2, 1280, 720);
   push();
   textAlign(CENTER, CENTER);
-  textFont(pixelFont);
-  fill(0);
-  textSize(30);
+  textFont(cuteFont);
+  fill(88, 71, 173);
+  textSize(50);
   text(`Kitchen`, width / 2, height / 2 - 250)
   pop();
 
@@ -129,8 +132,8 @@ function kitchen() {
   displayBathroomButton();
   displayKitchenButton();
   displayBedroomButton();
-  tamagotchiEgg.move();
-  tamagotchiEgg.position();
+  tamagotchiEgg.getOnChair();
+
 
 }
 
@@ -141,9 +144,10 @@ function bedRoom() {
   image(bedroomBg, width / 2, height / 2, 1280, 720);
   push();
   textAlign(CENTER, CENTER);
-  textFont(pixelFont);
-  fill(68, 55, 115);
-  textSize(30);
+  textFont(cuteFont);
+  fill(88, 71, 173);
+  stroke(255);
+  textSize(50);
   text(`Bedroom`, width / 2, height / 2 - 250)
 
   pop();

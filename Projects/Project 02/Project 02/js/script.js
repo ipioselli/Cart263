@@ -71,13 +71,21 @@ let fingerImg;
 
 
 //kitchen variables
-const desserts = [ //array of the tamagotchi's favourite food
-  "tiramisu",
-  "cannoli",
-  "gelato",
-  "affogato",
-  "zeppole",
-  "yakisoba",
+let gelatoFlavours = [ //array of the tamagotchi's favourite gelato flavours
+  "hazelnut gelato",
+  "strawberry gelato",
+  "chocolate gelato",
+  "nutella gelato",
+  "pistachio gelato",
+  "straciatella gelato",
+  "vanilla gelato",
+  "coffee gelato",
+  "lemon gelato",
+  " cookies and cream gelato",
+  "tiramisu gelato",
+  "mint gelato",
+  "peach gelato",
+  "coconut gelato"
 ];
 
 let foodRightAnswer = 0;
@@ -158,19 +166,26 @@ let floorPlanBg;
 let chooseEggBG;
 let bathroomBg;
 let bedroomBg;
+let kitchenBg;
 
 //fonts
 let pixelFont;
+let cuteFont;
 
 //sounds
 let song01;
+let blingSfx;
+let badSfx;
 
 let state = `floorPlan`; // the prototype starts with the start state
 
 //loads all the variables
 function preload() {
 
-  pixelFont = loadFont(`assets/fonts/dogica.otf`);
+  pixelFont = loadFont(`assets/fonts/dogicaBold.otf`);
+  cuteFont = loadFont(`assets/fonts/bubble.ttf`);
+
+
   chooseEggBG = loadImage(`assets/images/chooseEggBg.png`);
   egg01Img = loadImage(`assets/images/egg01.png`);
   egg02Img = loadImage(`assets/images/tamagotchi_01.png`);
@@ -179,11 +194,12 @@ function preload() {
   fingerImg = loadImage(`assets/images/heart.png`);
 
   egg03Img = loadImage(`assets/images/egg03.png`);
-  song01 = loadSound(`assets/sounds/Cute.mp3`);
+
   roomBg = loadImage(`assets/images/roomBg.png`);
   floorPlanBg = loadImage(`assets/images/floorplan.png`)
   bathroomBg = loadImage(`assets/images/bathroom.png`)
   bedroomBg = loadImage(`assets/images/bedroom.png`);
+  kitchenBg = loadImage(`assets/images/kitchen.png`);
   bubbleImg = loadImage(`assets/images/bubble.png`);
   heartImg = loadImage(`assets/images/heart.png`);
 
@@ -200,6 +216,11 @@ function preload() {
   //school
   englishData = loadJSON(`data/lesson_01.json`);
   italianData = loadJSON(`data/lesson_01.json`);
+
+  //sounds
+  song01 = loadSound(`assets/sounds/Cute.mp3`);
+  blingSfx = loadSound(`assets/sounds/bling.mp3`);
+  badSfx = loadSound(`assets/sounds/bad.mp3`);
 
 }
 
@@ -347,13 +368,15 @@ function setupStates() {
 //function to check through array of food in the kitchen state
 function feed(food) {
   if (state === `kitchen`) {
-    if (desserts.includes(food)) { //if right increase the score and energy
+    if (gelatoFlavours.includes(food)) { //if right increase the score and energy
       foodRightAnswer++;
       tamagotchiEnergy += 10;
+      blingSfx.play(); //play good sound if you guess the right flavour
     }
     else {
       foodWrongAnswer++; //if wrong increase wrong score and decrease energy
       tamagotchiEnergy -= 10;
+      badSfx.play();
     }
   }
 }
@@ -367,6 +390,8 @@ function overlapTamagotchi(){
   let d = dist(finger.x, finger.y, tamagotchiEgg.x, tamagotchiEgg.y);
   if(d < tamagotchiEgg.size/2){
     tamagotchiEgg.pet();
+    tamagotchiEnergy+=5;
+    tamagotchiEnergy = 2000;
   }
 }
 
@@ -453,7 +478,7 @@ function readyForBed(){
 
 function checkBedTime(){
 if(tamagotchiLVL === 1){
-  if(hour < 7){
+  if(hour < 20){
     tamagotchiEgg.move();
     tamagotchiEgg.position();
   }
@@ -470,7 +495,7 @@ if(tamagotchiLVL === 1){
       }
   }
   else if(tamagotchiLVL === 2){
-    if(hour < 8){
+    if(hour < 20){
       tamagotchiEgg.move();
       tamagotchiEgg.position();
     }
@@ -544,9 +569,10 @@ function displaySleepButton(){
 function displayEnergy() {
   push();
   textAlign(CENTER, CENTER);
-  textFont(pixelFont);
-  fill(68, 55, 115);
-  textSize(20);
+  textFont(cuteFont);
+  fill(88, 71, 173);
+  stroke(255);
+  textSize(40);
   text(`Energy: ${ceil(tamagotchiEnergy)}`, width / 2 + 400, height / 2 - 300);
   pop();
 
@@ -556,24 +582,24 @@ function displayEnergy() {
 function displayEvolutionLVL() {
   push();
   textAlign(CENTER, CENTER);
-  textFont(pixelFont);
-  fill(68, 55, 115);
-  textSize(20);
+  textFont(cuteFont);
+  fill(88, 71, 173);
+  textSize(40);
   text(`Evolution: ${tamagotchiLVL}`, width / 2 - 400, height / 2 - 300);
   pop();
 }
 
 function displaySchoolLesson01() {
 
-  let cool = `** Lesson 01 **
+  let lesson01 = `** Lesson 01 **
   English Translation: ${schoolLesson01.currentEnglishWord}
   Italian Translation: ${schoolLesson01.currentItalianWord}`;
   push();
   textAlign(CENTER, CENTER);
-  textFont(pixelFont);
+  textFont(cuteFont);
   fill(0);
   textSize(20);
-  text(cool, width / 2 , height / 2);
+  text(lesson01, width / 2 , height / 2);
   pop();
 }
 
@@ -611,7 +637,7 @@ function displayCurrentAnswer(){
 function displayTime() {
   push();
   textAlign(CENTER, CENTER);
-  textFont(pixelFont);
+  textFont(cuteFont);
   fill(68, 55, 115);
   textSize(20);
   text(`Time:${hour}:00`, width / 2, height / 2 - 300);
@@ -641,7 +667,7 @@ function displayBedroomButton(){
 function displayBadScore() {
   push();
   textAlign(CENTER, CENTER);
-  textFont(pixelFont);
+  textFont(cuteFont);
   fill(0);
   textSize(20);
   text(`Food Thrown Up = ${foodWrongAnswer}`, width / 2 + 400, height / 2 - 250);
@@ -673,7 +699,6 @@ function displayGoodScore() {
 function mousePressed() {
 
   readyForBed();
-  // nextQuestion();
 
   let d = dist(mouseX, mouseY, feedButton.x, feedButton.y);
   if (state === `kitchen`) {

@@ -16,6 +16,8 @@ class Tamagotchi {
     this.showerY = 360;
     this.bedX = 860;
     this.bedY = 460;
+    this.chairX = 845;
+    this.chairY = 460;
     this.minX = 350;
     this.maxX = 950;
 
@@ -23,7 +25,6 @@ class Tamagotchi {
 
   //calls all the functions for the tamagotchi
   update() {
-
     this.display();
     this.dirtTimer();
     this.removeDirt();
@@ -52,7 +53,7 @@ class Tamagotchi {
   //function called when you touch the tamagotchi with handpose
   pet() {
     this.y = this.y + 10;
-    this.position();
+  
 
   }
 
@@ -68,6 +69,13 @@ class Tamagotchi {
       this.x = this.bedX;
       this.y = this.bedY;
 
+    }
+  }
+
+  getOnChair(){
+    if(state === `kitchen`){
+      this.x = this.chairX;
+      this.y = this.chairY;
     }
   }
 
