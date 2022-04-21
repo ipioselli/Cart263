@@ -188,6 +188,9 @@ function bathroom() {
 }
 
 function schoolYard(){
+
+  generateLesson01();
+  displaySchoolLesson01();
   push();
   background(186, 219, 205);
   textAlign(CENTER, CENTER);

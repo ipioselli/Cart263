@@ -82,12 +82,20 @@ let foodWrongAnswer = 0;
 
 //school variables
 //DAY 1
-let currentItalianWord = ``;
+let schoolLesson01 = {
+  currentItalianWord: ``,
+  currentEnglishWord: ``,
+
+};
+
 let currentItalianAnswer = ``;
+let italianData;
+let englishData;
 
 let schoolRightAnswers = 0;
-let schoolMaxRightAnswers = 0;
+let schoolMaxRightAnswers = 10;
 let schoolWrongAnswers = 0;
+let schoolMaxWrongAnswers = 10;
 
 let feedButton = {
   x: 1280 / 2,
@@ -150,7 +158,7 @@ let pixelFont;
 //sounds
 let song01;
 
-let state = `floorPlan`; // the prototype starts with the start state
+let state = `schoolYard`; // the prototype starts with the start state
 
 //loads all the variables
 function preload() {
@@ -181,6 +189,11 @@ function preload() {
   bedroomButton.image = loadImage(`assets/images/bedroomButton.png`);
   kitchenButton.image = loadImage(`assets/images/kitchenButton.png`);
   sleepButton.image = loadImage(`assets/images/sleepButton.png`);
+
+  //school
+  englishData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/archetypes/character.json`);
+  italianData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/archetypes/character.json`);
+
 }
 
 
@@ -200,13 +213,13 @@ function setupAnnyang() {
   if (annyang) {
 
     let commands = {
-      "Eat some *food": feed //detects for food
+      "Eat some *food": feed, //detects for food
+      "The anwser is": guessAnswer
     };
     annyang.addCommands(commands);
     annyang.start();
     feed(); //calls function to check the score
   }
-
 }
 
 
@@ -263,6 +276,22 @@ function setupHandpose() {
   });
 }
 
+// function loadLesson01(){
+//   schoolLesson01.currentItalianWord = data.currentItalianWord;
+//   schoolLesson01.currentEnglishWord = data.currentEnglishWord;
+// }
+
+function generateLesson01(){
+
+  let englishTranslation = random(englishData.characters);
+  schoolLesson01.currentEnglishWord = random(englishTranslation.character);
+
+  let italianTranslation = random(italianData.characters);
+  schoolLesson01.currentItalianWord = random(italianTranslation.moves);
+
+  // localStorage.setItem(`school-lesson-01-data`, JSON.stringify(schoolLesson01));
+
+}
 
 //Draws all the states for the game
 function draw() {
@@ -306,6 +335,9 @@ function setupStates() {
   }
   else if (state === `dead`) {
     dead();
+  }
+  else if(state === `win`){
+    win();
   }
 
 }
@@ -363,6 +395,38 @@ function checkHour() {
   if (hour >= 12) {
     state = `schoolYard`; //if the time is 12 pm then its time for school
 
+  }
+}
+
+function checkLesson01Score(){
+  if(currentItalianAnswer === schoolLesson01.currentItalianWord){
+    schoolRightAnswers++;
+
+    if(schoolRightAnswers === schoolMaxRightAnswers){
+      state = `win`;
+    }
+    else{
+      nextQuestion();
+    }
+  }
+  else{
+    schoolWrongAnswers++;
+    if(schoolWrongAnswers === schoolMaxWrongAnswers){
+      state = `dead`;
+    }
+  }
+
+
+}
+
+function guessAnswer(phrase){
+  currentItalianAnswer = phrase.toLowerCase();
+  checkLesson01Score();
+}
+
+function nextQuestion(){
+  if(state === `schoolYard`){
+    generateLesson01();
   }
 }
 
@@ -481,6 +545,20 @@ function displayEvolutionLVL() {
   pop();
 }
 
+function displaySchoolLesson01() {
+
+  let cool = `** Lesson 01 **
+  English Translation: ${schoolLesson01.currentEnglishWord}
+  Italian Translation: ${schoolLesson01.currentItalianWord}`;
+  push();
+  textAlign(CENTER, CENTER);
+  textFont(pixelFont);
+  fill(0);
+  textSize(20);
+  text(schoolLesson01.currentEnglishWord, width / 2 , height / 2);
+  pop();
+}
+
 //display the time of day
 function displayTime() {
   push();
@@ -547,6 +625,8 @@ function displayGoodScore() {
 function mousePressed() {
 
   readyForBed();
+  nextQuestion();
+
 
   let d = dist(mouseX, mouseY, feedButton.x, feedButton.y);
   if (state === `kitchen`) {
