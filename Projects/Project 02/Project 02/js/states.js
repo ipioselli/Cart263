@@ -92,19 +92,18 @@ function livingRoom() {
 
     overlapTamagotchi();
   }
+  updateEgg02();
+  tamagotchiEgg.move();
+  tamagotchiEgg.position();
   displayFinger();
   displayTime();
   displayEnergy();
   displayEvolutionLVL();
-  updateEgg02();
-  tamagotchiEgg.move();
-  tamagotchiEgg.position();
-
-
   displayLivingRoomButton();
   displayBathroomButton();
   displayKitchenButton();
   displayBedroomButton();
+  displayPetButton();
 
 
 }

@@ -130,6 +130,12 @@ let sleepButton = {
   size: 150,
 }
 
+let petButton = {
+  x: 1280 / 2,
+  y: 720 / 2 - 150,
+  size: 150,
+}
+
 let livingRoomButton = {
   x: 1280/5,
   y: 720 / 2 + 300,
@@ -159,6 +165,7 @@ let feedInstructions = `Feed the tamagotchi by saying Eat some and then the name
 let showerInstructions = `Press the letter S on the keypad to wash away all the dirt`;
 let sleepInstructions01 = `It's not time for bed yet`;
 let sleepInstructions02 = `Time for bed`;
+let petInstructions = `Hover your index finger over the tamagotchi to pet it and increase the energy level`;
 
 //background image variables
 let roomBg;
@@ -178,6 +185,7 @@ let cuteFont;
 let song01;
 let blingSfx;
 let badSfx;
+let petSfx;
 
 let state = `floorPlan`; // the prototype starts with the start state
 
@@ -215,6 +223,7 @@ function preload() {
   bedroomButton.image = loadImage(`assets/images/bedroomButton.png`);
   kitchenButton.image = loadImage(`assets/images/kitchenButton.png`);
   sleepButton.image = loadImage(`assets/images/sleepButton.png`);
+  petButton.image = loadImage(`assets/images/petButton.png`);
 
   //school
   englishData = loadJSON(`data/lesson_01.json`);
@@ -224,6 +233,7 @@ function preload() {
   song01 = loadSound(`assets/sounds/Cute.mp3`);
   blingSfx = loadSound(`assets/sounds/bling.mp3`);
   badSfx = loadSound(`assets/sounds/bad.mp3`);
+  petSfx = loadSound(`assets/sounds/pet.mp3`);
 
 }
 
@@ -393,6 +403,8 @@ function overlapTamagotchi(){
   let d = dist(finger.x, finger.y, tamagotchiEgg.x, tamagotchiEgg.y);
   if(d < tamagotchiEgg.size/2){
     tamagotchiEgg.pet();
+    petSfx.setVolume(0.1);
+    petSfx.play();
     tamagotchiEnergy+=5;
     tamagotchiEnergy = 2000;
   }
@@ -538,6 +550,14 @@ function moveShower(){
   }
 }
 
+function petMe(){
+  if(state === `livingRoom`){
+    let d = dist(mouseX, mouseY, petButton.x, petButton.y);
+    if(d<petButton.size/2){
+      responsiveVoice.speak(petInstructions, "UK English Female");
+    }
+  }
+}
 
 
 //display feeding instructions in the kitchen
@@ -567,6 +587,11 @@ function displayBathroomButton() {
 function displaySleepButton(){
   imageMode(CENTER, CENTER);
   image(sleepButton.image, sleepButton.x, sleepButton.y, sleepButton.size, sleepButton.size);
+}
+
+function displayPetButton(){
+  imageMode(CENTER, CENTER);
+  image(petButton.image, petButton.x, petButton.y, petButton.size, petButton.size);
 }
 //display the energy amount
 function displayEnergy() {
@@ -702,6 +727,8 @@ function displayGoodScore() {
 function mousePressed() {
 
   readyForBed();
+
+  petMe();
 
   let d = dist(mouseX, mouseY, feedButton.x, feedButton.y);
   if (state === `kitchen`) {
