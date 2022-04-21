@@ -46,8 +46,9 @@ let bubbles = [];
 let numShowerWater = 200
 let showerWater = [];
 
-let heart;
-let heartImg;
+let pencilImg;
+let numPencils = 20;
+let pencils = [];
 
 
 //living room variables
@@ -166,6 +167,7 @@ let showerInstructions = `Press the letter S on the keypad to wash away all the 
 let sleepInstructions01 = `It's not time for bed yet`;
 let sleepInstructions02 = `Time for bed`;
 let petInstructions = `Hover your index finger over the tamagotchi to pet it and increase the energy level`;
+let schoolInstructions01 = `It's your tamagotchi's first day of italian school. \n You must help it learn italian by saying the words in italian. \n Your first lesson will be about food. \n Get 10 right in order to advance. \nIf you get 10 wrong your tamagotchi will not evolve.`
 
 //background image variables
 let roomBg;
@@ -175,6 +177,7 @@ let bathroomBg;
 let bedroomBg;
 let kitchenBg;
 let livingRoomBg;
+let schoolYardBg;
 
 
 //fonts
@@ -187,7 +190,7 @@ let blingSfx;
 let badSfx;
 let petSfx;
 
-let state = `floorPlan`; // the prototype starts with the start state
+let state = `schoolYard`; // the prototype starts with the start state
 
 //loads all the variables
 function preload() {
@@ -211,8 +214,11 @@ function preload() {
   bedroomBg = loadImage(`assets/images/bedroom.png`);
   kitchenBg = loadImage(`assets/images/kitchen.png`);
   livingRoomBg = loadImage(`assets/images/livingRoomBg.png`);
+  schoolYardBg = loadImage(`assets/images/schoolyardBg.png`);
+
+
   bubbleImg = loadImage(`assets/images/bubble.png`);
-  heartImg = loadImage(`assets/images/heart.png`);
+  pencilImg = loadImage(`assets/images/pencil.png`);
 
   //buttons
   tamagotchiMenu.image = loadImage("assets/images/tamagotchi.png");
@@ -245,8 +251,9 @@ function setup() {
 
   setupEgg02();
   setupBubbles();
+  setupPencils();
   setupShower();
-  setupHeart();
+
   setupAnnyang(); //setup for annyang
 
 }
@@ -287,6 +294,15 @@ function setupBubbles(){
     bubbles.push(bubble);
   }
 
+}
+
+function setupPencils(){
+  for(let i = 0; i<numPencils; i++){
+    let x = random(0, width);
+    let y = random(0, height);
+    let pencil = new Pencil(x, y, pencilImg);
+    pencils.push(pencil);
+  }
 }
 
 function setupShower(){
@@ -366,6 +382,12 @@ function setupStates() {
   else if(state === `schoolYard`){
     schoolYard();
   }
+  else if(state === `lesson01Instructions`){
+    lesson01Instructions();
+  }
+  else if(state === `schoolDay01`){
+    schoolDay01();
+  }
   else if(state === `day02`){
     day02();
   }
@@ -439,7 +461,7 @@ function checkCounter() {
 //function to increase the hour of the day
 function checkHour() {
   hour++;
-  if (hour === 12) {
+  if (hour === 7) {
     state = `schoolYard`; //if the time is 12 pm then its time for school
     generateLesson01();
   }
@@ -540,6 +562,13 @@ function updateShower(){
   for(let i =0; i<numShowerWater; i++){
     let shower = showerWater[i];
    showerWater[i].update();
+  }
+}
+
+function updatePencils(){
+  for(let i=0; i<numPencils; i++){
+    let pencil = pencils[i];
+    pencils[i].update();
   }
 }
 
@@ -801,6 +830,16 @@ function keyPressed() {
       state = `bedRoom`;
       setInterval(checkCounter, 3000); //every 3 seconds
       setInterval(checkHour, 10000); //every 10 seconds
+    }
+  }
+  if(state === `schoolYard`){
+    if(keyCode === 13){
+      state = `lesson01Instructions`;
+    }
+  }
+  if(state === `lesson01Instructions`){
+    if(keyCode === 32){
+      state = `schoolDay01`;
     }
   }
   if(state === `day02`){

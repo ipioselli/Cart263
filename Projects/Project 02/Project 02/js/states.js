@@ -193,16 +193,48 @@ function bathroom() {
 }
 
 function schoolYard(){
+  imageMode(CENTER, CENTER);
+  image(schoolYardBg, width / 2, height / 2, 1280, 720);
+  push();
+  textAlign(CENTER, CENTER);
+  textFont(cuteFont);
+  fill(30, 43, 130);
+  textSize(50);
+  text(`TIME FOR SCHOOL`, width / 2, height / 2 - 300);
+  textSize(30);
+  text(`School Yard`, width / 2, height / 2 + 250);
+  textSize(50);
+  text(`ENTER`, width / 2, height / 2 + 300);
+  pop();
 
+}
+
+function lesson01Instructions(){
   push();
   background(186, 219, 205);
   textAlign(CENTER, CENTER);
-  textFont(pixelFont);
+  textFont(cuteFont);
+  fill(30, 43, 130);
+  textSize(50);
+  text(`FIRST DAY OF SCHOOL `, width / 2, height / 2 -300);
+  textSize(30);
+  text(schoolInstructions01, width / 2, height / 2);
+  pop();
+
+  updatePencils();
+}
+
+function schoolDay01(){
+  push();
+  push();
+  background(186, 219, 205);
+  textAlign(CENTER, CENTER);
+  textFont(cuteFont);
   fill(0);
   textSize(30);
   text(` `, width / 2, height / 2);
   pop();
-
+  pop();
   displaySchoolLesson01();
   displayLesson01GoodScore();
   displayLesson01BadScore();
