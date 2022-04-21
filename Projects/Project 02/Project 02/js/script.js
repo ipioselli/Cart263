@@ -162,13 +162,13 @@ let bathroomButton = {
 }
 
 let englishButton = {
-  x: 1280 / 2 + 200,
+  x: 1280 / 2 - 200,
   y: 720 / 2 + 40,
   size: 100,
 }
 
 let italianButton = {
-  x: 1280 / 2 - 200,
+  x: 1280 / 2 + 200,
   y: 720 / 2 + 40,
   size: 100,
 }
@@ -202,7 +202,7 @@ let blingSfx;
 let badSfx;
 let petSfx;
 
-let state = `schoolDay01`; // the prototype starts with the start state
+let state = `floorPlan`; // the prototype starts with the start state
 
 //loads all the variables
 function preload() {
@@ -532,29 +532,32 @@ function readyForBed(){
 }
 
 function checkBedTime(){
-if(tamagotchiLVL === 1){
-  if(hour < 20){
-    tamagotchiEgg.move();
-    tamagotchiEgg.position();
-  }
-  else{
-      tamagotchiEgg.getInBed();
-
-        bedTimeTimerDelay -=5;
-        if(bedTimeTimerDelay <=0){
-          bedTimeTimerDone = true;
-        }
-        if(bedTimeTimerDone){
-          state = `day02`;
-        }
-      }
-  }
-  else if(tamagotchiLVL === 2){
-    if(hour < 20){
+if(state === `livingRoom` || state === `bedRoom` || state === `kitchen` || state === `bathroom`){
+  if(tamagotchiLVL === 1){
+    if(hour < 13){
       tamagotchiEgg.move();
       tamagotchiEgg.position();
     }
-  }
+    else{
+        tamagotchiEgg.getInBed();
+
+          bedTimeTimerDelay -=5;
+          if(bedTimeTimerDelay <=0){
+            bedTimeTimerDone = true;
+          }
+          if(bedTimeTimerDone){
+            state = `day02`;
+          }
+        }
+    }
+    else if(tamagotchiLVL === 2){
+      if(hour < 20){
+        tamagotchiEgg.move();
+        tamagotchiEgg.position();
+      }
+    }
+}
+
 }
 
 

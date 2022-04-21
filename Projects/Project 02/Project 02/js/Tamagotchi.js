@@ -34,11 +34,15 @@ class Tamagotchi {
   }
 
   classroom(){
-    this.display();
+    this.dirt = [];
+    tamagotchiEnergy = 2000;
     if(state === `schoolDay01`){
       this.x = this.classX;
       this.y = this.classY;
     }
+    push();
+    image(this.image, this.x, this.y, this.size, this.size);
+    pop();
   }
 
 

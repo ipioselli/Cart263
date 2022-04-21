@@ -1,11 +1,21 @@
 {
   "description": "Lesson 01: English and italian translations",
   "lesson01": [
-    {"english":"Coffee", "italian":"caffè"},
+    {"english":"The Coffee", "italian":"Il caffè"},
     {"english":"The cup", "italian":"La tazza"},
     {"english":"The cookie", "italian":"Un biscotto"},
-    {"english":"The cookie", "italian":"Un biscotto"},
-    {"english":"The milk", "italian":"Il Latte"}
+    {"english":"The dessert", "italian":"Il dessert"},
+    {"english":"The milk", "italian":"Il Latte"},
+    {"english":"The lemon", "italian":"Il limone"},
+    {"english":"She cooks", "italian":"Lei cucina"},
+    {"english":"The orange", "italian":"L'arancia"},
+    {"english":"Sweet", "italian":"Dolce"},
+    {"english":"She drinks", "italian":"Lei beve"},
+    {"english":"The strawberry", "italian":"La fragolla"},
+    {"english":"The cappucino", "italian":"Il cappucino"},
+    {"english":"The cream", "italian":"La crema"},
+    {"english":"The sugar", "italian":"Il zucchero"}
+
 
   ]
 }
