@@ -158,7 +158,7 @@ let pixelFont;
 //sounds
 let song01;
 
-let state = `schoolYard`; // the prototype starts with the start state
+let state = `floorPlan`; // the prototype starts with the start state
 
 //loads all the variables
 function preload() {
@@ -207,7 +207,7 @@ function setup() {
   setupShower();
   setupHeart();
   setupAnnyang(); //setup for annyang
-  generateLesson01();
+
 }
 
 function setupAnnyang() {
@@ -215,11 +215,13 @@ function setupAnnyang() {
 
     let commands = {
       "Eat some *food": feed, //detects for food
-      "The anwser is": guessAnswer
+      "The answer is *phrase": guessAnswer,
     };
     annyang.addCommands(commands);
     annyang.start();
     feed(); //calls function to check the score
+
+
   }
 }
 
@@ -285,10 +287,10 @@ function setupHandpose() {
 function generateLesson01(){
 
   let englishTranslation = random(englishData.countries);
-  schoolLesson01.currentEnglishWord = englishTranslation.name;
+  schoolLesson01.currentEnglishWord = englishTranslation.name.toLowerCase();
 
   let italianTranslation = englishTranslation;
-  schoolLesson01.currentItalianWord = italianTranslation.capital;
+  schoolLesson01.currentItalianWord = italianTranslation.capital.toLowerCase();
 
   // localStorage.setItem(`school-lesson-01-data`, JSON.stringify(schoolLesson01));
 
@@ -357,6 +359,12 @@ function feed(food) {
   }
 }
 
+function guessAnswer(phrase){
+  console.log(schoolLesson01.currentItalianWord);
+  currentItalianAnswer = phrase.toLowerCase();
+  checkLesson01Score();
+}
+
 function overlapTamagotchi(){
   let d = dist(finger.x, finger.y, tamagotchiEgg.x, tamagotchiEgg.y);
   if(d < tamagotchiEgg.size/2){
@@ -393,13 +401,15 @@ function checkCounter() {
 //function to increase the hour of the day
 function checkHour() {
   hour++;
-  if (hour >= 12) {
+  if (hour === 7) {
     state = `schoolYard`; //if the time is 12 pm then its time for school
+    generateLesson01();
 
   }
 }
 
 function checkLesson01Score(){
+
   if(currentItalianAnswer === schoolLesson01.currentItalianWord){
     schoolRightAnswers++;
     nextQuestion();
@@ -407,24 +417,17 @@ function checkLesson01Score(){
     if(schoolRightAnswers === schoolMaxRightAnswers){
       state = `win`;
     }
-    else{
-      nextQuestion();
-    }
+
   }
-  else{
+  else if(currentItalianAnswer !== schoolLesson01.currentItalianWord){
     schoolWrongAnswers++;
     if(schoolWrongAnswers === schoolMaxWrongAnswers){
       state = `dead`;
     }
   }
-
-
 }
 
-function guessAnswer(phrase){
-  currentItalianAnswer = phrase.toLowerCase();
-  checkLesson01Score();
-}
+
 
 function nextQuestion(){
   if(state === `schoolYard`){
@@ -571,6 +574,26 @@ function displayLesson01GoodScore(){
   text(`Good Answers = ${schoolRightAnswers}`, width / 2 - 400, height / 2 - 250);
   pop();
 }
+
+function displayLesson01BadScore(){
+  push();
+  textAlign(CENTER, CENTER);
+  textFont(pixelFont);
+  fill(0);
+  textSize(20);
+  text(`Bad Answers = ${schoolWrongAnswers}`, width / 2 + 400, height / 2 - 250);
+  pop();
+}
+
+function displayCurrentAnswer(){
+  push();
+  textAlign(CENTER, CENTER);
+  textFont(pixelFont);
+  fill(0);
+  textSize(20);
+  text(`Current Answer = ${currentItalianAnswer}`, width / 2, height / 2 + 250);
+  pop();
+}
 //display the time of day
 function displayTime() {
   push();
@@ -637,7 +660,7 @@ function displayGoodScore() {
 function mousePressed() {
 
   readyForBed();
-  nextQuestion();
+  // nextQuestion();
 
   let d = dist(mouseX, mouseY, feedButton.x, feedButton.y);
   if (state === `kitchen`) {

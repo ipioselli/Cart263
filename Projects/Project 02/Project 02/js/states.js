@@ -202,6 +202,8 @@ function schoolYard(){
 
   displaySchoolLesson01();
   displayLesson01GoodScore();
+  displayLesson01BadScore();
+  displayCurrentAnswer()
 }
 
 function day02(){
