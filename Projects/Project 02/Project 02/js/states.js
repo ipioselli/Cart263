@@ -318,11 +318,14 @@ function schoolDay02() {
   textSize(30);
   text(` `, width / 2, height / 2);
   pop();
+  //function to position tamagotchi on the chair
   tamagotchiEgg.classroom();
+  //display all the variables for lesson 02
   displaySchoolLesson02();
   displayLesson01GoodScore();
   displayLesson01BadScore();
-  displayCurrentAnswer()
+  displayCurrentAnswer();
+  //display buttons for english and italian translation
   displayEnglishButton();
   displayItalianButton();
 }

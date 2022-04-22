@@ -8,10 +8,11 @@ CAPPUGOTCHI
 How to play:
 - you are given a cute lil italian coffee bean as a pet.
 - you must wash it, give it love with handpose and feed it with annyang
-- it also goes to school which it will learn english
+- it also goes to school which it will learn english with annyang
 - after school is done it will go back home and go to bed
 - once it goes to bed, a new day begins and it evolves into something cooler!
 - its final form is CAPPUGOTCHI a delicious cappucino
+- there are 3 evolutions!
 
 */
 
@@ -49,7 +50,6 @@ let pencils = []; //pencil array
 
 
 //living room variables
-
 //handpose variables
 let video = undefined; //user's webcam
 let modelName = `HANDPOSE`; //name of my model
@@ -89,13 +89,13 @@ let italianFood = [
   "carbonara",
   "risotti"
 
+
 ];
 
 let foodRightAnswer = 0; //the amount of right answers guessed by the user
 let foodWrongAnswer = 0; //the amount of wrong answers guessed by the user
 
 //school variables
-
 //school day 01 lesson 01
 let schoolLesson01 = {
   currentEnglishWord: ``,
@@ -242,83 +242,75 @@ function setupAnnyang() {
   }
 }
 
-//setup tamagotchi
+//setup tamagotchi from tamagotchi class
 function setupTamagotchi() {
-  let x = width / 2;
-  let y = height / 2 + 150;
+  let x = width / 2; //start in middle of canvas
+  let y = height / 2 + 150; //start on the floor of the room
+  //get all the images for all the evolutions and emotions
   tamagotchiEgg = new Tamagotchi(x, y, tamagotchiImg01, tamagotchiImg02, tamagotchiImg03, tamagotchiImg04, tamagotchiImg05, tamagotchiImg06, tamagotchiImg07);
 }
 
-
-//setup the bubbles for the bathroom
-function setupBubbles(){
-
-  for(let i = 0; i<numBubbles; i++){
-    let x = width/2;
-    let y = height/2;
+//setup the bubbles for the bathroom from the Bubble class
+function setupBubbles() {
+  //loop through all the bubbles
+  for (let i = 0; i < numBubbles; i++) {
+    //middle of canvas
+    let x = width / 2;
+    let y = height / 2;
+    //create bubble with an image
     let bubble = new Bubble(x, y, bubbleImg);
     bubbles.push(bubble);
   }
-
 }
 
-function setupPencils(){
-  for(let i = 0; i<numPencils; i++){
+//setup pencils from pencil class
+//used in the school lesson instructions
+function setupPencils() {
+  //loop through all the pencils
+  for (let i = 0; i < numPencils; i++) {
+    //random x and y position
     let x = random(0, width);
     let y = random(0, height);
+    //create pencils with an image
     let pencil = new Pencil(x, y, pencilImg);
     pencils.push(pencil);
   }
 }
 
-function setupShower(){
-  for(let i=0; i<numShowerWater; i++){
-    let x = random(480, 760);
-    let y = random(0, -height);
-    let shower =  new Shower(x, y);
+//setup shower from the shower class
+//used in the bathroom state when the user washes the tamagotchi
+function setupShower() {
+  //loop through all the water in the shower
+  for (let i = 0; i < numShowerWater; i++) {
+    let x = random(480, 780); //random position in the width of the tub
+    let y = random(0, -height); //random y position
+    //create shower
+    let shower = new Shower(x, y);
     showerWater.push(shower);
   }
 }
 
-
+//function to setup handpose for the living room state
+//used when the user pets the tamagotchi with their index finger
 function setupHandpose() {
-
+  //hide the user's webcam
   video.hide();
   // Start the Handpose model and switch to our livingroom state when it loads
   //calculate ratio of the canvas to the webcam
-  webcamRatio.x = width / video.elt.videoWidth; //change the webcam x ratio to the x of the canvas
-  webcamRatio.y = height / video.elt.videoHeight; //change the webcam y ratio to the y of the canvas
+  webcamRatio.x = width / video.elt.videoWidth; //change the user's webcam x ratio to the x of the canvas
+  webcamRatio.y = height / video.elt.videoHeight; //change the user's webcam y ratio to the y of the canvas
   handpose = ml5.handpose(video, {
     flipHorizontal: true //flips camera
   }, function() {
     state = `livingRoom` //calls the living room state
   });
-  // Listen for prediction events from Handpose and store the results in our
-  // predictions array when they occur
+  /**Listen for prediction events from Handpose and store the results in our
+  predictions array when they occur **/
   handpose.on(`predict`, function(results) {
     predictions = results;
   });
 }
 
-
-
-function generateLesson01(){
-
-  let italianTranslation = random(italianData.lesson01);
-  schoolLesson01.currentItalianWord = italianTranslation.italian.toLowerCase();
-
-  let englishTranslation = italianTranslation;
-  schoolLesson01.currentEnglishWord = englishTranslation.english.toLowerCase();
-
-}
-
-function generateLesson02(){
-  let italianTranslation = random(italianData.lesson02);
-  schoolLesson02.currentItalianWord02 = italianTranslation.italian.toLowerCase();
-
-  let englishTranslation = italianTranslation;
-  schoolLesson02.currentEnglishWord02 = englishTranslation.english.toLowerCase();
-}
 
 //Draws all the states for the game
 function draw() {
@@ -336,13 +328,10 @@ function setupStates() {
   else if (state === `instructions`) {
     instructions();
   }
-  else if (state === `floorPlan`) {
-    floorPlan();
-  }
   else if (state === `bedroom`) {
     bedroom();
   }
-  else if(state === `loading`){
+  else if (state === `loading`) {
     loading();
   }
   else if (state === `livingRoom`) {
@@ -354,220 +343,267 @@ function setupStates() {
   else if (state === `bathroom`) {
     bathroom();
   }
-  else if(state === `schoolYard`){
+  else if (state === `schoolYard`) {
     schoolYard();
   }
-  else if(state === `lesson01Instructions`){
+  else if (state === `lesson01Instructions`) {
     lesson01Instructions();
   }
-  else if(state === `lesson02Instructions`){
+  else if (state === `lesson02Instructions`) {
     lesson02Instructions();
   }
-  else if(state === `schoolDay01`){
+  else if (state === `schoolDay01`) {
     schoolDay01();
   }
-  else if(state === `schoolDay02`){
+  else if (state === `schoolDay02`) {
     schoolDay02();
   }
-
-  else if(state === `day02`){
+  else if (state === `day02`) {
     day02();
   }
-  else if(state === `day03`){
+  else if (state === `day03`) {
     day03();
   }
   else if (state === `dead`) {
     dead();
   }
-  else if(state === `win`){
-    win();
-  }
+}
+
+//function to generate all the lesson 01 words from the json file
+//convert them all to lowercase so that the user's answer matches the words
+function generateLesson01() {
+  //get the italian words in lesson 01 array
+  let italianTranslation = random(italianData.lesson01);
+  //get the current italian word from the italian words
+  schoolLesson01.currentItalianWord = italianTranslation.italian.toLowerCase();
+
+  //get the english words in lesson 01 array
+  let englishTranslation = italianTranslation;
+  //get the current english word from the english words
+  schoolLesson01.currentEnglishWord = englishTranslation.english.toLowerCase();
 
 }
 
-//function to check through array of food in the kitchen state
+//function to generate all the lesson 02 words from the json file
+//convert them all to lowercase so that the user's answer matches the words
+function generateLesson02() {
+  //get the italian words in lesson 02 array
+  let italianTranslation = random(italianData.lesson02);
+  schoolLesson02.currentItalianWord02 = italianTranslation.italian.toLowerCase();
+  //get the italian words in lesson 02 array
+  let englishTranslation = italianTranslation;
+  schoolLesson02.currentEnglishWord02 = englishTranslation.english.toLowerCase();
+}
+
+/**function to check through array of food in the kitchen state and
+see if it matches with what the user says **/
 function feed(food) {
-  if (state === `kitchen`) {
-    if (italianFood.includes(food)) { //if right increase the score and energy
-      foodRightAnswer++;
-      tamagotchiEnergy += 10;
-      blingSfx.play(); //play good sound if you guess the right flavour
-      if(tamagotchiEnergy >2000) {
+  if (state === `kitchen`) { // if the user is in the kitchen
+    if (italianFood.includes(food)) { //if the user's food guess is part of the the food array
+      foodRightAnswer++; // if it is right then increase the score by 1
+      tamagotchiEnergy += 10; //decrement the energy by 10
+      blingSfx.play(); //play good sound if you guess the right food
+      //make sure the energy stays below 2000
+      if (tamagotchiEnergy > 2000) {
         tamagotchiEnergy = 2000;
       }
     }
+    //if the guess is not part of the food array
     else {
-      foodWrongAnswer++; //if wrong increase wrong score and decrease energy
-      tamagotchiEnergy -= 10;
-      badSfx.play();
+      foodWrongAnswer++; //if wrong increase wrong score by 1
+      tamagotchiEnergy -= 10; //decrease energy by 10
+      badSfx.play(); //play bad sfx
     }
   }
 }
 
-
+//function to guess the answer in the school day 1 and 2
+//calls the checkscore function to see if its user answers correctly
 function guessAnswer(phrase){
   if(state === `schoolDay01`){
-    currentLessonAnswer01 = phrase.toLowerCase();
-    checkLesson01Score();
+    currentLessonAnswer01 = phrase.toLowerCase(); //convert to lower case
+    checkLessonScore(); //checks lesson score
   }
   else if(state === `schoolDay02`){
-    currentLessonAnswer02 = phrase.toLowerCase();
-    checkLesson01Score();
+    currentLessonAnswer02 = phrase.toLowerCase(); //convert to lower case
+    checkLessonScore(); //checks lesson score
   }
 }
 
+//function to check if the finger overlaps with the tamagotchi in the living room
 function overlapTamagotchi(){
   let d = dist(finger.x, finger.y, tamagotchiEgg.x, tamagotchiEgg.y);
   if(d < tamagotchiEgg.size/2){
-    tamagotchiEgg.pet();
-    petSfx.setVolume(0.1);
-    petSfx.play();
-    tamagotchiEnergy+=5;
-    tamagotchiEnergy = 2000;
+    tamagotchiEgg.pet(); //calls pet function from tamagotchi class
+    petSfx.setVolume(0.1); //set volume of pet sound
+    petSfx.play(); //play pet sound
+    tamagotchiEnergy+=5; //increase energy by 5
+    tamagotchiEnergy = 2000; //max energy is 200
   }
 }
 
-
+/*Updates the position of the finger according to the latest prediction and
+ matches it to the ratio of the camera*/
 function updatehand(hand){
   let index =  hand.annotations.indexFinger[3];
-  finger.x = index[0] * webcamRatio.x;
-  finger.y = index[1] * webcamRatio.y;
+  finger.x = index[0] * webcamRatio.x; //updates finger x position with the user's webcam ratio
+  finger.y = index[1] * webcamRatio.y; //updates finger y position with the user's webcam ratio
 }
 
-
-function checkHand(){
-  if(state === `loading`){
-    video = createCapture(VIDEO, setupHandpose);
-  }
-}
 
 //function to decrease the energy and check if its under 0 or over 2000
 function checkCounter() {
-  tamagotchiEnergy-= 5; //decreases by 5
-
+  tamagotchiEnergy -= 5; //decreases by 5 overtime
+  //if the energy reaches 0 then the tamagotchi dies
   if (tamagotchiEnergy <= 0) {
     state = `dead`;
   }
-  if(tamagotchiEnergy >= 2000){
+  //make sure energy doesn't go over 2000
+  if (tamagotchiEnergy >= 2000) {
     tamagotchiEnergy = 2000;
   }
 }
 
-//function to increase the hour of the day
+//function to increase the hour of the day and bring you to school at 1pm
 function checkHour() {
-  hour++;
+  hour++; //increase hour by 1
   if (hour === 13) {
     state = `schoolYard`; //if the time is 13 pm then its time for school
-
   }
 }
 
-
-function checkLesson01Score(){
-
-  if(state === `schoolDay01`){
-    if(currentLessonAnswer01 === schoolLesson01.currentEnglishWord){
-      schoolRightAnswers++;
-      blingSfx.play();
-      nextQuestion();
-
-      if(schoolRightAnswers === schoolMaxRightAnswers){
-        state = `bedroom`;
-        hour = 20;
+//function to check the lesson score for school day 01 and 02
+function checkLessonScore() {
+  //if the school day is 01
+  if (state === `schoolDay01`) {
+    //if the user's answer matches the current english word
+    if (currentLessonAnswer01 === schoolLesson01.currentEnglishWord) {
+      schoolRightAnswers++; //increase the score by 1
+      blingSfx.play(); //play a bling sound
+      nextQuestion(); //move on to the next question
+      //if the number of right answers = the max right answer
+      if (schoolRightAnswers === schoolMaxRightAnswers) {
+        state = `bedroom`; //go back to the bedroom
+        hour = 20; //set the time to 8 pm
       }
-
     }
-    else if(currentLessonAnswer01 !== schoolLesson01.currentItalianWord){
-      schoolWrongAnswers++;
-      badSfx.play();
-      if(schoolWrongAnswers === schoolMaxWrongAnswers){
+    //if the answer is not the same as the current english word
+    else if (currentLessonAnswer01 !== schoolLesson01.currentEnglishWord) {
+      schoolWrongAnswers++; //increase wrong answer score by 1
+      badSfx.play(); //play bad sfx
+      //if the # of wrong answers = max wrong answers
+      if (schoolWrongAnswers === schoolMaxWrongAnswers) {
+        //tamagotchi dies
         state = `dead`;
       }
     }
   }
-
-    if(state === `schoolDay02`){
-      if(currentLessonAnswer02 === schoolLesson02.currentEnglishWord02){
-        schoolRightAnswers++;
-        nextQuestion();
-
-        if(schoolRightAnswers === schoolMaxRightAnswers){
-          state = `bedroom`;
-          hour = 20;
-        }
-        else if(currentLessonAnswer02 !== schoolLesson02.currentEnglishWord02){
-          schoolWrongAnswers++;
-          if(schoolWrongAnswers === schoolMaxWrongAnswers){
-            state = `dead`;
-          }
+  //if the school day is 01
+  if (state === `schoolDay02`) {
+    //if the user's answer matches the current english word
+    if (currentLessonAnswer02 === schoolLesson02.currentEnglishWord02) {
+      schoolRightAnswers++; //increase the score by 1
+      blingSfx.play(); //play a bling sound
+      nextQuestion(); //move onto next question
+      //if the number of right answers = the max right answer
+      if (schoolRightAnswers === schoolMaxRightAnswers) {
+        state = `bedroom`; //go back to the bedroom
+        hour = 20; //set the time to 8 pm
+      }
+      //if the answer is not the same as the current english word
+      else if (currentLessonAnswer02 !== schoolLesson02.currentEnglishWord02) {
+        schoolWrongAnswers++; //increase wrong answer score by 1
+        badSfx.play(); //play bad sfx
+        //if the # of wrong answers = max wrong answers
+        if (schoolWrongAnswers === schoolMaxWrongAnswers) {
+          //tamagotchi dies
+          state = `dead`;
         }
       }
     }
+  }
 }
 
-
-
-
-
-function nextQuestion(){
-  if(state === `schoolDay01`){
+//function to generate the lesson based on the school day
+function nextQuestion() {
+  //generate lesson 01 on school day 01
+  if (state === `schoolDay01`) {
     generateLesson01();
   }
-  if(state === `schoolDay02`){
+  //generate lesson 02 on school day 02
+  if (state === `schoolDay02`) {
     generateLesson02();
   }
 }
 
-function readyForBed(){
-
+//function for responsive voice to say if its time for bed or not
+function readyForBed() {
+  //check if the sleep button is clicked
   let d = dist(mouseX, mouseY, sleepButton.x, sleepButton.y);
   if (state === `bedroom`) {
     if (d < sleepButton.size / 2) {
-      if(hour < 21 ){
-        tamagotchiEgg.move();
-        tamagotchiEgg.position();
+      if (hour < 21) { //if the time is less than 9
+        tamagotchiEgg.move(); //move the tamagotchi
+        tamagotchiEgg.position(); //set y position
+        //say the its not time for bed
         responsiveVoice.speak(sleepInstructions01, "UK English Female");
       }
-      else{
+      else {
+        //say its time for bed if its 9 or over
         responsiveVoice.speak(sleepInstructions02, "UK English Female");
-
       }
     }
   }
 }
 
+//check if
 function checkBedTime() {
+  //if the tamagotchi is in 1 of the 4 rooms
   if (state === `livingRoom` || state === `bedroom` || state === `kitchen` || state === `bathroom`) {
+    //when the tamagotchi is level 01 evolution
     if (tamagotchiLVL === 1) {
+      //if hour is less than 9 pm
       if (hour < 21) {
+        //move the tamagotchi
         tamagotchiEgg.move();
         tamagotchiEgg.position();
       }
+      //if the hour is 9
       else if (hour === 21) {
+        //put the tamagotchi in bed
         tamagotchiEgg.getInBed();
 
-        bedTimeTimerDelay -= 5;
-        if (bedTimeTimerDelay <= 0) {
-          bedTimeTimerDone = true;
+        //bed delay timer to call day 02 state
+        bedTimeTimerDelay -= 5; //decrease timer by 5
+        if (bedTimeTimerDelay <= 0) { //if the timer reaches 0
+          bedTimeTimerDone = true; //change the boolean to true
         }
+        //when the timer is done call day02 state
         if (bedTimeTimerDone) {
           state = `day02`;
 
         }
       }
     }
-    else if(tamagotchiLVL === 2){
-      if(hour < 20){
+    //when the tamagotchi is level 02 evolution
+    else if (tamagotchiLVL === 2) {
+      //if hour is less than 9
+      if (hour < 21) {
+        //move the tamagotchi
         tamagotchiEgg.move();
         tamagotchiEgg.position();
       }
+      //if the hour is 9
       else if (hour === 21) {
+        //put the tamagotchi in bed
         tamagotchiEgg.getInBed();
 
-        bedTimeTimerDelay -= 5;
-        if (bedTimeTimerDelay <= 0) {
-          bedTimeTimerDone = true;
+        //bed delay timer to call day 03 state
+        bedTimeTimerDelay -= 5; //decrease timer by 5
+        if (bedTimeTimerDelay <= 0) { //if the timer reaches 0
+          bedTimeTimerDone = true; //change the boolean to true
         }
+        //when the timer is done call day03 state
         if (bedTimeTimerDone) {
           state = `day03`;
 
@@ -577,48 +613,50 @@ function checkBedTime() {
   }
 }
 
-
-//update tamagotchi
+//function to update tamagotchi
+//calls update function from tamagotchi class
+//displays, add dirts, removes dirt and checks for dirt
 function updateTamagotchi() {
   tamagotchiEgg.update();
 }
 
 
-function updateHeart(){
-  heart.update();
-}
-
-
+//function to update bubbles in the bathroom
+//calls update function from bubble class
+//moves, jitters and displays the bubbles
 function updateBubbles(){
+  //loops through all the bubbles
   for(let i=0; i<numBubbles; i++){
     let bubble = bubbles[i];
     bubbles[i].update();
   }
 }
 
+//function to update shower in the bathroom
+//calls update function from shower class
+//moves, loops and displays shower
 function updateShower(){
+  //loops through all the water
   for(let i =0; i<numShowerWater; i++){
     let shower = showerWater[i];
    showerWater[i].update();
   }
 }
 
+//function to update pencils in the lessonsInstructions
+//calls update function from pencil class
+//moves and displays the pecils
 function updatePencils(){
+  //loops through all the pencils
   for(let i=0; i<numPencils; i++){
     let pencil = pencils[i];
     pencils[i].update();
   }
 }
 
-function moveShower(){
-  for(let i =0; i<numShowerWater; i++){
-    let shower = showerWater[i];
-   showerWater[i].move();
-  }
-}
-
 //check if the petme button in the living room overlaps with the mouse
 function petMe(){
+  //in the living room state
   if(state === `livingRoom`){
     let d = dist(mouseX, mouseY, petButton.x, petButton.y);
     if(d<petButton.size/2){
@@ -633,36 +671,47 @@ function petMe(){
 function resetDay02(){
   hour = 6;
   tamagotchiLVL = 2; //changes evolution to 2 when its day02
-  tamagotchiEnergy = 2000;
-  tamagotchiEgg.resetDirt();
+  tamagotchiEnergy = 2000; //energy set to 2000
+  tamagotchiEgg.resetDirt(); //calls reset dirt function
+  //set all the scores to 0
   foodRightAnswer = 0;
   foodWrongAnswer = 0;
   schoolRightAnswers = 0;
   schoolWrongAnswers = 0;
 }
 
-function englishInstructions(){
-  if(state === `schoolDay01` ){
+//function to check if the mouse overlaps with the english button
+//in the school day 01 and day 02 state
+function englishInstructions() {
+  //if its day 01 of school
+  if (state === `schoolDay01`) {
     let d = dist(mouseX, mouseY, englishButton.x, englishButton.y);
-    if(d < englishButton.size/2){
-        responsiveVoice.speak(schoolLesson01.currentEnglishWord, "UK English Female");
+    if (d < englishButton.size / 2) {
+      //says the current english word from lesson 01
+      responsiveVoice.speak(schoolLesson01.currentEnglishWord, "UK English Female");
     }
   }
-  else if(state === `schoolDay02`){
+  //if its day 02 of school
+  else if (state === `schoolDay02`) {
     let d = dist(mouseX, mouseY, englishButton.x, englishButton.y);
-    if(d < englishButton.size/2){
-        responsiveVoice.speak(schoolLesson02.currentEnglishWord02, "UK English Female");
+    if (d < englishButton.size / 2) {
+      //say the current english word from lesson 02
+      responsiveVoice.speak(schoolLesson02.currentEnglishWord02, "UK English Female");
+    }
   }
 }
-}
 
+//function to check if the mouse overlaps with the italian button
+//in the school day 01 and day 02 state
 function italianInstructions(){
+  //if its day 01 of school
   if(state === `schoolDay01`){
     let d = dist(mouseX, mouseY, italianButton.x, italianButton.y);
     if(d < italianButton.size/2){
         responsiveVoice.speak(schoolLesson01.currentItalianWord, "Italian Male");
     }
   }
+  //if its day 02 of school
   if(state === `schoolDay02`){
     let d = dist(mouseX, mouseY, italianButton.x, italianButton.y);
     if(d < italianButton.size/2){
@@ -726,8 +775,8 @@ function keyPressed() {
   if (state === `start`) {
     if (keyCode === 13) { //keycode for ENTER
       state = `menu`;
-      // song01.play();
-      // song01.setVolume(0.2);
+      song01.play();
+      song01.setVolume(0.2);
     }
   }
   if (state === `menu`) {
