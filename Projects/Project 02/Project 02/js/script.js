@@ -141,6 +141,7 @@ let cuteFont; //bubble font
 
 //sounds
 let song01; //main song
+let song02; //song for day 02
 let blingSfx; //sfx for right answers
 let badSfx; //sfx for wrong answers
 let petSfx; //sound for when you pet the tamagotchi
@@ -203,6 +204,7 @@ function preload() {
 
   //load sounds
   song01 = loadSound(`assets/sounds/Cute.mp3`);
+  song02 = loadSound(`assets/sounds/song02.mp3`);
   blingSfx = loadSound(`assets/sounds/bling.mp3`);
   badSfx = loadSound(`assets/sounds/bad.mp3`);
   petSfx = loadSound(`assets/sounds/pet.mp3`);
@@ -796,7 +798,7 @@ function keyPressed() {
     if (keyCode === 13) { //keycode for ENTER
       state = `menu`;
       //play the main song
-      song01.play();
+      song01.loop();
       song01.setVolume(0.2);
     }
   }
@@ -849,6 +851,9 @@ function keyPressed() {
       setInterval(checkCounter, 3000); //decreases energy every 3 seconds
       setInterval(checkHour, 10000); //changes hour every 10 seconds
       resetDay02(); //reset all the variables on day 02
+      song01.stop(); //stop song 01
+      song02.loop(); //loop second song
+      song02.setVolume(0.2); //set the volume for the new song
     }
   }
 }
