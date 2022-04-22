@@ -7,24 +7,14 @@ Tamagotchi Sim
 CAPPUGOTCHI
 - you are given a cute lil coffee bean as a pet.
 
-Today:
-- make all 9 drawings
-- finish bed room
-- finish living room
-
 */
 
 "use strict";
 
-let tamagotchiMenu = { // tamagotchi on the menu page
-  x: 1280 / 2,
-  y: 720 / 2,
-  size: 300,
-}
+
 
 //main game variables
 let tamagotchiEgg;
-let tamagotchiImg;
 
 let tamagotchiImg01;
 let tamagotchiImg02;
@@ -32,7 +22,9 @@ let tamagotchiImg03;
 let tamagotchiImg04;
 let tamagotchiImg05;
 let tamagotchiImg06;
+let tamagotchiImg07;
 
+//header info
 let energyCounter = 0;
 let tamagotchiEnergy = 2000;
 let tamagotchiLVL = 1;
@@ -46,7 +38,7 @@ let bubbles = [];
 let numShowerWater = 200
 let showerWater = [];
 
-//floating pencils
+//floating pencils for lesson instructions
 let pencilImg;
 let numPencils = 20;
 let pencils = [];
@@ -61,14 +53,14 @@ let webcamRatio = {
   x: undefined,
   y: undefined
 };
-
+//index finger for handpose
 let finger = {
   x:undefined,
   y:undefined,
   size: 50,
   image:undefined,
 };
-
+//image for the index finger
 let fingerImg;
 
 
@@ -98,8 +90,6 @@ let foodWrongAnswer = 0;
 let schoolLesson01 = {
   currentEnglishWord: ``,
   currentItalianWord: ``,
-
-
 };
 
 let schoolLesson02 = {
@@ -111,90 +101,32 @@ let currentItalianAnswer = ``;
 let currentItalianAnswer02 = ``;
 let italianData;
 let englishData;
-let italianData02;
-let englishData02;
 
 let schoolRightAnswers = 0;
 let schoolMaxRightAnswers = 5;
 let schoolWrongAnswers = 0;
 let schoolMaxWrongAnswers = 10;
 
-//bedtime
+//timer variables to check if its time forbed
 let bedTimeTimerDelay = 700;
 let bedTimeTimerDone = false;
 
-let feedButton = {
-  x: 1280 / 2,
-  y: 720 / 2 - 150,
-  size: 150,
-}
-
-let showerButton = {
-  x: 1280 / 2,
-  y: 720 / 2 - 150,
-  size: 150,
-}
-
-let sleepButton = {
-  x: 1280 / 2,
-  y: 720 / 2 - 150,
-  size: 150,
-}
-
-let petButton = {
-  x: 1280 / 2,
-  y: 720 / 2 - 150,
-  size: 150,
-}
-
-let livingRoomButton = {
-  x: 1280/5,
-  y: 720 / 2 + 300,
-  size: 100,
-}
-
-let kitchenButton = {
-  x: 1280/5 *2,
-  y: 720 / 2 + 300,
-  size: 100,
-}
-
-let bedroomButton = {
-  x: 1280/5 *3,
-  y: 720 / 2 + 300,
-  size: 100,
-}
-
-let bathroomButton = {
-  x: 1280/5 *4,
-  y: 720 / 2 + 300,
-  size: 100,
-}
-
-let englishButton = {
-  x: 1280 / 2 - 200,
-  y: 720 / 2 + 40,
-  size: 100,
-}
-
-let italianButton = {
-  x: 1280 / 2 + 200,
-  y: 720 / 2 + 40,
-  size: 100,
-}
 
 
+//instructions
+let tamagotchiInstructions = `You are given a lil italian coffee bean to raise! \n The lil bean gets a house to live in.\nYou must make sure its energy level stays up by feeding, \ncleaning and loving him.`;
+let tamagotchiInstructions02 = `At 12pm the tamagotchi must go to school. \nOnce it finishes school it will evolve into a new form!`;
 let feedInstructions = `Feed the tamagotchi by saying the name of the food. Hint The tamagotchi loves italian food`;
 let showerInstructions = `Press the letter S on the keypad to wash away all the dirt`;
-let sleepInstructions01 = `It's not time for bed yet`;
+let sleepInstructions01 = `It's not time for bed yet. Your bedtime is at 9`;
 let sleepInstructions02 = `Time for bed`;
 let petInstructions = `Hover your index finger over the tamagotchi to pet it and increase the energy level`;
-let schoolInstructions01 = `It's your tamagotchi's first day of school. \n You must help it learn italian by saying the words in italian. \n Your first lesson will be about food. \n Get 10 right in order to advance. \nIf you get 10 wrong your tamagotchi will not evolve.`
+let schoolInstructions01 = `It's your tamagotchi's first day of school. \n You must help it learn english. \nThe word's will be displayed in Italian and you must guess them in english. \n You can click on the english button for help \n Get 5 right to continue or if you get 5 wrong your tamagotchi will die >:(`;
 
 let schoolInstructions02 = `It's your tamagotchi's second day of school. \n You must help it learn english.\n The word's will be displayed in Italian and you must guess them in english. \n You can click on the english button for help`;
 
 //background image variables
-let roomBg;
+
 let floorPlanBg;
 let chooseEggBG;
 let bathroomBg;
@@ -214,7 +146,9 @@ let blingSfx;
 let badSfx;
 let petSfx;
 
-let state = `lesson02Instructions`; // the prototype starts with the start state
+let state = `start`; // the prototype starts with the start state
+
+
 
 //loads all the variables
 function preload() {
@@ -222,8 +156,6 @@ function preload() {
   pixelFont = loadFont(`assets/fonts/dogicaBold.otf`);
   cuteFont = loadFont(`assets/fonts/bubble.ttf`);
 
-
-  chooseEggBG = loadImage(`assets/images/chooseEggBg.png`);
 
   tamagotchiImg01 = loadImage(`assets/images/tamagotchi_01.png`);
   tamagotchiImg02 = loadImage(`assets/images/tamagotchi_02.png`);
@@ -234,8 +166,7 @@ function preload() {
   fingerImg = loadImage(`assets/images/heart.png`);
 
 
-
-  roomBg = loadImage(`assets/images/roomBg.png`);
+  //load all the background images
   floorPlanBg = loadImage(`assets/images/floorplan.png`)
   bathroomBg = loadImage(`assets/images/bathroom.png`)
   bedroomBg = loadImage(`assets/images/bedroom.png`);
@@ -244,11 +175,11 @@ function preload() {
   schoolYardBg = loadImage(`assets/images/schoolyardBg.png`);
   classroomBg = loadImage(`assets/images/classroomBg.png`);
 
-
+  //load small icon images
   bubbleImg = loadImage(`assets/images/bubble.png`);
   pencilImg = loadImage(`assets/images/pencil.png`);
 
-  //buttons
+  //load button images
   tamagotchiMenu.image = loadImage("assets/images/tamagotchi.png");
   feedButton.image = loadImage(`assets/images/feedButton.png`);
   showerButton.image = loadImage(`assets/images/washButton.png`);
@@ -261,11 +192,11 @@ function preload() {
   englishButton.image = loadImage(`assets/images/englishButton.png`);
   italianButton.image = loadImage(`assets/images/italianButton.png`);
 
-  //school
+  //load json data
   englishData = loadJSON(`data/lesson_01.json`);
   italianData = loadJSON(`data/lesson_01.json`);
 
-  //sounds
+  //load sounds
   song01 = loadSound(`assets/sounds/Cute.mp3`);
   blingSfx = loadSound(`assets/sounds/bling.mp3`);
   badSfx = loadSound(`assets/sounds/bad.mp3`);
@@ -278,19 +209,16 @@ function preload() {
 function setup() {
   createCanvas(1280, 720);
 
-
   setupTamagotchi();
   setupBubbles();
   setupPencils();
   setupShower();
-
   setupAnnyang(); //setup for annyang
-
 }
+
 
 function setupAnnyang() {
   if (annyang) {
-
 
     let commands = {
 
@@ -302,8 +230,6 @@ function setupAnnyang() {
     feed(); //calls function to check the score
 
   }
-
-
 }
 
 //setup tamagotchi
@@ -313,11 +239,6 @@ function setupTamagotchi() {
   tamagotchiEgg = new Tamagotchi(x, y, tamagotchiImg01, tamagotchiImg02, tamagotchiImg03, tamagotchiImg04, tamagotchiImg05, tamagotchiImg06);
 }
 
-function setupHeart(){
-  let x = width/2;
-  let y =height / 2 + 150;
-  heart = new Heart(x,y, heartImg);
-}
 
 //setup the bubbles for the bathroom
 function setupBubbles(){
@@ -348,6 +269,7 @@ function setupShower(){
     showerWater.push(shower);
   }
 }
+
 
 function setupHandpose() {
 
@@ -471,6 +393,7 @@ function feed(food) {
     }
   }
 }
+
 
 function guessAnswer(phrase){
   if(state === `schoolDay01`){
@@ -691,6 +614,15 @@ function petMe(){
   }
 }
 
+function resetDay02(){
+  hour = 6;
+  tamagotchiLVL = 2;
+  tamagotchiEnergy = 2000;
+  tamagotchiEgg.resetDirt();
+  schoolRightAnswers = 0;
+  schoolWrongAnswers = 0;
+}
+
 function englishInstructions(){
   if(state === `schoolDay01` ){
     let d = dist(mouseX, mouseY, englishButton.x, englishButton.y);
@@ -776,8 +708,8 @@ function keyPressed() {
   if (state === `start`) {
     if (keyCode === 13) { //keycode for ENTER
       state = `menu`;
-      song01.play();
-      song01.setVolume(0.2);
+      // song01.play();
+      // song01.setVolume(0.2);
     }
   }
   if (state === `menu`) {
@@ -787,21 +719,18 @@ function keyPressed() {
   }
   if (state === `instructions`) {
     if (keyCode === 13) { //
-      state = `floorPlan`;
-    }
-  }
-  if (state === `floorPlan`) {
-    if (keyCode === 32) {
       state = `bedRoom`;
       setInterval(checkCounter, 3000); //every 3 seconds
       setInterval(checkHour, 10000); //every 10 seconds
     }
   }
+
   if(state === `schoolYard`){
     if(tamagotchiLVL === 1){
       if(keyCode === 13){
         state = `lesson01Instructions`;
       }
+    }
       else if(tamagotchiLVL ===2 ){
         if(keyCode === 13){
           state = `lesson02Instructions`;
@@ -809,7 +738,6 @@ function keyPressed() {
       }
     }
 
-  }
   if(state === `lesson01Instructions`){
     if(keyCode === 32){
       state = `schoolDay01`;
@@ -825,12 +753,9 @@ function keyPressed() {
   if(state === `day02`){
     if(keyCode === 13){ //keycode for enter
       state = `bedRoom`;
-      hour = 6;
-      tamagotchiLVL = 2;
-      tamagotchiEnergy = 2000;
-      tamagotchiEgg.resetDirt();
-      schoolRightAnswers = 0;
-      schoolWrongAnswers = 0;
+      setInterval(checkCounter, 3000); //every 3 seconds
+      setInterval(checkHour, 10000); //every 10 seconds
+      resetDay02();
     }
   }
 }

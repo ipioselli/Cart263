@@ -17,9 +17,12 @@ function menu() {
   background(186, 219, 205);
   textAlign(CENTER, CENTER);
   textFont(pixelFont);
-  fill(255);
+  fill(88, 71, 173);
+  stroke(255);
   textSize(50);
   text(`TAMAGOTCHI SIM`, width / 2, height / 2 - 300);
+  textSize(30);
+  text(`Cappugotchi`, width / 2, height / 2 - 200);
   textSize(30);
   text(`Press spacebar`, width / 2, height / 2 + 200);
   pop();
@@ -32,30 +35,17 @@ function instructions() {
   background(186, 219, 205);
   textAlign(CENTER, CENTER);
   textFont(pixelFont);
-  fill(255);
+  fill(88, 71, 173);
+  stroke(255);
   textSize(30);
   text(`INSTRUCTIONS`, width / 2, height / 2 - 250);
-  text(`You must choose an egg to raise! \n You are given a house and \nmust make sure its energy level stays up`, width / 2, height / 2 - 100);
-  text(`For the prototype go to the kitchen.`, width / 2, height / 2);
-  text(`Press Enter for Floor plans`, width / 2, height / 2 + 200);
+  textSize(20);
+  text(tamagotchiInstructions, width / 2, height / 2 - 100);
+  text(tamagotchiInstructions02, width / 2, height / 2);
+  text(`Press ENTER to start`, width / 2, height / 2 + 200);
   pop();
 }
 
-//function to show the floor plan
-function floorPlan() {
-  push();
-  imageMode(CENTER, CENTER);
-  image(floorPlanBg, width / 2, height / 2, 1280, 720);
-  textAlign(CENTER, CENTER);
-  textFont(pixelFont);
-  fill(255);
-  textSize(50);
-  text(`FLOOR PLAN`, width / 2, height / 2 - 300);
-  textSize(30);
-  text(`press SPACE when ready`, width / 2, height / 2 - 200);
-  pop();
-
-}
 
 function loading(){
   background(129, 115, 189);
@@ -80,6 +70,7 @@ function livingRoom() {
   textAlign(CENTER, CENTER);
   textFont(pixelFont);
   fill(88, 71, 173);
+  stroke(255);
   textSize(30);
   text(`Living Room`, width / 2, height / 2 - 250);
 
@@ -116,9 +107,10 @@ function kitchen() {
   image(kitchenBg, width / 2, height / 2, 1280, 720);
   push();
   textAlign(CENTER, CENTER);
-  textFont(cuteFont);
+  textFont(pixelFont);
+  stroke(255);
   fill(88, 71, 173);
-  textSize(50);
+  textSize(30);
   text(`Kitchen`, width / 2, height / 2 - 250);
 
   pop();
@@ -146,10 +138,10 @@ function bedRoom() {
   image(bedroomBg, width / 2, height / 2, 1280, 720);
   push();
   textAlign(CENTER, CENTER);
-  textFont(cuteFont);
+  textFont(pixelFont);
   fill(88, 71, 173);
   stroke(255);
-  textSize(50);
+  textSize(30);
   text(`Bedroom`, width / 2, height / 2 - 250)
 
   pop();
@@ -175,7 +167,8 @@ function bathroom() {
   push();
   textAlign(CENTER, CENTER);
   textFont(pixelFont);
-  fill(0);
+  fill(88, 71, 173);
+  stroke(255);
   textSize(30);
   text(`Bathroom`, width / 2, height / 2 - 250);
   pop();
@@ -292,6 +285,17 @@ function day02(){
   fill(0);
   textSize(30);
   text(`DAY 2`, width / 2, height / 2);
+  pop();
+}
+
+function day03(){
+  push();
+  background(186, 219, 205);
+  textAlign(CENTER, CENTER);
+  textFont(pixelFont);
+  fill(0);
+  textSize(30);
+  text(`DAY 3`, width / 2, height / 2);
   pop();
 }
 

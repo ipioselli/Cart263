@@ -71,10 +71,10 @@ function displayBedroomButton(){
 function displayEnergy() {
   push();
   textAlign(CENTER, CENTER);
-  textFont(cuteFont);
+  textFont(pixelFont);
   fill(88, 71, 173);
   stroke(255);
-  textSize(40);
+  textSize(20);
   text(`Energy: ${ceil(tamagotchiEnergy)}`, width / 2 + 400, height / 2 - 300);
   pop();
 }
@@ -84,9 +84,10 @@ function displayEnergy() {
 function displayEvolutionLVL() {
   push();
   textAlign(CENTER, CENTER);
-  textFont(cuteFont);
+  textFont(pixelFont);
   fill(88, 71, 173);
-  textSize(40);
+  stroke(255);
+  textSize(20);
   text(`Evolution: ${tamagotchiLVL}`, width / 2 - 400, height / 2 - 300);
   pop();
 }
@@ -95,8 +96,9 @@ function displayEvolutionLVL() {
 function displayTime() {
   push();
   textAlign(CENTER, CENTER);
-  textFont(cuteFont);
-  fill(68, 55, 115);
+  textFont(pixelFont);
+  fill(88, 71, 173);
+  stroke(255);
   textSize(20);
   text(`Time:${hour}:00`, width / 2, height / 2 - 300);
   pop();
@@ -110,7 +112,7 @@ function displayTime() {
 function displayBadScore() {
   push();
   textAlign(CENTER, CENTER);
-  textFont(cuteFont);
+  textFont(pixelFont);
   fill(0);
   textSize(20);
   text(`Food Thrown Up = ${foodWrongAnswer}`, width / 2 + 400, height / 2 - 250);
@@ -152,7 +154,8 @@ function displaySchoolLesson01() {
   push();
   textAlign(CENTER, CENTER);
   textFont(cuteFont);
-  fill(0);
+  fill(88, 71, 173);
+  stroke(255);
   textSize(30);
   text(lesson01, width / 2 , height / 2 -150);
   pop();
@@ -165,7 +168,8 @@ function displaySchoolLesson02() {
   push();
   textAlign(CENTER, CENTER);
   textFont(cuteFont);
-  fill(0);
+  fill(88, 71, 173);
+  stroke(255);
   textSize(30);
   text(lesson02, width / 2 , height / 2 -150);
   pop();
@@ -176,7 +180,8 @@ function displayLesson01GoodScore(){
   push();
   textAlign(CENTER, CENTER);
   textFont(cuteFont);
-  fill(0);
+  fill(88, 71, 173);
+  stroke(255);
   textSize(40);
   text(`Good Answers = ${schoolRightAnswers}`, width / 2 - 400, height / 2 - 300);
   pop();
@@ -186,21 +191,40 @@ function displayLesson01BadScore(){
   push();
   textAlign(CENTER, CENTER);
   textFont(cuteFont);
-  fill(0);
+  fill(88, 71, 173);
+  stroke(255);
   textSize(40);
   text(`Bad Answers = ${schoolWrongAnswers}`, width / 2 + 400, height / 2 - 300);
   pop();
 }
 
+//display the current answer that the user gives
 function displayCurrentAnswer(){
-  push();
-  textAlign(CENTER, CENTER);
-  textFont(cuteFont);
-  fill(0);
-  textSize(20);
-  text(`Current Answer = ${currentItalianAnswer}`, width / 2, height / 2 -50);
-  pop();
+  //if its the first day of school display the current answer
+  if(state === `schoolDay01`){
+    push();
+    textAlign(CENTER, CENTER);
+    textFont(cuteFont);
+    fill(88, 71, 173);
+    stroke(255);
+    textSize(20);
+    text(`Current Answer = The answer is${currentItalianAnswer}`, width / 2, height / 2 -50);
+    pop();
+  }
+  //if its the second day of school display the current answer 02
+  else if(state === `schoolDay02`){
+    push();
+    textAlign(CENTER, CENTER);
+    textFont(cuteFont);
+    fill(88, 71, 173);
+    stroke(255);
+    textSize(20);
+    text(`Current Answer = The answer is ${currentItalianAnswer02}`, width / 2, height / 2 -50);
+    pop();
+  }
+
 }
+
 function displayEnglishButton(){
   imageMode(CENTER, CENTER);
   image(englishButton.image, englishButton.x, englishButton.y, englishButton.size, englishButton.size);
