@@ -22,6 +22,7 @@ class Veggies {
     this.move();
   }
 
+  //function to move the pencils and constrain it to the canvas
   move() {
 
     //update the position with velocity
