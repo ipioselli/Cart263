@@ -147,7 +147,7 @@ let state = `start`; // the prototype starts with the start state
 //loads all the variables
 function preload() {
 
-  pixelFont = loadFont(`assets/fonts/dogicaBold.otf`);
+  pixelFont = loadFont(`assets/fonts/dogica.otf`);
   cuteFont = loadFont(`assets/fonts/bubble.ttf`);
 
 
