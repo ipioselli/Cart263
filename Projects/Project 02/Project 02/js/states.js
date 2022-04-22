@@ -76,7 +76,7 @@ function loading(){
 //main room
 //this is the bed room where the tamagotchi sleeps
 // you can only go to sleep when its 9 pm
-function bedRoom() {
+function bedroom() {
   imageMode(CENTER, CENTER);
   image(bedroomBg, width / 2, height / 2, 1280, 720);
   push();

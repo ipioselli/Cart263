@@ -336,8 +336,8 @@ function setupStates() {
   else if (state === `floorPlan`) {
     floorPlan();
   }
-  else if (state === `bedRoom`) {
-    bedRoom();
+  else if (state === `bedroom`) {
+    bedroom();
   }
   else if(state === `loading`){
     loading();
@@ -469,7 +469,7 @@ function checkLesson01Score(){
       nextQuestion();
 
       if(schoolRightAnswers === schoolMaxRightAnswers){
-        state = `bedRoom`;
+        state = `bedroom`;
         hour = 20;
       }
 
@@ -489,7 +489,7 @@ function checkLesson01Score(){
         nextQuestion();
 
         if(schoolRightAnswers === schoolMaxRightAnswers){
-          state = `bedRoom`;
+          state = `bedroom`;
           hour = 20;
         }
         else if(currentLessonAnswer02 !== schoolLesson02.currentEnglishWord02){
@@ -518,7 +518,7 @@ function nextQuestion(){
 function readyForBed(){
 
   let d = dist(mouseX, mouseY, sleepButton.x, sleepButton.y);
-  if (state === `bedRoom`) {
+  if (state === `bedroom`) {
     if (d < sleepButton.size / 2) {
       if(hour < 21 ){
         tamagotchiEgg.move();
@@ -534,7 +534,7 @@ function readyForBed(){
 }
 
 function checkBedTime() {
-  if (state === `livingRoom` || state === `bedRoom` || state === `kitchen` || state === `bathroom`) {
+  if (state === `livingRoom` || state === `bedroom` || state === `kitchen` || state === `bathroom`) {
     if (tamagotchiLVL === 1) {
       if (hour <= 6) {
         tamagotchiEgg.move();
@@ -714,7 +714,7 @@ function mousePressed() {
 
   let d7 = dist(mouseX, mouseY, bedroomButton.x, bedroomButton.y);
   if(d7 < bedroomButton.size/2){
-    state= `bedRoom`;
+    state= `bedroom`;
   }
 }
 
@@ -734,7 +734,7 @@ function keyPressed() {
   }
   if (state === `instructions`) {
     if (keyCode === 13) { //
-      state = `bedRoom`;
+      state = `bedroom`;
       setInterval(checkCounter, 3000); //every 3 seconds
       setInterval(checkHour, 10000); //every 10 seconds
     }
@@ -767,7 +767,7 @@ function keyPressed() {
   }
   if(state === `day02`){
     if(keyCode === 13){ //keycode for enter
-      state = `bedRoom`;
+      state = `bedroom`;
       setInterval(checkCounter, 3000); //every 3 seconds
       setInterval(checkHour, 10000); //every 10 seconds
       resetDay02();

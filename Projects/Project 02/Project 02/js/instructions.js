@@ -1,5 +1,9 @@
-//instructions
+/***********************
+Instructions
+-All the text for the instructions
+***********************/
 let tamagotchiInstructions = `You are given a lil italian coffee bean to raise! \n The lil bean gets a house to live in.\nYou must make sure its energy level stays up by feeding, \ncleaning and loving him.`;
+
 let tamagotchiInstructions02 = `At 12pm the tamagotchi must go to school. \nOnce it finishes school it will evolve into a new form!`;
 let feedInstructions = `Feed the tamagotchi by saying the name of the food. Hint The tamagotchi loves italian food`;
 let showerInstructions = `Press the letter S on the keypad to wash away all the dirt`;
