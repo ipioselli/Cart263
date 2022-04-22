@@ -1,8 +1,6 @@
-\#Project 02 Artist Statement:
+#Project 02 Artist Statement:
 
 CAPPUGOTCHI
-
- artistic vision, the desired user experience, and how you believe you accomplished this both technically and artistically.
 
  For my artistic vision I wanted to recreate a tamagotchi game with p5. I based mine off of the tamagotchi app on ios/android since I wanted a more modern look. Much like the app, I wanted my tamagotchi to have 4 different rooms in which it can be washed, be fed, sleep and be given affection. From the feedback from my prototype I made the tamagotchi move on it's own since it is a pet and the user must take care of it instead of having the user control its movements. I also kept a similar style of interaction with the buttons to change rooms much like in the app. I wanted a pastel cute theme so I used a pastel colour palette throughout the whole game. For the theme, I decided to make my tamagotchi an italian coffee bean so that it could evolve from a bean into an espresso machine and finally into a delicious cappuccino. Since it is an italian coffee bean, I wanted it to eat italian themed food and go to school to learn english.
 
@@ -10,6 +8,8 @@ CAPPUGOTCHI
 
  For this project I tried to incorporate a lot of the lessons we learned in class such as responsive voice, annyang, json and handpose through the different interactions with the tamagotchi. I personally love handpose the most and it was really fun to have the user pet the tamagotchi and it would go back into place.
  I faced a bit of a difficulty with annyang since I wanted to incorporate a different language however, I decided to go for a different approach for the school lessons that still made sense.
+
+ Special thanks to the Instructor and TA for all the help >:) !
 
  Sources :
  =========

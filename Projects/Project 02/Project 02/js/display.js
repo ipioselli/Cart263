@@ -1,4 +1,7 @@
-//This js file is for all the display functions
+/***********************
+Display functions
+-This file is for all the display functions
+***********************/
 
 //------------------------------------------------------//
 //---------***********DISPLAY BUTTONS***********---------//

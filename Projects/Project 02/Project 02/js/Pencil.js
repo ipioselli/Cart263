@@ -1,14 +1,18 @@
-//When the tamagotchi is pet a hear appears
-
+/***********************
+Pencil class
+- This class is for the floating cute pencils for the instruction
+states of the school day 1 and 2
+- Its purpose is to move the pencils randomly and display them
+***********************/
 class Pencil{
 constructor(x, y, image){
-
-  this.x = x;
-  this.y = y;
-  this.vx = random(-2, 2);
-  this.vy = random(-2, 2);
-  this.size = 50;
-  this.image = image
+  //pencil variables
+  this.x = x; //x position
+  this.y = y; //y position
+  this.vx = random(-2, 2); //random vx
+  this.vy = random(-2, 2); //random vy
+  this.size = 50; //size
+  this.image = image //image
 }
 
 update(){

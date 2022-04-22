@@ -118,6 +118,9 @@ let englishData;
 let schoolRightAnswers = 0;
 let schoolMaxRightAnswers = 5;
 
+let schoolWrongAnswers = 0;
+let schoolMaxWrongAnswers = 10;
+
 
 //timer variables to check if its time for bed
 let bedTimeTimerDelay = 700;
@@ -453,8 +456,8 @@ function checkCounter() {
 //function to increase the hour of the day
 function checkHour() {
   hour++;
-  if (hour === 7) {
-    state = `schoolYard`; //if the time is 12 pm then its time for school
+  if (hour === 13) {
+    state = `schoolYard`; //if the time is 13 pm then its time for school
 
   }
 }
@@ -536,7 +539,7 @@ function readyForBed(){
 function checkBedTime() {
   if (state === `livingRoom` || state === `bedroom` || state === `kitchen` || state === `bathroom`) {
     if (tamagotchiLVL === 1) {
-      if (hour <= 6) {
+      if (hour < 21) {
         tamagotchiEgg.move();
         tamagotchiEgg.position();
       }
