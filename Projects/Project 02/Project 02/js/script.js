@@ -692,7 +692,7 @@ function englishInstructions() {
     }
   }
   //if its day 02 of school
-  else if (state === `schoolDay02`) {
+  if (state === `schoolDay02`) {
     let d = dist(mouseX, mouseY, englishButton.x, englishButton.y);
     if (d < englishButton.size / 2) {
       //say the current english word from lesson 02
@@ -703,126 +703,152 @@ function englishInstructions() {
 
 //function to check if the mouse overlaps with the italian button
 //in the school day 01 and day 02 state
-function italianInstructions(){
+function italianInstructions() {
   //if its day 01 of school
-  if(state === `schoolDay01`){
+  if (state === `schoolDay01`) {
     let d = dist(mouseX, mouseY, italianButton.x, italianButton.y);
-    if(d < italianButton.size/2){
-        responsiveVoice.speak(schoolLesson01.currentItalianWord, "Italian Male");
+    if (d < italianButton.size / 2) {
+      //says the current italian word from lesson 01
+      responsiveVoice.speak(schoolLesson01.currentItalianWord, "Italian Male");
     }
   }
   //if its day 02 of school
-  if(state === `schoolDay02`){
+  if (state === `schoolDay02`) {
     let d = dist(mouseX, mouseY, italianButton.x, italianButton.y);
-    if(d < italianButton.size/2){
-        responsiveVoice.speak(schoolLesson02.currentItalianWord02, "Italian Male");
+    if (d < italianButton.size / 2) {
+      //says the current italian word from lesson 02
+      responsiveVoice.speak(schoolLesson02.currentItalianWord02, "Italian Male");
     }
   }
 }
 
 
-//mousepressed to trigger responsiveVoice
+//function to check if the mouse has been pressed
 function mousePressed() {
 
-  readyForBed();
-  petMe();
-  englishInstructions();
-  italianInstructions();
+  readyForBed(); //check if the mouse presses the sleep button in the bedroom
+  petMe(); //check if the mouse presses the pet me button in the living room
+  englishInstructions(); //check if the mouse presses the english button in the school
+  italianInstructions(); //check if the mouse presses the italian button in the school
 
+  //feed button
+  //check if the mouse presses the feed button in the kitchen
   let d = dist(mouseX, mouseY, feedButton.x, feedButton.y);
   if (state === `kitchen`) {
     if (d < feedButton.size / 2) {
-
+      //says the feed instructions
       responsiveVoice.speak(feedInstructions, "UK English Female");
     }
   }
 
+  //shower button
+  //check if the mouse presses the shower button in the bathroom
   let d2 = dist(mouseX, mouseY, showerButton.x, showerButton.y);
-  if(state === `bathroom`){
-    if(d2 < showerButton.size/2){
+  if (state === `bathroom`) {
+    if (d2 < showerButton.size / 2) {
+      //says the shower instructions
       responsiveVoice.speak(showerInstructions, "UK English Female");
     }
   }
 
-  let d3 = dist(mouseX, mouseY, livingRoomButton.x,  livingRoomButton.y);
-  if(d3 < livingRoomButton.size/2){
+  //------------------------------------------------------//
+  //---------***********ROOM BUTTONS***********-----------//
+  //------------------------------------------------------//
+
+  //living room button
+  //check if the mouse presses the living room button
+  let d3 = dist(mouseX, mouseY, livingRoomButton.x, livingRoomButton.y);
+  if (d3 < livingRoomButton.size / 2) {
+    //calls loading function for handpose
     state = `loading`;
     video = createCapture(VIDEO, setupHandpose);
   }
 
-  let d4 = dist(mouseX, mouseY, tamagotchiEgg.x, tamagotchiEgg.y);
-  if(d4 < tamagotchiEgg.size/2){
-  }
-
-  let d5 = dist(mouseX, mouseY, bathroomButton.x, bathroomButton.y);
-  if(d5 < bathroomButton.size/2){
+  //bathroom button
+  //check if the mouse presses the bathroom room button
+  let d4 = dist(mouseX, mouseY, bathroomButton.x, bathroomButton.y);
+  if (d4 < bathroomButton.size / 2) {
+    //brings you to the bathroom state
     state = `bathroom`;
   }
 
-  let d6 = dist(mouseX, mouseY, kitchenButton.x, kitchenButton.y);
-  if(d6 < kitchenButton.size/2){
+  //kitchen button
+  //check if the mouse presses the kitchen button
+  let d5 = dist(mouseX, mouseY, kitchenButton.x, kitchenButton.y);
+  if (d5 < kitchenButton.size / 2) {
+    //brings you to the kitchen
     state = `kitchen`;
   }
 
-  let d7 = dist(mouseX, mouseY, bedroomButton.x, bedroomButton.y);
-  if(d7 < bedroomButton.size/2){
-    state= `bedroom`;
+  //bedroom button
+  //check if the mouse presses the bedroom button
+  let d6 = dist(mouseX, mouseY, bedroomButton.x, bedroomButton.y);
+  if (d6 < bedroomButton.size / 2) {
+    //brings you to the bedroom
+    state = `bedroom`;
   }
 }
 
-//keyboard input from the user
+//function to check keyboard input from the user
 function keyPressed() {
+  //brings you to the menus state
   if (state === `start`) {
     if (keyCode === 13) { //keycode for ENTER
       state = `menu`;
+      //play the main song
       song01.play();
       song01.setVolume(0.2);
     }
   }
+  //brings you to the instructions state
   if (state === `menu`) {
-    if (keyCode === 32) { //spacebar
+    if (keyCode === 32) { //keycode for spacebar
       state = `instructions`;
     }
   }
+  //brings you to the bedroom
   if (state === `instructions`) {
     if (keyCode === 13) { //
       state = `bedroom`;
-      setInterval(checkCounter, 3000); //every 3 seconds
-      setInterval(checkHour, 10000); //every 10 seconds
+      setInterval(checkCounter, 3000); //decreases energy every 3 seconds
+      setInterval(checkHour, 10000); //changes hour every 10 seconds
     }
   }
-
-  if(state === `schoolYard`){
-    if(tamagotchiLVL === 1){
-      if(keyCode === 13){
+  if (state === `schoolYard`) {
+    //brings you to lesson01Instructions on day01
+    if (tamagotchiLVL === 1) {
+      if (keyCode === 13) { //keycode for enter
         state = `lesson01Instructions`;
       }
     }
-      else if(tamagotchiLVL ===2 ){
-        if(keyCode === 13){
-          state = `lesson02Instructions`;
-        }
+    //brings you to lesson02Instructions on day02
+    else if (tamagotchiLVL === 2) {
+      if (keyCode === 13) { //keycode for enter
+        state = `lesson02Instructions`;
       }
     }
-
-  if(state === `lesson01Instructions`){
-    if(keyCode === 32){
+  }
+  //brings you to schoolday02
+  if (state === `lesson01Instructions`) {
+    if (keyCode === 32) { //keycode for spacebar
       state = `schoolDay01`;
       generateLesson01(); //generates the english and italian words
     }
   }
-  if(state === `lesson02Instructions`){
-    if(keyCode === 32){
+  //brings you to schoolday02
+  if (state === `lesson02Instructions`) {
+    if (keyCode === 32) {
       state = `schoolDay02`;
-      generateLesson02();
+      generateLesson02(); //generates the english and italian words
     }
   }
-  if(state === `day02`){
-    if(keyCode === 13){ //keycode for enter
+  //brings you the bedroom on day 02
+  if (state === `day02`) {
+    if (keyCode === 13) { //keycode for enter
       state = `bedroom`;
-      setInterval(checkCounter, 3000); //every 3 seconds
-      setInterval(checkHour, 10000); //every 10 seconds
-      resetDay02();
+      setInterval(checkCounter, 3000); //decreases energy every 3 seconds
+      setInterval(checkHour, 10000); //changes hour every 10 seconds
+      resetDay02(); //reset all the variables on day 02
     }
   }
 }
