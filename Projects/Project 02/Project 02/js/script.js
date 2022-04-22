@@ -140,7 +140,7 @@ let blingSfx;
 let badSfx;
 let petSfx;
 
-let state = `start`; // the prototype starts with the start state
+let state = `bedRoom`; // the prototype starts with the start state
 
 
 
@@ -157,6 +157,7 @@ function preload() {
   tamagotchiImg04 = loadImage(`assets/images/tamagotchi_04.png`);
   tamagotchiImg05 = loadImage(`assets/images/tamagotchi_05.png`);
   tamagotchiImg06 = loadImage(`assets/images/tamagotchi_06.png`);
+  tamagotchiImg07 = loadImage(`assets/images/tamagotchi_07.png`);
   fingerImg = loadImage(`assets/images/heart.png`);
 
 
@@ -230,7 +231,7 @@ function setupAnnyang() {
 function setupTamagotchi() {
   let x = width / 2;
   let y = height / 2 + 150;
-  tamagotchiEgg = new Tamagotchi(x, y, tamagotchiImg01, tamagotchiImg02, tamagotchiImg03, tamagotchiImg04, tamagotchiImg05, tamagotchiImg06);
+  tamagotchiEgg = new Tamagotchi(x, y, tamagotchiImg01, tamagotchiImg02, tamagotchiImg03, tamagotchiImg04, tamagotchiImg05, tamagotchiImg06, tamagotchiImg07);
 }
 
 
@@ -523,7 +524,7 @@ function readyForBed(){
 function checkBedTime() {
   if (state === `livingRoom` || state === `bedRoom` || state === `kitchen` || state === `bathroom`) {
     if (tamagotchiLVL === 1) {
-      if (hour <= 20) {
+      if (hour <= 6) {
         tamagotchiEgg.move();
         tamagotchiEgg.position();
       }

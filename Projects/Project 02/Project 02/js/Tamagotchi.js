@@ -1,6 +1,6 @@
 class Tamagotchi {
 
-  constructor(x, y, image01, image02, image03, image04, image05, image06) {
+  constructor(x, y, image01, image02, image03, image04, image05, image06, image07) {
     this.x = x;
     this.y = y;
     this.size =150;
@@ -12,6 +12,7 @@ class Tamagotchi {
     this.image04 = image04;
     this.image05 = image05;
     this.image06 = image06;
+    this.image07 = image07;
     this.dirt = [];
     this.newDirtTimer = 0;
     this.newDirtDelay = 100;
@@ -198,6 +199,13 @@ class Tamagotchi {
         image(this.image04, this.x, this.y, this.size, this.size);
         pop();
       }
+
+    }
+
+    if(tamagotchiLVL === 3){
+      push();
+      image(this.image07, this.x, this.y, this.size, this.size);
+      pop();
     }
 
 

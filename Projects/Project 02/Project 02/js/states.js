@@ -297,6 +297,9 @@ function day03(){
   textSize(30);
   text(`DAY 3`, width / 2, height / 2);
   pop();
+
+  tamagotchiEgg.move();
+  tamagotchiEgg.position();
 }
 
 //function when the tamagotchi dies because the energy is less than 0
