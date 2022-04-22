@@ -1,4 +1,11 @@
+//------------------------------------------------------//
+//---------***********STATE FUNCTIONS***********--------//
+//------------------------------------------------------//
+//This js file contains all the information for the states in chronological order//
+
 //start state
+//first state of the tamagotchi game
+//press enter to begin
 function start() {
   push();
   background(186, 219, 205);
@@ -12,6 +19,8 @@ function start() {
 }
 
 //menu state with tamagotchi illustration
+//this is the title page
+//press spacebar to continue
 function menu() {
   push();
   background(186, 219, 205);
@@ -26,10 +35,11 @@ function menu() {
   textSize(30);
   text(`Press spacebar`, width / 2, height / 2 + 200);
   pop();
-  displayTamagotchiMenu();
+  displayTamagotchiMenu(); //displays the tamagotchi illustration that jitters
 }
 
-//instructions for prototype
+//instructions state for the main instructions of the game
+//press enter to start the actual game
 function instructions() {
   push();
   background(186, 219, 205);
@@ -46,7 +56,9 @@ function instructions() {
   pop();
 }
 
-
+//this is the loading state that is called with you click on the heart icon in the game
+// its purpose is to allow handpose to load
+//there are also instructions for how handpose works
 function loading(){
   background(129, 115, 189);
   push();
@@ -59,10 +71,41 @@ function loading(){
   text(`Pet the tamagotchi with your index finger \n to increase the energy level `, width/2, height/2);
   pop();
 
-  // checkHand();
 }
 
-//main room = living room
+//main room
+//this is the bed room where the tamagotchi sleeps
+// you can only go to sleep when its 9 pm
+function bedRoom() {
+  imageMode(CENTER, CENTER);
+  image(bedroomBg, width / 2, height / 2, 1280, 720);
+  push();
+  textAlign(CENTER, CENTER);
+  textFont(pixelFont);
+  fill(88, 71, 173);
+  stroke(255);
+  textSize(30);
+  text(`Bedroom`, width / 2, height / 2 - 250)
+  pop();
+
+  checkBedTime(); //check when its time for bed
+  displayTime(); //display the time in top middle
+  displayEnergy(); //display the energy at the top right
+  displayEvolutionLVL(); //display the evolution level at the top left
+  updateTamagotchi(); //call the update function for the tamagotchi
+
+  //displays all the buttons
+  displayLivingRoomButton();
+  displayBathroomButton();
+  displayKitchenButton();
+  displayBedroomButton();
+  displaySleepButton();
+
+}
+
+//living room state
+// you can get here once you click on the heart icon
+// this function uses handpose to pet the tamagotchi and give it some love
 function livingRoom() {
   imageMode(CENTER, CENTER);
   image(livingRoomBg, width / 2, height / 2, 1280, 720);
@@ -73,23 +116,29 @@ function livingRoom() {
   stroke(255);
   textSize(30);
   text(`Living Room`, width / 2, height / 2 - 250);
-
   pop();
 
+  //check if there are currently any predictions to display
   if(predictions.length >0 ){
+    //if yes, then get the positions of the index finger
     let hand = predictions[0];
     console.log(hand);
     updatehand(hand);
 
+    //checks if the finger overlaps with the tamagotchi
     overlapTamagotchi();
   }
-  updateEgg02();
+  //calls update function and allows tamagotchi to move and go back original y position
+  updateTamagotchi();
   tamagotchiEgg.move();
   tamagotchiEgg.position();
-  displayFinger();
+
+  //display all the functions below
+  displayFinger(); //displays the index finger in the form of a heart
   displayTime();
   displayEnergy();
   displayEvolutionLVL();
+  //display all the buttons
   displayLivingRoomButton();
   displayBathroomButton();
   displayKitchenButton();
@@ -103,6 +152,7 @@ function livingRoom() {
 //feeding game
 //on the right of the living room
 function kitchen() {
+  //displays bg image
   imageMode(CENTER, CENTER);
   image(kitchenBg, width / 2, height / 2, 1280, 720);
   push();
@@ -112,53 +162,30 @@ function kitchen() {
   fill(88, 71, 173);
   textSize(30);
   text(`Kitchen`, width / 2, height / 2 - 250);
-
   pop();
 
+  //displays all header information
   displayTime();
   displayEnergy();
   displayEvolutionLVL();
-  displayFeedButton();
+
+  //displays all the scores for annyang
   displayGoodScore();
   displayBadScore();
-  updateEgg02();
+  //calls update from tamagotchi class
+  updateTamagotchi();
+  //displays all the buttons
+  displayFeedButton();
   displayLivingRoomButton();
   displayBathroomButton();
   displayKitchenButton();
   displayBedroomButton();
+  //calls getOnchair from the tamagotchi class to place the tamagotchi on the chair
   tamagotchiEgg.getOnChair();
 
-
 }
 
-//bedroom on the left of the living room
-//for the tamagotchi to sleep
-function bedRoom() {
-  imageMode(CENTER, CENTER);
-  image(bedroomBg, width / 2, height / 2, 1280, 720);
-  push();
-  textAlign(CENTER, CENTER);
-  textFont(pixelFont);
-  fill(88, 71, 173);
-  stroke(255);
-  textSize(30);
-  text(`Bedroom`, width / 2, height / 2 - 250)
 
-  pop();
-  checkBedTime();
-  displayTime();
-  displayEnergy();
-  displayEvolutionLVL();
-  updateEgg02();
-  displayLivingRoomButton();
-  displayBathroomButton();
-  displayKitchenButton();
-  displayBedroomButton();
-  displaySleepButton();
-
-
-
-}
 //on the bottom of the living room
 //for the tamagotchi to wash himself
 function bathroom() {
@@ -175,7 +202,7 @@ function bathroom() {
   displayTime();
   displayEnergy();
   displayEvolutionLVL();
-  updateEgg02();
+  updateTamagotchi();
   updateBubbles();
   updateShower();
   displayShowerButton();
@@ -282,9 +309,14 @@ function day02(){
   background(186, 219, 205);
   textAlign(CENTER, CENTER);
   textFont(pixelFont);
-  fill(0);
+  fill(88, 71, 173);
   textSize(30);
-  text(`DAY 2`, width / 2, height / 2);
+  text(`DAY 2`, width / 2, height / 2 - 200);
+  textSize(20);
+  text(`YAY your tamagotchi evolved into its 2nd form`, width / 2, height / 2 - 100);
+  text(`Press ENTER to continue`, width / 2, height / 2 );
+  tamagotchiEgg.move();
+  tamagotchiEgg.position();
   pop();
 }
 
@@ -293,13 +325,17 @@ function day03(){
   background(186, 219, 205);
   textAlign(CENTER, CENTER);
   textFont(pixelFont);
-  fill(0);
+  fill(88, 71, 173);
   textSize(30);
-  text(`DAY 3`, width / 2, height / 2);
+  text(`DAY 3`, width / 2, height / 2 - 200);
+  textSize(20);
+  text(`YAY your tamagotchi evolved into Cappugotchi!`, width / 2, height / 2 - 100);
+  text(`They also graduated school!`, width / 2, height / 2 );
   pop();
 
   tamagotchiEgg.move();
   tamagotchiEgg.position();
+  tamagotchiEgg.displayTamagotchiLastDay();
 }
 
 //function when the tamagotchi dies because the energy is less than 0

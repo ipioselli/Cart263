@@ -1,3 +1,5 @@
+//This js file is for all the display functions
+
 //------------------------------------------------------//
 //---------***********DISPLAY BUTTONS***********---------//
 //------------------------------------------------------//
@@ -92,7 +94,7 @@ function displayEvolutionLVL() {
   pop();
 }
 
-//display the time in hours
+//display the time in hours with the 24 hour clock
 function displayTime() {
   push();
   textAlign(CENTER, CENTER);
@@ -108,7 +110,7 @@ function displayTime() {
 //---------***********DISPLAY KITCHEN PARAMETERS***********------//
 //--------------------------------------------------------------//
 
-//display bad score for the food
+//display bad score for the kitchen guessing game
 function displayBadScore() {
   push();
   textAlign(CENTER, CENTER);
@@ -119,7 +121,7 @@ function displayBadScore() {
   pop();
 }
 
-//display good score for the food
+//display good score for the kitchen guessing game
 function displayGoodScore() {
   push();
   textAlign(CENTER, CENTER);
@@ -144,11 +146,12 @@ function displayFinger(){
 }
 
 //---------------------------------------------------------------//
-//---------***********SCHOOL LESSON 01***********----------------//
+//---------***********SCHOOL LESSONS***********-----------------//
 //--------------------------------------------------------------//
 
+//function display lesson 01 for the first day of school
+//will be displayed on schoolDay01 on the green chalkboard
 function displaySchoolLesson01() {
-
   let lesson01 = `** Lesson 01: Food**
   Italian Translation: ${schoolLesson01.currentItalianWord}`;
   push();
@@ -161,8 +164,9 @@ function displaySchoolLesson01() {
   pop();
 }
 
+//function display lesson 02 for the 2nd day of school
+//will be displayed on schoolDay02 on the green chalkboard
 function displaySchoolLesson02() {
-
   let lesson02 = `** Lesson 02: Household Appliances**
   Italian Translation: ${schoolLesson02.currentItalianWord02}`;
   push();
@@ -175,7 +179,7 @@ function displaySchoolLesson02() {
   pop();
 }
 
-
+//displays the good score for the lesson
 function displayLesson01GoodScore(){
   push();
   textAlign(CENTER, CENTER);
@@ -187,6 +191,7 @@ function displayLesson01GoodScore(){
   pop();
 }
 
+//displays the bad score for the lesson
 function displayLesson01BadScore(){
   push();
   textAlign(CENTER, CENTER);
@@ -224,11 +229,13 @@ function displayCurrentAnswer(){
   }
 
 }
-
+//function to display the english translation button
 function displayEnglishButton(){
   imageMode(CENTER, CENTER);
   image(englishButton.image, englishButton.x, englishButton.y, englishButton.size, englishButton.size);
 }
+
+//function to display the italian translation button
 function displayItalianButton(){
   imageMode(CENTER, CENTER);
   image(italianButton.image, italianButton.x, italianButton.y, italianButton.size, italianButton.size);

@@ -166,6 +166,15 @@ class Tamagotchi {
     }
   }
 
+  displayTamagotchiLastDay(){
+    if(tamagotchiLVL === 3){
+      this.size = 200;
+      push();
+      image(this.image07, this.x, this.y, this.size, this.size);
+      pop();
+    }
+  }
+
 
   //display the tamagotchi
   display() {
@@ -202,11 +211,7 @@ class Tamagotchi {
 
     }
 
-    if(tamagotchiLVL === 3){
-      push();
-      image(this.image07, this.x, this.y, this.size, this.size);
-      pop();
-    }
+
 
 
 

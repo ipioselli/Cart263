@@ -4,11 +4,6 @@ Ines Pioselli
 
 Tamagotchi Sim
 
-left to do:
-- day 02 INSTRUCTIONS
-- day 03 INSTRUCTIONS
-- draw last tamagotchi
-- add comments and organize
 
 CAPPUGOTCHI
 - you are given a cute lil coffee bean as a pet.
@@ -140,7 +135,7 @@ let blingSfx;
 let badSfx;
 let petSfx;
 
-let state = `bedRoom`; // the prototype starts with the start state
+let state = `start`; // the prototype starts with the start state
 
 
 
@@ -564,7 +559,7 @@ function checkBedTime() {
 
 
 //update tamagotchi
-function updateEgg02() {
+function updateTamagotchi() {
   tamagotchiEgg.update();
 }
 
@@ -602,20 +597,26 @@ function moveShower(){
   }
 }
 
+//check if the petme button in the living room overlaps with the mouse
 function petMe(){
   if(state === `livingRoom`){
     let d = dist(mouseX, mouseY, petButton.x, petButton.y);
     if(d<petButton.size/2){
+      //if it is does, then responsiveVoice says the pet instructions
       responsiveVoice.speak(petInstructions, "UK English Female");
     }
   }
 }
 
+
+//function to reset all the game variables to their original values when day02 is called
 function resetDay02(){
   hour = 6;
-  tamagotchiLVL = 2;
+  tamagotchiLVL = 2; //changes evolution to 2 when its day02
   tamagotchiEnergy = 2000;
   tamagotchiEgg.resetDirt();
+  foodRightAnswer = 0;
+  foodWrongAnswer = 0;
   schoolRightAnswers = 0;
   schoolWrongAnswers = 0;
 }
