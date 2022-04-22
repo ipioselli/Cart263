@@ -46,7 +46,7 @@ let bubbles = [];
 let numShowerWater = 200
 let showerWater = [];
 
-//floating pencils 
+//floating pencils
 let pencilImg;
 let numPencils = 20;
 let pencils = [];
@@ -102,9 +102,17 @@ let schoolLesson01 = {
 
 };
 
+let schoolLesson02 = {
+  currentEnglishWord02: ``,
+  currentItalianWord02: ``,
+}
+
 let currentItalianAnswer = ``;
+let currentItalianAnswer02 = ``;
 let italianData;
 let englishData;
+let italianData02;
+let englishData02;
 
 let schoolRightAnswers = 0;
 let schoolMaxRightAnswers = 5;
@@ -112,7 +120,7 @@ let schoolWrongAnswers = 0;
 let schoolMaxWrongAnswers = 10;
 
 //bedtime
-let bedTimeTimerDelay = 500;
+let bedTimeTimerDelay = 700;
 let bedTimeTimerDone = false;
 
 let feedButton = {
@@ -181,7 +189,9 @@ let showerInstructions = `Press the letter S on the keypad to wash away all the 
 let sleepInstructions01 = `It's not time for bed yet`;
 let sleepInstructions02 = `Time for bed`;
 let petInstructions = `Hover your index finger over the tamagotchi to pet it and increase the energy level`;
-let schoolInstructions01 = `It's your tamagotchi's first day of italian school. \n You must help it learn italian by saying the words in italian. \n Your first lesson will be about food. \n Get 10 right in order to advance. \nIf you get 10 wrong your tamagotchi will not evolve.`
+let schoolInstructions01 = `It's your tamagotchi's first day of school. \n You must help it learn italian by saying the words in italian. \n Your first lesson will be about food. \n Get 10 right in order to advance. \nIf you get 10 wrong your tamagotchi will not evolve.`
+
+let schoolInstructions02 = `It's your tamagotchi's second day of school. \n You must help it learn english.\n The word's will be displayed in Italian and you must guess them in english. \n You can click on the english button for help`;
 
 //background image variables
 let roomBg;
@@ -204,7 +214,7 @@ let blingSfx;
 let badSfx;
 let petSfx;
 
-let state = `schoolDay01`; // the prototype starts with the start state
+let state = `lesson02Instructions`; // the prototype starts with the start state
 
 //loads all the variables
 function preload() {
@@ -280,8 +290,7 @@ function setup() {
 
 function setupAnnyang() {
   if (annyang) {
-    // annyang.setLanguage('en-US');
-    // annyang.setLanguage('it-IT');
+
 
     let commands = {
 
@@ -292,8 +301,6 @@ function setupAnnyang() {
     annyang.start();
     feed(); //calls function to check the score
 
-
-    // annyang.setLanguage('en-US');
   }
 
 
@@ -365,14 +372,20 @@ function setupHandpose() {
 
 function generateLesson01(){
 
-
-
   let italianTranslation = random(italianData.lesson01);
   schoolLesson01.currentItalianWord = italianTranslation.italian.toLowerCase();
 
   let englishTranslation = italianTranslation;
   schoolLesson01.currentEnglishWord = englishTranslation.english.toLowerCase();
 
+}
+
+function generateLesson02(){
+  let italianTranslation = random(italianData.lesson02);
+  schoolLesson02.currentItalianWord02 = italianTranslation.italian.toLowerCase();
+
+  let englishTranslation = italianTranslation;
+  schoolLesson02.currentEnglishWord02 = englishTranslation.english.toLowerCase();
 }
 
 //Draws all the states for the game
@@ -415,14 +428,21 @@ function setupStates() {
   else if(state === `lesson01Instructions`){
     lesson01Instructions();
   }
+  else if(state === `lesson02Instructions`){
+    lesson02Instructions();
+  }
   else if(state === `schoolDay01`){
     schoolDay01();
   }
   else if(state === `schoolDay02`){
     schoolDay02();
   }
+
   else if(state === `day02`){
     day02();
+  }
+  else if(state === `day03`){
+    day03();
   }
   else if (state === `dead`) {
     dead();
@@ -453,9 +473,14 @@ function feed(food) {
 }
 
 function guessAnswer(phrase){
-
-  currentItalianAnswer = phrase.toLowerCase();
-  checkLesson01Score();
+  if(state === `schoolDay01`){
+    currentItalianAnswer = phrase.toLowerCase();
+    checkLesson01Score();
+  }
+  else if(state === `schoolDay02`){
+    currentItalianAnswer02 = phrase.toLowerCase();
+    checkLesson01Score();
+  }
 }
 
 function overlapTamagotchi(){
@@ -507,29 +532,54 @@ function checkHour() {
 
 function checkLesson01Score(){
 
-  if(currentItalianAnswer === schoolLesson01.currentEnglishWord){
-    schoolRightAnswers++;
-    nextQuestion();
+  if(state === `schoolDay01`){
+    if(currentItalianAnswer === schoolLesson01.currentEnglishWord){
+      schoolRightAnswers++;
+      nextQuestion();
 
-    if(schoolRightAnswers === schoolMaxRightAnswers){
-      state = `bedRoom`;
-      hour = 20;
-    }
+      if(schoolRightAnswers === schoolMaxRightAnswers){
+        state = `bedRoom`;
+        hour = 20;
+      }
 
-  }
-  else if(currentItalianAnswer !== schoolLesson01.currentItalianWord){
-    schoolWrongAnswers++;
-    if(schoolWrongAnswers === schoolMaxWrongAnswers){
-      state = `dead`;
+    }
+    else if(currentItalianAnswer !== schoolLesson01.currentItalianWord){
+      schoolWrongAnswers++;
+      if(schoolWrongAnswers === schoolMaxWrongAnswers){
+        state = `dead`;
+      }
     }
   }
+
+    if(state === `schoolDay02`){
+      if(currentItalianAnswer02 === schoolLesson02.currentEnglishWord02){
+        schoolRightAnswers++;
+        nextQuestion();
+
+        if(schoolRightAnswers === schoolMaxRightAnswers){
+          state = `bedRoom`;
+          hour = 20;
+        }
+        else if(currentItalianAnswer02 !== schoolLesson02.currentEnglishWord02){
+          schoolWrongAnswers++;
+          if(schoolWrongAnswers === schoolMaxWrongAnswers){
+            state = `dead`;
+          }
+        }
+      }
+    }
 }
+
+
 
 
 
 function nextQuestion(){
   if(state === `schoolDay01`){
     generateLesson01();
+  }
+  if(state === `schoolDay02`){
+    generateLesson02();
   }
 }
 
@@ -551,33 +601,45 @@ function readyForBed(){
   }
 }
 
-function checkBedTime(){
-if(state === `livingRoom` || state === `bedRoom` || state === `kitchen` || state === `bathroom`){
-  if(tamagotchiLVL === 1){
-    if(hour < 13){
-      tamagotchiEgg.move();
-      tamagotchiEgg.position();
-    }
-    else{
+function checkBedTime() {
+  if (state === `livingRoom` || state === `bedRoom` || state === `kitchen` || state === `bathroom`) {
+    if (tamagotchiLVL === 1) {
+      if (hour <= 20) {
+        tamagotchiEgg.move();
+        tamagotchiEgg.position();
+      }
+      else if (hour === 21) {
         tamagotchiEgg.getInBed();
 
-          bedTimeTimerDelay -=5;
-          if(bedTimeTimerDelay <=0){
-            bedTimeTimerDone = true;
-          }
-          if(bedTimeTimerDone){
-            state = `day02`;
-          }
+        bedTimeTimerDelay -= 5;
+        if (bedTimeTimerDelay <= 0) {
+          bedTimeTimerDone = true;
         }
+        if (bedTimeTimerDone) {
+          state = `day02`;
+
+        }
+      }
     }
     else if(tamagotchiLVL === 2){
       if(hour < 20){
         tamagotchiEgg.move();
         tamagotchiEgg.position();
       }
-    }
-}
+      else if (hour === 21) {
+        tamagotchiEgg.getInBed();
 
+        bedTimeTimerDelay -= 5;
+        if (bedTimeTimerDelay <= 0) {
+          bedTimeTimerDone = true;
+        }
+        if (bedTimeTimerDone) {
+          state = `day03`;
+
+        }
+      }
+    }
+  }
 }
 
 
@@ -630,19 +692,31 @@ function petMe(){
 }
 
 function englishInstructions(){
-  if(state === `schoolDay01` || state === `schoolDay02`){
+  if(state === `schoolDay01` ){
     let d = dist(mouseX, mouseY, englishButton.x, englishButton.y);
     if(d < englishButton.size/2){
         responsiveVoice.speak(schoolLesson01.currentEnglishWord, "UK English Female");
     }
   }
+  else if(state === `schoolDay02`){
+    let d = dist(mouseX, mouseY, englishButton.x, englishButton.y);
+    if(d < englishButton.size/2){
+        responsiveVoice.speak(schoolLesson02.currentEnglishWord02, "UK English Female");
+  }
+}
 }
 
 function italianInstructions(){
-  if(state === `schoolDay01` || state === `schoolDay02`){
+  if(state === `schoolDay01`){
     let d = dist(mouseX, mouseY, italianButton.x, italianButton.y);
     if(d < italianButton.size/2){
         responsiveVoice.speak(schoolLesson01.currentItalianWord, "Italian Male");
+    }
+  }
+  if(state === `schoolDay02`){
+    let d = dist(mouseX, mouseY, italianButton.x, italianButton.y);
+    if(d < italianButton.size/2){
+        responsiveVoice.speak(schoolLesson02.currentItalianWord02, "Italian Male");
     }
   }
 }
@@ -724,14 +798,28 @@ function keyPressed() {
     }
   }
   if(state === `schoolYard`){
-    if(keyCode === 13){
-      state = `lesson01Instructions`;
+    if(tamagotchiLVL === 1){
+      if(keyCode === 13){
+        state = `lesson01Instructions`;
+      }
+      else if(tamagotchiLVL ===2 ){
+        if(keyCode === 13){
+          state = `lesson02Instructions`;
+        }
+      }
     }
+
   }
   if(state === `lesson01Instructions`){
     if(keyCode === 32){
       state = `schoolDay01`;
       generateLesson01(); //generates the english and italian words
+    }
+  }
+  if(state === `lesson02Instructions`){
+    if(keyCode === 32){
+      state = `schoolDay02`;
+      generateLesson02();
     }
   }
   if(state === `day02`){
@@ -741,6 +829,8 @@ function keyPressed() {
       tamagotchiLVL = 2;
       tamagotchiEnergy = 2000;
       tamagotchiEgg.resetDirt();
+      schoolRightAnswers = 0;
+      schoolWrongAnswers = 0;
     }
   }
 }

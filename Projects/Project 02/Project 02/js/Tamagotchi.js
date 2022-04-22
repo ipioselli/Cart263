@@ -6,7 +6,7 @@ class Tamagotchi {
     this.size =150;
     this.vx = 1.5;
     this.vy = 0;
-    this.image = image01;
+    this.image01 = image01;
     this.image02 = image02;
     this.image03 = image03;
     this.image04 = image04;
@@ -39,13 +39,14 @@ class Tamagotchi {
   classroom(){
     this.dirt = [];
     tamagotchiEnergy = 2000;
-    if(state === `schoolDay01`){
+    if(state === `schoolDay01` || `schoolDay02`){
       this.x = this.classX;
       this.y = this.classY;
     }
+
     if(tamagotchiLVL === 1){
       push();
-      image(this.image, this.x, this.y, this.size, this.size);
+      image(this.image01, this.x, this.y, this.size, this.size);
       pop();
     }
     if(tamagotchiLVL === 2){

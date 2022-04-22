@@ -7,14 +7,31 @@
     {"english":"The spoon", "italian":"il cucchiaio"},
     {"english":"The milk", "italian":"Il Latte"},
     {"english":"The lemon", "italian":"Il limone"},
-    {"english":"She cooks", "italian":"Lei cucina"},
+    {"english":"The melon", "italian":"Il melone"},
     {"english":"The orange", "italian":"L'arancia"},
     {"english":"Sweet", "italian":"Dolce"},
     {"english":"She drinks", "italian":"Lei beve"},
     {"english":"The strawberry", "italian":"La fragola"},
-    {"english":"The cappucino", "italian":" cappucino"},
+    {"english":"The cappucino", "italian":"Il cappucino"},
     {"english":"The cream", "italian":"La crema"},
     {"english":"The sugar", "italian":"Il zucchero"}
+
+  ],
+  "lesson02": [
+    {"english":"The sofa", "italian":"Il divano"},
+    {"english":"The chair ", "italian":"La sedia"},
+    {"english":"The bed", "italian":"il letto"},
+    {"english":"The table", "italian":"la tavola"},
+    {"english":"The phone", "italian":"Il telefono"},
+    {"english":"The radio", "italian":"La radio"},
+    {"english":"The sink", "italian":"Il lavandino"},
+    {"english":"The carpet", "italian":"Il tappeto"},
+    {"english":"the lamp", "italian":"la lampada"},
+    {"english":"the closet", "italian":"l'armadio"},
+    {"english":"The bathroom", "italian":"il bagno"},
+    {"english":"the kitchen", "italian":"la cucina"},
+    {"english":"the shower", "italian":"la doccia"},
+    {"english":"the desk", "italian":"la scrivania"}
 
 
   ]

@@ -148,7 +148,6 @@ function displayFinger(){
 function displaySchoolLesson01() {
 
   let lesson01 = `** Lesson 01: Food**
-  
   Italian Translation: ${schoolLesson01.currentItalianWord}`;
   push();
   textAlign(CENTER, CENTER);
@@ -156,6 +155,19 @@ function displaySchoolLesson01() {
   fill(0);
   textSize(30);
   text(lesson01, width / 2 , height / 2 -150);
+  pop();
+}
+
+function displaySchoolLesson02() {
+
+  let lesson02 = `** Lesson 02: Household Appliances**
+  Italian Translation: ${schoolLesson02.currentItalianWord02}`;
+  push();
+  textAlign(CENTER, CENTER);
+  textFont(cuteFont);
+  fill(0);
+  textSize(30);
+  text(lesson02, width / 2 , height / 2 -150);
   pop();
 }
 

@@ -228,6 +228,24 @@ function lesson01Instructions(){
 
 }
 
+function lesson02Instructions(){
+  push();
+  background(186, 219, 205);
+  textAlign(CENTER, CENTER);
+  textFont(cuteFont);
+  fill(30, 43, 130);
+  textSize(50);
+  text(`SECOND DAY OF SCHOOL `, width / 2, height / 2 -300);
+  textSize(30);
+  text(schoolInstructions02, width / 2, height / 2);
+  textSize(40);
+  text(`Press SPACEBAR to continue`, width / 2, height / 2 + 200);
+  pop();
+
+  updatePencils();
+
+}
+
 function schoolDay01(){
   push();
   imageMode(CENTER, CENTER);
@@ -240,6 +258,25 @@ function schoolDay01(){
   pop();
   tamagotchiEgg.classroom();
   displaySchoolLesson01();
+  displayLesson01GoodScore();
+  displayLesson01BadScore();
+  displayCurrentAnswer()
+  displayEnglishButton();
+  displayItalianButton();
+}
+
+function schoolDay02(){
+  push();
+  imageMode(CENTER, CENTER);
+  image(classroomBg, width / 2, height / 2, 1280, 720);
+  textAlign(CENTER, CENTER);
+  textFont(cuteFont);
+  fill(0);
+  textSize(30);
+  text(` `, width / 2, height / 2);
+  pop();
+  tamagotchiEgg.classroom();
+  displaySchoolLesson02();
   displayLesson01GoodScore();
   displayLesson01BadScore();
   displayCurrentAnswer()
