@@ -213,7 +213,7 @@ function displayCurrentAnswer(){
     fill(88, 71, 173);
     stroke(255);
     textSize(20);
-    text(`Current Answer = The answer is${currentItalianAnswer}`, width / 2, height / 2 -50);
+    text(`Current Answer = The answer is${currentLessonAnswer01}`, width / 2, height / 2 -50);
     pop();
   }
   //if its the second day of school display the current answer 02
@@ -224,7 +224,7 @@ function displayCurrentAnswer(){
     fill(88, 71, 173);
     stroke(255);
     textSize(20);
-    text(`Current Answer = The answer is ${currentItalianAnswer02}`, width / 2, height / 2 -50);
+    text(`Current Answer = The answer is ${currentLessonAnswer02}`, width / 2, height / 2 -50);
     pop();
   }
 

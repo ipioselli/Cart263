@@ -1,21 +1,24 @@
 /**
-Project 2 prototype
+Project 2
 Ines Pioselli
 
 Tamagotchi Sim
-
-
 CAPPUGOTCHI
-- you are given a cute lil coffee bean as a pet.
+
+How to play:
+- you are given a cute lil italian coffee bean as a pet.
+- you must wash it, give it love with handpose and feed it with annyang
+- it also goes to school which it will learn english
+- after school is done it will go back home and go to bed
+- once it goes to bed, a new day begins and it evolves into something cooler!
+- its final form is CAPPUGOTCHI a delicious cappucino
 
 */
 
 "use strict";
 
-
-
 //main game variables
-let tamagotchiEgg;
+let tamagotchiEgg; //this is the variable used for the tamagotchi
 
 //all images for the tamagotchis emotions and evolutions
 let tamagotchiImg01;
@@ -28,46 +31,50 @@ let tamagotchiImg07;
 
 //header info
 let energyCounter = 0;
-let tamagotchiEnergy = 2000;//max energy amount
+let tamagotchiEnergy = 2000; //max energy amount
 let tamagotchiLVL = 1; //starts at evolution level 1
-let tamagotchi;
 let hour = 6; //day starts at 6am
 
 //bathroom variables
-let bubbleImg;
-let numBubbles = 10;
-let bubbles = [];
-let numShowerWater = 200
-let showerWater = [];
+let bubbleImg; //image for bubbles
+let numBubbles = 10; //number of bubbles
+let bubbles = []; //bubble array
+let numShowerWater = 200 //number of water droplets in the shower
+let showerWater = []; //shower array
 
 //floating pencils for lesson instructions
-let pencilImg;
-let numPencils = 20;
-let pencils = [];
+let pencilImg; //pencil image
+let numPencils = 20; //number of pencils
+let pencils = []; //pencil array
 
 
 //living room variables
-let video = undefined;
-let modelName = `HANDPOSE`;
-let handpose = undefined;
-let predictions = [];
+
+//handpose variables
+let video = undefined; //user's webcam
+let modelName = `HANDPOSE`; //name of my model
+let handpose = undefined; //handpose object
+let predictions = []; //array of predictions once handpose is running
+//get the ratio of the user's webcam
 let webcamRatio = {
   x: undefined,
   y: undefined
 };
+
 //index finger for handpose
 let finger = {
-  x:undefined,
-  y:undefined,
+  x: undefined,
+  y: undefined,
   size: 50,
-  image:undefined,
+  image: undefined,
 };
 //image for the index finger
 let fingerImg;
 
 
 //kitchen variables
-let italianFood = [ //array of the tamagotchi's favourite gelato flavours
+//array of the tamagotchi's favourite italian food
+let italianFood = [
   "pasta",
   "pizza",
   "gelato",
@@ -84,68 +91,72 @@ let italianFood = [ //array of the tamagotchi's favourite gelato flavours
 
 ];
 
-let foodRightAnswer = 0;
-let foodWrongAnswer = 0;
+let foodRightAnswer = 0; //the amount of right answers guessed by the user
+let foodWrongAnswer = 0; //the amount of wrong answers guessed by the user
 
 //school variables
-//DAY 1
+
+//school day 01 lesson 01
 let schoolLesson01 = {
   currentEnglishWord: ``,
   currentItalianWord: ``,
 };
 
+//school day 02 lesson 02
 let schoolLesson02 = {
   currentEnglishWord02: ``,
   currentItalianWord02: ``,
 }
-
-let currentItalianAnswer = ``;
-let currentItalianAnswer02 = ``;
+//current answers said by the user
+let currentLessonAnswer01 = ``;
+let currentLessonAnswer02 = ``;
+//data from json file
 let italianData;
 let englishData;
 
+//scores for right and wrong answers in lesson 01 and lesson 02
 let schoolRightAnswers = 0;
 let schoolMaxRightAnswers = 5;
-let schoolWrongAnswers = 0;
-let schoolMaxWrongAnswers = 10;
 
-//timer variables to check if its time forbed
+
+//timer variables to check if its time for bed
 let bedTimeTimerDelay = 700;
 let bedTimeTimerDone = false;
 
 
 //background image variables
-
-let floorPlanBg;
-let chooseEggBG;
-let bathroomBg;
-let bedroomBg;
-let kitchenBg;
-let livingRoomBg;
-let schoolYardBg;
-let classroomBg;
+let bathroomBg; //for the bathroom
+let bedroomBg; //for the bedroom
+let kitchenBg; //for the kitchen
+let livingRoomBg; //for the living room
+let schoolYardBg; //for the school yard
+let classroomBg; //for the class
 
 //fonts
-let pixelFont;
-let cuteFont;
+let pixelFont; //pixelated font
+let cuteFont; //bubble font
 
 //sounds
-let song01;
-let blingSfx;
-let badSfx;
-let petSfx;
+let song01; //main song
+let blingSfx; //sfx for right answers
+let badSfx; //sfx for wrong answers
+let petSfx; //sound for when you pet the tamagotchi
 
-let state = `start`; // the prototype starts with the start state
+let state = `start`; // the project starts with the start state
 
 
+//------------------------------------------------------//
+//---------***********PRELOAD***********----------------//
+//------------------------------------------------------//
 
-//loads all the variables
+//loads all images, sounds, fonts and json for the game
 function preload() {
 
+  //load all the fonts
   pixelFont = loadFont(`assets/fonts/dogica.otf`);
   cuteFont = loadFont(`assets/fonts/bubble.ttf`);
 
-
+  //loads all the tamagotchi's evolutions and emotions
   tamagotchiImg01 = loadImage(`assets/images/tamagotchi_01.png`);
   tamagotchiImg02 = loadImage(`assets/images/tamagotchi_02.png`);
   tamagotchiImg03 = loadImage(`assets/images/tamagotchi_03.png`);
@@ -153,11 +164,12 @@ function preload() {
   tamagotchiImg05 = loadImage(`assets/images/tamagotchi_05.png`);
   tamagotchiImg06 = loadImage(`assets/images/tamagotchi_06.png`);
   tamagotchiImg07 = loadImage(`assets/images/tamagotchi_07.png`);
+
+  //load finger img for handpose
   fingerImg = loadImage(`assets/images/heart.png`);
 
 
   //load all the background images
-  floorPlanBg = loadImage(`assets/images/floorplan.png`)
   bathroomBg = loadImage(`assets/images/bathroom.png`)
   bedroomBg = loadImage(`assets/images/bedroom.png`);
   kitchenBg = loadImage(`assets/images/kitchen.png`);
@@ -194,30 +206,35 @@ function preload() {
 
 }
 
+//------------------------------------------------------//
+//---------***********SETUP***********------------------//
+//------------------------------------------------------//
 
-//setup the canvas
+//Setup all the classes, annyang, and create the canvas
 function setup() {
   createCanvas(1280, 720);
 
-  setupTamagotchi();
-  setupBubbles();
-  setupPencils();
-  setupShower();
+  setupTamagotchi(); //setup tamagotchi
+  setupBubbles(); //setup floating bubbles
+  setupPencils(); //setup floating pencils
+  setupShower(); //setup shower water
   setupAnnyang(); //setup for annyang
 }
 
-
+//function to setup annyang
 function setupAnnyang() {
+  //checks if annyang is available
   if (annyang) {
-
+    //create the guessing command
     let commands = {
 
-        "eat some *food": feed,
-        "the answer is *phrase": guessAnswer
+      "eat some *food": feed,
+      "the answer is *phrase": guessAnswer
     };
+    //setup annyang and start
     annyang.addCommands(commands);
     annyang.start();
-    feed(); //calls function to check the score
+    feed(); //calls function to check if one of the foods guessed is part of the list of foods
 
   }
 }
@@ -387,11 +404,11 @@ function feed(food) {
 
 function guessAnswer(phrase){
   if(state === `schoolDay01`){
-    currentItalianAnswer = phrase.toLowerCase();
+    currentLessonAnswer01 = phrase.toLowerCase();
     checkLesson01Score();
   }
   else if(state === `schoolDay02`){
-    currentItalianAnswer02 = phrase.toLowerCase();
+    currentLessonAnswer02 = phrase.toLowerCase();
     checkLesson01Score();
   }
 }
@@ -446,7 +463,7 @@ function checkHour() {
 function checkLesson01Score(){
 
   if(state === `schoolDay01`){
-    if(currentItalianAnswer === schoolLesson01.currentEnglishWord){
+    if(currentLessonAnswer01 === schoolLesson01.currentEnglishWord){
       schoolRightAnswers++;
       blingSfx.play();
       nextQuestion();
@@ -457,7 +474,7 @@ function checkLesson01Score(){
       }
 
     }
-    else if(currentItalianAnswer !== schoolLesson01.currentItalianWord){
+    else if(currentLessonAnswer01 !== schoolLesson01.currentItalianWord){
       schoolWrongAnswers++;
       badSfx.play();
       if(schoolWrongAnswers === schoolMaxWrongAnswers){
@@ -467,7 +484,7 @@ function checkLesson01Score(){
   }
 
     if(state === `schoolDay02`){
-      if(currentItalianAnswer02 === schoolLesson02.currentEnglishWord02){
+      if(currentLessonAnswer02 === schoolLesson02.currentEnglishWord02){
         schoolRightAnswers++;
         nextQuestion();
 
@@ -475,7 +492,7 @@ function checkLesson01Score(){
           state = `bedRoom`;
           hour = 20;
         }
-        else if(currentItalianAnswer02 !== schoolLesson02.currentEnglishWord02){
+        else if(currentLessonAnswer02 !== schoolLesson02.currentEnglishWord02){
           schoolWrongAnswers++;
           if(schoolWrongAnswers === schoolMaxWrongAnswers){
             state = `dead`;

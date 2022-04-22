@@ -1,15 +1,25 @@
-let tamagotchiMenu = { // tamagotchi on the menu page
+/***********************
+buttons
+-This file is for all the button variables
+***********************/
+
+// tamagotchi on the menu page
+let tamagotchiMenu = {
   x: 1280 / 2,
   y: 720 / 2,
   size: 300,
 }
 
+//feed button in the kitchen
+//explains how to feed the tamagotchi
 let feedButton = {
   x: 1280 / 2,
   y: 720 / 2 - 150,
   size: 150,
 }
 
+//shower button in the bathroom
+//explains how to wash the tamagotchi
 let showerButton = {
   x: 1280 / 2,
   y: 720 / 2 - 150,

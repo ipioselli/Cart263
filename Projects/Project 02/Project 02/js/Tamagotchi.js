@@ -3,7 +3,7 @@ class Tamagotchi {
   constructor(x, y, image01, image02, image03, image04, image05, image06, image07) {
     this.x = x;
     this.y = y;
-    this.size =150;
+    this.size = 150;
     this.vx = 1.5;
     this.vy = 0;
     this.image01 = image01;
@@ -22,7 +22,7 @@ class Tamagotchi {
     this.bedY = 460;
     this.chairX = 845;
     this.chairY = 460;
-    this.classX = 1280/2 + 10;
+    this.classX = 1280 / 2 + 10;
     this.classY = 460;
     this.minX = 350;
     this.maxX = 950;
@@ -37,20 +37,20 @@ class Tamagotchi {
     this.checkDirt();
   }
 
-  classroom(){
+  classroom() {
     this.dirt = [];
     tamagotchiEnergy = 2000;
-    if(state === `schoolDay01` || `schoolDay02`){
+    if (state === `schoolDay01` || `schoolDay02`) {
       this.x = this.classX;
       this.y = this.classY;
     }
 
-    if(tamagotchiLVL === 1){
+    if (tamagotchiLVL === 1) {
       push();
       image(this.image01, this.x, this.y, this.size, this.size);
       pop();
     }
-    if(tamagotchiLVL === 2){
+    if (tamagotchiLVL === 2) {
       push();
       image(this.image04, this.x, this.y, this.size, this.size);
       pop();
@@ -85,22 +85,22 @@ class Tamagotchi {
   }
 
   getInShower() {
-    if (state === `bathroom`){
+    if (state === `bathroom`) {
       this.x = this.showerX;
       this.y = this.showerY;
     }
 
   }
-  getInBed(){
-    if(state === `bedRoom`){
+  getInBed() {
+    if (state === `bedRoom`) {
       this.x = this.bedX;
       this.y = this.bedY;
 
     }
   }
 
-  getOnChair(){
-    if(state === `kitchen`){
+  getOnChair() {
+    if (state === `kitchen`) {
       this.x = this.chairX;
       this.y = this.chairY;
     }
@@ -141,7 +141,7 @@ class Tamagotchi {
     }
   }
 
-  resetDirt(){
+  resetDirt() {
     this.dirt = [];
   }
 
@@ -166,8 +166,8 @@ class Tamagotchi {
     }
   }
 
-  displayTamagotchiLastDay(){
-    if(tamagotchiLVL === 3){
+  displayTamagotchiLastDay() {
+    if (tamagotchiLVL === 3) {
       this.size = 200;
       push();
       image(this.image07, this.x, this.y, this.size, this.size);
@@ -178,12 +178,12 @@ class Tamagotchi {
 
   //display the tamagotchi
   display() {
-    if(tamagotchiLVL === 1){
-      if (tamagotchiEnergy <= 1990) {
+    if (tamagotchiLVL === 1) {
+      if (tamagotchiEnergy <= 1600) {
         push();
         image(this.image03, this.x, this.y, this.size, this.size);
         pop();
-      } else if (tamagotchiEnergy <= 1995) {
+      } else if (tamagotchiEnergy <= 1800) {
         push();
         image(this.image02, this.x, this.y, this.size, this.size);
         pop();
@@ -194,12 +194,12 @@ class Tamagotchi {
       }
     }
 
-    if(tamagotchiLVL === 2){
-      if (tamagotchiEnergy <= 1990) {
+    if (tamagotchiLVL === 2) {
+      if (tamagotchiEnergy <= 1600) {
         push();
         image(this.image06, this.x, this.y, this.size, this.size);
         pop();
-      } else if (tamagotchiEnergy <= 1995) {
+      } else if (tamagotchiEnergy <= 1800) {
         push();
         image(this.image05, this.x, this.y, this.size, this.size);
         pop();
@@ -208,14 +208,7 @@ class Tamagotchi {
         image(this.image04, this.x, this.y, this.size, this.size);
         pop();
       }
-
     }
-
-
-
-
-
-
 
     for (let i = 0; i < this.dirt.length; i++) {
       let dirt = this.dirt[i];
@@ -227,7 +220,4 @@ class Tamagotchi {
 
     }
   }
-
-
-
 }
